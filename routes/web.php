@@ -189,6 +189,8 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::POST("blog/update/{id}", 'Admin\BlogController@update')->name('blogupdate');
 
 		Route::get('tours', 'Admin\TourController@tourList')->name('tourList');
+		Route::get('cities/{country}', 'Admin\TourController@getCities');
+
 		Route::get('tour/create/new', 'Admin\TourController@tourForm')->name('tourForm');
 		Route::post('tour/create', 'Admin\TourController@tourCreate')->name('tourCreate');
 		Route::get('tour/update/{tourid}/tour', 'Admin\TourController@getTourUpdate')->name('getTourUpdate');

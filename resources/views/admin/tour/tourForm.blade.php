@@ -4,7 +4,6 @@
 $active = 'tours';
 $subactive = 'tour/create/new';
 use App\component\Content;
-$countryId = Auth::user()->country_id ? Auth::user()->country_id : 0;
 
 ?>
 @section('content')
@@ -33,34 +32,25 @@ $countryId = Auth::user()->country_id ? Auth::user()->country_id : 0;
                                     </div>
                                     <div class="col-md-3 col-xs-6">
                                         <div class="form-group">
-                                            <label>Country <span style="color:#b12f1f;">*</span></label>
+                                            <label>Country <span style="color:hsl(7, 70%, 41%);">*</span></label>
+
                                             <select class="form-control country" name="country" id="country"
                                                 data-type="country" data-method="tour_accommodation" required>
                                                 @foreach (App\Country::where('country_status', 1)->orderBy('country_name')->get() as $con)
-                                                    <option value="{{ $con->id }}"
-                                                        {{ Auth::user()->country_id == $con->id ? 'selected' : '' }}>
+                                                    <option value="{{ $con->id }}">
                                                         {{ $con->country_name }}</option>
                                                 @endforeach
                                             </select>
+
                                         </div>
                                     </div>
 
                                     <div class="col-md-3 col-xs-6">
                                         <div class="form-group">
                                             <label>City <span style="color:#b12f1f;">*</span></label>
+
                                             <select class="form-control" name="city" id="city" required>
-                                                @if (isset($_GET['country_id']))
-                                                    $country_id=$_POST['country_id'];
-                                                    @foreach (App\Province::where(['province_status' => 1, 'country_id' => $country_id])->orderBy('province_name')->get() as $pro)
-                                                        <option value="{{ $pro->id }}">{{ $pro->province_name }}
-                                                        </option>
-                                                    @endforeach
-                                                @else
-                                                    @foreach (App\Province::where(['province_status' => 1, 'country_id' => $countryId])->orderBy('province_name')->get() as $pro)
-                                                        <option value="{{ $pro->id }}">{{ $pro->province_name }}
-                                                        </option>
-                                                    @endforeach
-                                                @endif
+                                                <option value="">Select a city</option>
                                             </select>
                                         </div>
                                     </div>
@@ -242,6 +232,7 @@ $countryId = Auth::user()->country_id ? Auth::user()->country_id : 0;
     </div>
     @include('admin.include.windowUpload')
     @include('admin.include.editor')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         function myFunction() {
             input = document.getElementById("search");
@@ -257,29 +248,33 @@ $countryId = Auth::user()->country_id ? Auth::user()->country_id : 0;
                 }
             }
         }
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <script>
+
         $(document).ready(function() {
-            // Submit button click event
-            $('#country').click(function() {
-                var country_id = $('#country').serialize(); // Serialize form data
-                // console.log(country_id);
+            $('#country').change(function() {
+                var countryId = $(this).val();
 
-                // AJAX request to send form data
                 $.ajax({
-                    url: window.location.href, // Use the current URL as the AJAX request URL
-                    type: 'POST', // Use the appropriate HTTP method
-                    data: country_id, // Send the serialized form data
+                    url: '/cities/' + countryId,
+                    type: 'GET',
+                    dataType: 'json',
                     success: function(response) {
-
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(error); // Handle any errors
+                        var citySelect = $('#city');
+                        citySelect.empty();
+                        if (response.length === 0) {
+                            citySelect.append('<option value="">No cities available</option>');
+                        } else {
+                            $.each(response, function(key, value) {
+                                citySelect.append('<option value="' + value.id + '">' +
+                                    value.province_name + '</option>');
+                            });
+                        }
                     }
                 });
             });
         });
     </script>
+
+
+
 @endsection

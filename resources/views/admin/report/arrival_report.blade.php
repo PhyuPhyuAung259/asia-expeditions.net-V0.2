@@ -21,14 +21,15 @@
             {{csrf_field()}}
             <div class="col-sm-8 pull-right">
               <div class="col-md-2">
-                <input type="hidden" name="" value="{{{$projectNo or ''}}}" id="projectNum">
-                <input readonly class="form-control input-sm" type="text" id="from_date" name="start_date" placeholder="From Date" value="{{{$startDate or ''}}}"> 
+                <input type="text" name="" value="{{{$projectNo or ''}}}" id="projectNum">
+                <input class="form-control input-sm" type="text" id="from_date" name="start_date" placeholder="From Date" value="{{{$startDate or ''}}}"> 
               </div>
               <div class="col-md-2" style="padding-right: 0px;">
-                <input readonly class="form-control input-sm" type="text" id="to_date" name="end_date" placeholder="To Date" value="{{{$endDate or ''}}}"> 
+                <input class="form-control input-sm" type="text" id="to_date" name="end_date" placeholder="To Date" value="{{{$endDate or ''}}}"> 
               </div>
               <div class="col-md-2" style="padding-right: 0px;">
                 <select class="form-control input-sm" name="agent">
+                  <option value="all">All</option>
                   @foreach(App\Supplier::getSupplier(9)->whereNotIn('pro.project_fileno', ["","Null",0])->get() as $agent)
                   <option value="{{$agent->id}}" {{$agent->id == $agent_id ? 'selected':''}}>{{$agent->supplier_name}}</option>
                   @endforeach
@@ -62,6 +63,7 @@
                 <?php $toTalPax = 0; ?>
                 @foreach($projects as $pro)
                   <?php 
+                
                     $guideSupplier = App\BookGuide::where(['project_number'=>$pro->project_number])->groupBy('supplier_id')->orderBy("created_at")->get(); 
                     $toTalPax = $toTalPax + $pro->project_pax;
                   ?>

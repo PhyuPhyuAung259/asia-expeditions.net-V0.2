@@ -112,6 +112,7 @@ class ReportController extends Controller
         $nextMonth = date('Y-m-').$d;
         $currentDate = date('Y-m-d');
         $projects = Project::Where(['project_status'=> 1])->whereBetween('project_start', [$currentDate, $nextMonth])->whereNotIn('project_fileno', [""," Null"])->orderBy('project_start', 'DESC')->get();
+        
         return view('admin.report.arrival_report', compact('projects'));
     }
  
@@ -201,12 +202,19 @@ class ReportController extends Controller
                 ->whereNotIn('project_fileno', ['Null','',0])
                 ->whereBetween('project_start', [$startDate, $endDate])
                 ->orderBy('project_start', 'DESC')->get();
-        }else{           
+        }elseif ($agentid=="all") {
+            $projects = Project::Where(['active'=>1,'project_status'=>1, 'project_prefix'=> $location])
+                ->whereNotIn('project_fileno', ['Null','',0])
+                ->whereBetween('project_start', [$startDate, $endDate])
+                ->orderBy('project_start', 'DESC')->get();
+        }
+        else{           
             $projects = Project::Where(['active'=>1,'project_status'=>1,'project_fileno'=> $projectNo, 'project_prefix'=> $location])
                 ->whereBetween('project_start', [$currentDate, $nextMonth])
                 ->whereNotIn('project_fileno', ['','Null', 0])
                 ->orderBy('project_start', 'DESC')->get();
         }
+        dd($projects,$agentid);
         return view('admin.report.arrival_report', compact('projects','projectNo', 'agentid', 'startDate', 'endDate', 'sort_main', 'location'));
     }
 

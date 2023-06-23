@@ -110,7 +110,7 @@ class DestinationController extends Controller
 		$addpro = Province::find($req->eid);
 		$addpro->province_name 	= $req->province_name;
 		$addpro->slug 			= str_slug($req->province_name,'-');
-		$addpro->country_id 	= $req->country_id;
+		$addpro->country_id 	= $req->country;
 		$addpro->province_status = $req->status;
 		$addpro->web 			= $req->web;
 		$addpro->province_photo = $req->image;

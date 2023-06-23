@@ -16,6 +16,7 @@ class TourController extends Controller
     {   
         $locationid = isset($req->location) ? $req->location: \Auth::user()->country_id;
         $tours = Tour::where(['tour_status'=>1, 'country_id'=>$locationid])->whereNotIn('post_type', [1])->orderBy('id', 'DESC')->get();
+        // dd($tours,$locationid);
         return view('admin.tour.tour', compact('tours', 'locationid'));
     }
 

@@ -858,6 +858,7 @@ class AdminController extends Controller
 
     public function addBookinOption(Request $req){
       $i = $req->i;
+      
       if ($req->type == "tour") {
           echo '<tr>
                   <td>

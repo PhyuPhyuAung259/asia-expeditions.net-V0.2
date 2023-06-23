@@ -80,7 +80,7 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::post('create/project', 'Admin\ProjectController@createProject')->name('createProject');
 		Route::get("/getImageFile", "Admin\AdminController@getImageFile")->name('getImageFile');
 		Route::post('booking/update', 'Admin\ProjectController@updateProject')->name('updateProject');
-		Route::POST("/project/AddNet", 'Admin\ProjectController@projectAddNetPrice')->name('projered ctAddNetPrice');
+		Route::POST("/project/AddNet", 'Admin\ProjectController@projectAddNetPrice')->name('projectAddNetPrice');
 
 		Route::get('/', 'Admin\AdminController@index')->name('adminhome');
 		Route::post('booked/{project}', 'Admin\AdminController@searchProject')->name('searchProject');
@@ -190,7 +190,6 @@ Route::group(['middleware' => ['IsLogin']], function(){
 
 		Route::get('tours', 'Admin\TourController@tourList')->name('tourList');
 		Route::get('cities/{country}', 'Admin\TourController@getCities');
-
 		Route::get('tour/create/new', 'Admin\TourController@tourForm')->name('tourForm');
 		Route::post('tour/create', 'Admin\TourController@tourCreate')->name('tourCreate');
 		Route::get('tour/update/{tourid}/tour', 'Admin\TourController@getTourUpdate')->name('getTourUpdate');

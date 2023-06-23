@@ -29,7 +29,7 @@
               </div>
               <div class="col-md-2" style="padding-right: 0px;">
                 <select class="form-control input-sm" name="agent">
-                  <option value="all">All</option>
+                  <option value="0">All Agent</option>
                   @foreach(App\Supplier::getSupplier(9)->whereNotIn('pro.project_fileno', ["","Null",0])->get() as $agent)
                   <option value="{{$agent->id}}" {{$agent->id == $agent_id ? 'selected':''}}>{{$agent->supplier_name}}</option>
                   @endforeach

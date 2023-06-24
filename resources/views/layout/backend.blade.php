@@ -9,12 +9,12 @@ $comadd = App\Company::find(1);
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ url('storage/avata') }}/{{ $comadd->logo }}">
-    <link rel="stylesheet" type="text/css" href='../adminlte/table/datatables.min.css'>
-    <link rel="stylesheet" type="text/css" href="../adminlte/table/datepicker.css'">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('storage/avata') }}/{{ $comadd->logo }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('adminlte/table/datatables.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('adminlte/table/datepicker.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="../adminlte/css/style.css">
-    <link rel="stylesheet" type="text/css" href="../adminlte/css/all.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('adminlte/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('adminlte/css/all.css') }}">
 
     <title>@yield('title') | {{ $comadd->title }}</title>
     <style type="text/css">
@@ -59,20 +59,20 @@ $comadd = App\Company::find(1);
 
 <body class=" skin-green sidebar-mini sidebar-collapse">
 
-    <script type="text/javascript" src="../adminlte/js/jquery.min.js"></script>
-    <script type="text/javascript" src="../adminlte/js/all.js"></script>
-    <script type="text/javascript" src="../adminlte/js/script.js"></script>
-    <script type="text/javascript" src="../adminlte/js/booking.js"></script>
-    <script type="text/javascript" src="http://127.0.0.1:8000/adminlte/js/apply_room.js"></script>
-    <script type="text/javascript" src="../adminlte/js/uploadfile.js"></script>
+    <script type="text/javascript" src="{{ asset('adminlte/js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('adminlte/js/all.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('adminlte/js/script.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('adminlte/js/booking.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('adminlte/js/apply_room.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('adminlte/js/uploadfile.js') }}"></script>
 
-    <script type="text/javascript" src="../adminlte/table/datatables.min.js"></script>
-    <!-- <script type="text/javascript" src="{{ asset('adminlte/table/bootstrap-datepicker.js') }}"></script>
-      <script type="text/javascript" src="{{ asset('adminlte/table/datepicker.js') }}"></script> -->
+    <script type="text/javascript" src="{{ asset('adminlte/table/datatables.min.js') }}"></script>
+    {{-- <!-- <script type="text/javascript" src="{{ asset('adminlte/table/bootstrap-datepicker.js') }}"></script>
+      <script type="text/javascript" src="{{ asset('adminlte/table/datepicker.js') }}"></script> --> --}}
 
     @yield('content')
-    <script type="text/javascript" src="../adminlte/table/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="../adminlte/table/datepicker.js"></script>
+    <script type="text/javascript" src="{{ asset('adminlte/table/bootstrap-datepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('adminlte/table/datepicker.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {

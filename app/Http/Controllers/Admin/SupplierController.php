@@ -30,9 +30,11 @@ class SupplierController extends Controller
     }
 
     public function supplierBusiness(Request $req, $supplierName){
+      
         $locationid = isset($req->location) ? $req->location: \Auth::user()->country_id;
         $business = Business::where('slug', $supplierName)->first();
-        $getCountry = Country::countryBySupplier($business['id']);
+        
+        $getCountry = Country::countryBySupplier($business->id);
         $suppliers = Supplier::where(['country_id'=>$locationid, 'business_id'=>$business->id, 'supplier_status'=>1])
                 // ->select('id', 'supplier_name', 'country_id', 'province_id', 'supplier_phone', 'supplier_email', 'supplier_photo', 'user_id')
                 ->orderBy('supplier_name')->get();
@@ -139,7 +141,7 @@ class SupplierController extends Controller
         $gallery = '';
         $photo = '';
         
-        if (isset($req->gallery) || isset($req->image)) {
+        if (isset($req->gallery)  && ($req->gallery !== null)) {
             if (count($req->gallery) > 0) {
                 foreach ($req->gallery as $key => $g) {
                     if ($g == null) {
@@ -149,11 +151,11 @@ class SupplierController extends Controller
                     }
                 }
             }
-            if (empty($req->image)) {
-                $photo = $req->image_old;
-            }else{
-                $photo = $req->image;
-            }
+        }
+        if (empty($req->image)) {
+            $photo = $req->image_old;
+        }else{
+            $photo = $req->image;
         }
         $addsup = Supplier::find($req->eid);
         $addsup->supplier_name  = $req->title;

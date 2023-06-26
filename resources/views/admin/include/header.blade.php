@@ -22,7 +22,7 @@ $logo = Storage::url('avata/' . $comadd->logo);
             <ul class="nav navbar-nav">
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="{{ asset('storage/avata') }}/{{ Auth::user()->picture }}" class="user-image">
+                        <img src="{{ asset('storage/avata/' . Auth::user()->picture) }}" class="user-image">
 
                         <span class="hidden-xs"></span>
                         <div class="clearfix"></div>

@@ -78,33 +78,16 @@ class UserController extends Controller
     }
 
     public function updateUser(Request $req){
-		 
-        if ($req->hasFile("image")) {
-            /*$image = $req->file('image');
-             $filename = time().'-'.$image->getClientOriginalName();
-			// $filename =hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-
+		if ($req->hasFile("image")) {
+            $image = $req->file('image');
+            $filename = time().'-'.$image->getClientOriginalName();
             $img = Image::make($image->getRealPath())->fit(200, 210);
-            $img->save(public_path('storage/avata/thumbnail/').$filename);
-            $image->move(public_path('storage/avata/'), $filename);  */
-			$image = $req->file('image');
-    
-			$filename = time() . '-' . $image->getClientOriginalName();
-			
-			$path = 'storage/avata/thumbnail/' . $filename;
-			$path_move='storage/avata'.$filename;
-			$image = Image::make($image)->fit(200, 210); // Resize the image if needed
-			Storage::disk('local')->put($path_move, (string) $image->encode());
-			Storage::put($path, (string)$image->encode());
-		 
-			 
-			// Additional logic or database storage if needed
-			
-			 
-     
+            $img->save(public_path('storage/avata/thumbnail/'.$filename));
+            $image->move(public_path('storage/avata/'), $filename);   
         }else{
             $filename = $req->oldFile;
         }
+		
     	$aUser = User::find($req->eid);
     	$aUser->fullname = $req->fullname;
     	$aUser->position = $req->position;

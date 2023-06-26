@@ -113,7 +113,7 @@ $user = App\User::find($project->check_by);
 														@if($tour->tour_picture || $tour->tour_photo)
 															<?php 
 																$gallery = [];
-																project/report/001889/details		if($tour->tour_photo){
+																if($tour->tour_photo){
 	        													 $gallery[] = ['thumbnail'=>$tour->tour_photo]; 
 	        													}
 	        													$tour_gallery = explode("|", trim($tour->tour_picture, '|'));
@@ -398,7 +398,7 @@ $user = App\User::find($project->check_by);
 					<th>No. Cabin</th>
 					@foreach(App\RoomCategory::whereIn('id',[1,2,3,4,5])->orderBy('id', 'ASC')->get() as $cat)
 	                <th class="text-right">{{$cat->name}}</th>
-	                @endforeachprogram
+	                @endforeach
 				</tr>
 				@foreach($cruiseBook->get() as $crp)			
 				<?php 
@@ -511,4 +511,3 @@ $user = App\User::find($project->check_by);
  	});
  </script>
 @endsection
-

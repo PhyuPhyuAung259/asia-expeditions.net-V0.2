@@ -120,6 +120,7 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::get("transport/edit", "Admin\ServiceController@getEditTransport")->name("getEditTransport");
 
 		Route::get('supplier/add/new', 'Admin\SupplierController@getSupplierForm')->name('getSupplierForm');
+		 
 		Route::post('supplier/create', 'Admin\SupplierController@createSupplier')->name('createSupplier');
 		Route::get('supplier/edit/{supplierId}', 'Admin\SupplierController@getEditSupplier')->name('getEditSupplier');
 		Route::get('supplier/hotel/update/info/{supplierId}', 'Admin\HotelController@getEditHotelInfo')->name('getEditHotelInfo');
@@ -189,7 +190,7 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::POST("blog/update/{id}", 'Admin\BlogController@update')->name('blogupdate');
 
 		Route::get('tours', 'Admin\TourController@tourList')->name('tourList');
-		Route::get('cities/{country}', 'Admin\TourController@getCities');
+		Route::get('cities/{country}', 'Admin\AdminController@getCities');
 		Route::get('tour/create/new', 'Admin\TourController@tourForm')->name('tourForm');
 		Route::post('tour/create', 'Admin\TourController@tourCreate')->name('tourCreate');
 		Route::get('tour/update/{tourid}/tour', 'Admin\TourController@getTourUpdate')->name('getTourUpdate');

@@ -20,13 +20,6 @@ class TourController extends Controller
         return view('admin.tour.tour', compact('tours', 'locationid'));
     }
 
-    public function getCities(Request $request, $country)
-    {
-        $cities = Province::where('country_id', $country)->get();
-        
-        return response()->json($cities);
-    }
-
     public function tourForm(){
         return view('admin.tour.tourForm');
     }

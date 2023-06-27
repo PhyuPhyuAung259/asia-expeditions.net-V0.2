@@ -36,7 +36,12 @@ class AdminController extends Controller
     {
       return view('admin.index');
     }
-
+    public function getCities(Request $request, $country)
+    {
+        $cities = Province::where('country_id', $country)->get();
+        
+        return response()->json($cities);
+    }
     public function delPriceRate ($hotelid, $bookid, $type) {
       if ($type == "hotel") {
         if (\App\HotelBooked::where(['hotel_id'=>$hotelid, 'book_id'=> $bookid])->delete()) {

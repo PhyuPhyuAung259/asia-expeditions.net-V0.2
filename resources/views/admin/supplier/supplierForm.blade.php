@@ -28,24 +28,28 @@
                   </div>        
                   <div class="col-md-3 col-xs-6">
                     <div class="form-group">
-                      <label>Country <span style="color:#b12f1f;">*</span></label> 
-                      <select class="form-control country" name="country" data-type="country" required>
-                        @foreach(App\Country::where('country_status', 1)->orderBy('country_name')->get() as $con)
-                          <option value="{{$con->id}}" {{Auth::user()->country_id == $con->id ? 'selected':''}}>{{$con->country_name}}</option>
-                        @endforeach
-                      </select>
-                    </div> 
-                  </div>
-                  <div class="col-md-3 col-xs-6">
+                        <label>Country <span style="color:hsl(7, 70%, 41%);">*</span></label>
+
+                        <select class="form-control country" name="country" id="country"
+                            data-type="country" data-method="tour_accommodation" required>
+                            @foreach (App\Country::where('country_status', 1)->orderBy('country_name')->get() as $con)
+                                <option value="{{ $con->id }}">
+                                    {{ $con->country_name }}</option>
+                            @endforeach
+                        </select>
+
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-xs-6">
                     <div class="form-group">
-                      <label>City <span style="color:#b12f1f;">*</span></label> 
-                      <select class="form-control" name="city" id="dropdown-data" required>
-                        @foreach(App\Province::where(['province_status'=> 1, 'country_id'=> $countryId ])->orderBy('province_name')->get() as $pro)
-                          <option value="{{$pro->id}}">{{$pro->province_name}}</option>
-                        @endforeach
-                      </select>
-                    </div> 
-                  </div>
+                        <label>City <span style="color:#b12f1f;">*</span></label>
+
+                        <select class="form-control" name="city" id="city" required>
+                            <option value="">Select a city</option>
+                        </select>
+                    </div>
+                </div>
                   <div class="col-md-3 col-xs-6">
                     <div class="form-group">
                       <label>Business Type <span style="color:#b12f1f;">*</span></label>
@@ -159,4 +163,30 @@
 </div>
 @include('admin.include.windowUpload')
 @include('admin.include.editor')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+            $('#country').change(function() {
+                var countryId = $(this).val();
+
+                $.ajax({
+                    url: '/cities/' + countryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        var citySelect = $('#city');
+                        citySelect.empty();
+                        if (response.length === 0) {
+                            citySelect.append('<option value="">No cities available</option>');
+                        } else {
+                            $.each(response, function(key, value) {
+                                citySelect.append('<option value="' + value.id + '">' +
+                                    value.province_name + '</option>');
+                            });
+                        }
+                    }
+                });
+            });
+        });
+</script>
 @endsection

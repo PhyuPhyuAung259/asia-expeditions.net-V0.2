@@ -7,9 +7,9 @@ $logo = Storage::url('avata/' . $comadd->logo);
     <!-- Logo -->
     <a href="{{ route('adminhome') }}" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><img src="{{ $logo }}" style="width: 100%;"></span>
+        <span class="logo-mini"><img src="{{ asset('storage/avata/' . $comadd->logo) }}" style="width: 100%;"></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><img src="{{ $logo }}" style="width: 15%;"></span>
+        <span class="logo-lg"><img src="{{ asset('storage/avata/' . $comadd->logo) }}" style="width: 15%;"></span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -29,7 +29,8 @@ $logo = Storage::url('avata/' . $comadd->logo);
                     </a>
                     <ul class="dropdown-menu">
                         <li class="user-header">
-                            <img src="/storage/avata/thumbnail/{{ Auth::user()->picture }}" class="img-circle">
+                            <img src="{{ asset('storage/avata/thumbnail/' . Auth::user()->picture) }}"
+                                class="img-circle">
                             <p>
                                 {{ Auth::user()->fullname }} - {{ Auth::user()->position }}
                                 <small>Member since {{ date('d-M-Y', strtotime(Auth::user()->created_at)) }}</small>

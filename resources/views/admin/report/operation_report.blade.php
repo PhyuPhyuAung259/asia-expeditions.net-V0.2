@@ -371,7 +371,7 @@
 						</tr>			
 						@foreach($tranBook->get() as $tran)
 							<?php 
-								$pro   = App\Province::find($tran->province_id); 
+								//$pro   = App\Province::find($tran->province_id); 
 								$btran = App\BookTransport::where(['project_number'=>$tran->book_project, 'book_id'=>$tran->id])->first();
 								$price = isset($btran->price)? $btran->price:0; 
 								$kprice = isset($btran->kprice)? $btran->kprice:0;
@@ -385,7 +385,7 @@
 									  	<span class="checkmark"></span>
 									</label>
 								</td>
-								<td colspan="3">{{ $tran->tour_name }} &nbsp; <i>[ {{$pro->province_name}} ]</i></td>
+								<td colspan="3">{{ $tran->tour_name }} </td>
 								<td colspan="2">{{{ $btran->service->title or ''}}}</td>
 				                <td>{{{ $btran->vehicle->name or ''}}}</td>
 				                <td>{{{ $btran->driver->driver_name or ''}}}</td>
@@ -453,7 +453,7 @@
 										<span class="checkmark"></span>
 									</label>
 								</td> 					
-								<td colspan="3">{{$tran->tour_name}} &nbsp; <i>[ {{$pro->province_name}} ]</i></td>     
+								<td colspan="3">{{$tran->tour_name}} </td>     
 								<td colspan="2">{{{ $bg->service->title or '' }}}</td>
 								<td>{{{ $bg->supplier->supplier_name or ''}}} </td>
 								<td>
@@ -611,7 +611,7 @@
 										</label>
 					                </td>
 					                <td colspan="10">
-					                  	<div><strong>{{$tour->tour_name}}</strong>&nbsp; <i>[ {{$pro->province_name}} ]</i></div>
+					                  	<div><strong>{{$tour->tour_name}}</strong></div>
 							            @if($miscService->count() > 0) 
 							            	<hr style="border-top:none; border-bottom: 1px solid #ddd;padding: 5px 0px; margin-top:0px; margin-bottom: 0px;">
 						                  	<div class="row "style="font-style: italic;">

@@ -4,6 +4,7 @@
   $active = 'restaurant/menu'; 
   $subactive = 'transport/service';
   use App\component\Content;
+ // dd($project,$booking);
 ?>
 @section('content')
 <div class="wrapper">
@@ -14,7 +15,7 @@
 		    <div class="row">
 		      	@include('admin.include.message')
 		        <section class="col-lg-12 connectedSortable">
-		          <h3 class="border" style="text-transform:capitalize;">Booking Golf for Project No. <b>{{$project->project_number}} </b></h3>
+		          <h3 class="border" style="text-transform:capitalize;">Booking Golf for Project No. <b>{{$project->project_number}} </b><span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Golf</a></h3>
 		            <table class="datatable table table-hover table-striped">
 		              <thead>
 		                <tr>
@@ -74,7 +75,7 @@
 		        </div>
 		        <div class="modal-body">
 		          	{{csrf_field()}}    
-		          	<input type="hidden" name="bookid" id="tour_id">
+		          	<input type="hidden" name="bookid" id="tour_id" value="">
 			        <div class="row">
 			            <div class="col-md-4 col-xs-6">
 				            <div class="form-group">

@@ -14,7 +14,7 @@
 		    <div class="row">
 		      	@include('admin.include.message')
 		        <section class="col-lg-12 connectedSortable">
-		          <h3 class="border" style="text-transform:capitalize;">Booking Transportation for Project No. <b>{{$project->project_number}} </b></h3>
+		          <h3 class="border" style="text-transform:capitalize;">Booking Transportation for Project No. <b>{{$project->project_number}} </b> <span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Transport</a></h3>
 		          	<div class="table-responsive">
 		          		<table class="datatable table table-hover table-striped">
 				            <thead>
@@ -24,7 +24,7 @@
 				                  <th>Tour Name</th>
 				                  <th>Service</th>
 				                  <th>Vehicle</th>
-				                  <th style="width:77px;s">Driver</th>
+				                  <th style="width:77px;">Driver</th>
 				                  <th>Phone</th>
 				                  <th title="Meeting / PickUp Time">MT/PKTime</th>
 				                  <th title="Flight Number & Time ">FlightNo./Time</th>
@@ -35,30 +35,35 @@
 				            </thead>
 				            <tbody>
 				                @foreach($booking as $tran)
+									 
 						            <?php 
+									 
 							            $pro   = App\Province::find($tran->province_id);
-							            $btran = App\BookTransport::where(['project_number'=>$tran->book_project,'book_id'=>$tran->id])->first();
-							            $TranJournal = App\AccountJournal::where(['supplier_id'=>$btran['transport_id'], 'business_id'=>7,'project_number'=>$project->project_number, 'book_id'=>$tran->id, 'type'=>1, 'status'=>1])->first();
+							        	$btran = App\BookTransport::where(['project_number'=>$tran->book_project,'book_id'=>$tran->id])->first();
+										if(isset($btran)){
+										$TranJournal = App\AccountJournal::where(['supplier_id'=>$btran->transport_id, 'business_id'=>7,'project_number'=>$project->project_number, 'book_id'=>$tran->id, 'type'=>1, 'status'=>1])->first();
+										}
 						            ?>
 					                <tr>
 					                  <td>{{Content::dateformat($tran->book_checkin)}}</td>
-					                  <!-- <td></td>          -->
-					                  <td>{{$tran->tour_name}} <span class="badge">{{$pro->province_name}}</span></td>          
-					                  <td>{{{$btran->service->title or ''}}}</td>
-					                  <td>{{{$btran->vehicle->name or ''}}}</td>
+					            
+					                  <td>{{$tran->tour_name}}  {{-- <span class="badge">{{$pro->province_name}}</span></td>           --}}</td>
+					                  <td>{{{isset($btran->service->title) ? $btran->service->title : ''}}}</td>
+					                  <td>{{{isset($btran->vehicle->name) ? $btran->vehicle->name : ''}}}</td>
 					                  <td>{{{$btran->driver->driver_name or ''}}}</td>
 					                  <td>
 					                  	@if(isset($btran->transport->phone) || isset($btran->transport->phone2))
 					                  		{{$btran->transport->phone}} {{ $btran->transport->phone2}}
 					                  	@else
-					                  		{{{$btran->transport_phone or ''}}}
+					                  		{{{isset($btran->transport->phone) ? $btran->transport->phone : ''}}}
 					                  	@endif
 					                  </td> 
-					                  <td>{{{ $btran->pickup_time or ''}}}</td>
-					                  <td>{{{$btran->flightno or ''}}}</td>
+					                  <td>{{{isset($btran->pickup_time) ? $btran->pickup_time : ''}}}</td>
+					                  <td>{{{isset($btran->flightno) ? $btran->flightno : ''}}}</td>
 					                  <td class="text-right">{{ isset($btran->price)?Content::money($btran->price):''}}</td>
 					                  <td class="text-right">{{ isset($btran->kprice)? Content::money($btran->kprice):''}}</td>
-					                  <td class="text-right">     
+					                  <td class="text-right"> 
+										@if(isset($TranJournal))    
 					                  	@if($TranJournal == Null)    
 						                  	@if(isset($btran->id))
 												<span class="btn btn-acc btn-xs btnRefresh" title="Clear this service" data-type="clear-transport" data-id="{{{$btran->id or ''}}}"><i class="fa fa-refresh"></i></span>
@@ -74,6 +79,7 @@
 						                @else
 						                	<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>
 					                   	@endif 
+										@endif
 					                    @if(isset($btran->id))
 										<a target="_blank" href="{{route('getBookingVoucher', [$tran->book_project, $tran->id])}}" title="View Restaurant Booking">
 							               	<label class="fa fa-list-alt btn btn-xs" style="font-size:17px; color: #527686;"></label>
@@ -105,6 +111,12 @@
 	          <input type="hidden" name="bookid" id="tour_id">
 	          <input type="hidden" name="project_number" id="project_number" value="{{$project->project_number}}">
 		        <div class="row">
+					<div class="col-md-12 col-xs-12">
+						<div class="form-group">
+							<label>Start Date</label> 
+							<input type="date" name="start_date" class="form-control book_date" placeholder="Start Date"">	
+						</div> 
+					</div>
 		            <div class="col-md-4 col-xs-6">
 		              <div class="form-group">
 		                <label>Country <span style="color:#b12f1f;">*</span></label> 

@@ -14,7 +14,7 @@
 		    <div class="row">
 		      	@include('admin.include.message')
 		        <section class="col-lg-12 connectedSortable">
-		          <h3 class="border" style="text-transform:capitalize;">Booking Guide for Project No. <b>{{$project->project_number}} </b></h3>
+		          <h3 class="border" style="text-transform:capitalize;">Booking Guide for Project No. <b>{{$project->project_number}} </b><span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Guide</a></h3>
 		            <table class="datatable table table-hover table-striped">
 		              <thead>
 		                <tr>
@@ -35,12 +35,16 @@
 				            <?php
 				            	$pro = App\Province::find($tran->province_id);
 				            	$bg  = App\BookGuide::where(['project_number'=>$tran->book_project, 'book_id'=>$tran->id])->first();
-				            	$JournalGuide = \App\AccountJournal::where(['supplier_id'=>$bg['supplier_id'], 'business_id'=>6,'project_number'=>$project->project_number, 'book_id'=>$tran->id, 'type'=>1 ,'status'=>1])->first();
-				            	?>
+						 		 
+								if(isset($bg)){
+								$JournalGuide = \App\AccountJournal::where(['supplier_id'=>$bg->supplier_id, 'business_id'=>6,'project_number'=>$project->project_number, 'book_id'=>$tran->id, 'type'=>1 ,'status'=>1])->first();
+								}
+								
+							?>
 				                <tr>
 									<td>{{Content::dateformat($tran->book_checkin)}}</td>
-									<!-- <td>{{$pro->province_name}}</td>          -->
-									<td>{{$tran->tour_name}} <span class="badge">{{$pro->province_name}}</span></td>     
+								      
+									 <td>{{$tran->tour_name}}{{--  <span class="badge">{{$pro->province_name}}</span>       --}}</td>
 									<td>{{{ $bg->service->title or '' }}}</td>
 									<td>{{{ $bg->supplier->supplier_name or ''}}} </td>
 									<td>
@@ -56,7 +60,10 @@
 									<td>{{{$bg->language->name or ''}}}</td>
 									<td class="text-right">{{ isset($bg->price)?Content::money($bg->price):''}}</td>
 									<td class="text-right">{{ isset($bg->price)? Content::money($bg->kprice):''}}</td>
-									<td class="text-right">      
+									<td class="text-right">  
+										@if (isset($JournalGuide))
+											
+										   
 										@if($JournalGuide == Null)
 											@if(isset($bg->id))
 											<span class="btn btn-acc btn-xs btnRefresh" title="Clear this service" data-type="clear-guide" data-id="{{{$bg->id or ''}}}"><i class="fa fa-refresh"></i></span>
@@ -78,6 +85,7 @@
 										@else
 											<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>
 										@endif
+										@endif  
 									</td>                     
 				                </tr>
 		                @endforeach
@@ -102,6 +110,12 @@
 		          	<input type="hidden" name="bookid" id="tour_id">
 	 	          	<input type="hidden" name="project_number" id="project_number" value="{{$project->project_number}}">
 			        <div class="row">
+						<div class="col-md-12 col-xs-12">
+							<div class="form-group">
+								<label>Start Date</label> 
+								<input type="date" name="start_date" class="form-control book_date" placeholder="Start Date"">	
+							</div> 
+						</div>
 			            <div class="col-md-6 col-xs-6">
 			              <div class="form-group">
 			                <label>Country <span style="color:#b12f1f;">*</span></label> 

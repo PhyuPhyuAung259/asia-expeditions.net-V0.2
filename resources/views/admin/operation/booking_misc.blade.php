@@ -14,7 +14,7 @@
 		    <div class="row">
 		      	@include('admin.include.message')
 		        <section class="col-lg-12 ">
-		          	<h3 class="border" style="text-transform:capitalize;">Miscellaneouse Assignment For File Number <b>{{$project->project_number}} </b></h3>
+		          	<h3 class="border" style="text-transform:capitalize;">Miscellaneouse Assignment For File Number <b>{{$project->project_number}} </b><span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Miscellaneouse</a></h3>
 		            <table class="datatable table table-hover table-striped">
 			            <thead>
 			                <tr>
@@ -32,7 +32,7 @@
 			                <tr>
 				                <td>{{Content::dateformat($tran->book_checkin)}}</td>       
 				                <td>
-				                  	<div><strong>{{$tran->tour_name}}</strong>&nbsp; <i>[ {{$pro->province_name}} ]</i></div>
+				                  	<div><strong>{{$tran->tour_name}}</strong> </div>
 						            @if($miscService->count() > 0) 
 						            	<hr  style="border-top:none; border-bottom: 1px solid #ddd;padding: 5px 0px; margin-top:0px; margin-bottom: 0px;">
 					                  	<div class="row "style="font-style: italic; color: #c36f04;" >
@@ -119,6 +119,12 @@
 		          	<input type="hidden" name="bookid" id="tour_id">
 		          	<input type="hidden" name="project_number" id="project_number" value="{{$project->project_number}}">
 			        <div class="row">
+						<div class="col-md-12 col-xs-12">
+							<div class="form-group">
+								<label>Start Date</label> 
+								<input type="date" name="start_date" class="form-control book_date" placeholder="Start Date"">	
+							</div> 
+						</div>	
 			            <div class="col-md-6 col-xs-6">
 				            <div class="form-group">
 				                <label>Country <span style="color:#b12f1f;">*</span></label> 

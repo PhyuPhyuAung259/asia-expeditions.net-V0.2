@@ -18,7 +18,7 @@ class BookingController extends Controller
 {
     public function geteditBookedType($bookType, $bookId){
     	$book = Booking::find($bookId);
-        if (empty($book)) {
+        if (empty($book)) { //dd($btran->book_id);
             $message = $bookId;
             return view('errors.error', compact('message', 'type'));
         }
@@ -26,6 +26,11 @@ class BookingController extends Controller
     }
 
     public function updateBookedType($bookType, Request $req){
+         
+        if($req->book_pax=="Select Pax"){
+            $errorPax="Please choose Number of Pax:";
+            return back()->with('data',$errorPax);
+        }
     	try {
             $checkin = Carbon::parse($req->book_start);
             $checkout = Carbon::parse($req->book_end);

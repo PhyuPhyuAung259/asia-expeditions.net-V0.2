@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Tour;
 use App\Project;
 use App\Booking; 
 use App\BookTransport; 
@@ -18,13 +18,14 @@ use App\CruiseBooked;
 class OperationController extends Controller
 {
     public function applyOperation($opstype, $projectNo){
+        //dd($client);
     	$project = Project::where('project_number', $projectNo)->first();
         if (empty($project)) {
             $message = $projectNo;
             return view('errors.error', compact('message', 'opstype'));
         }
     	if ($opstype == "transport" || $opstype == "guide" || $opstype == "misc"){
-    		$booking = Booking::tourBook($projectNo)->get();
+    		 $booking = Booking::tourBook($projectNo)->get();   
     	}elseif ($opstype == 'restaurant') {            
     		$booking = \App\BookRestaurant::where('project_number', $projectNo)->orderBy('start_date', 'ASC')->get();
     	}elseif ($opstype == 'entrance') {
@@ -32,6 +33,7 @@ class OperationController extends Controller
     	}elseif ($opstype == "golf") {
             $booking = Booking::golfBook($projectNo)->get();
         }
+        dd($booking);
     	return view('admin.operation.booking_'.$opstype, compact("booking","project", "opstype"));
     }
 
@@ -71,9 +73,10 @@ class OperationController extends Controller
 
     public function assignTransport(Request $req){
     	$getTran = BookTransport::where(['project_number'=> $req->project_number, 'book_id'=> $req->bookid])->first();
-    	if ( $getTran) {
+        $project=Project::where(['project_number'=>$req->project_number])->first();
+    	if ( $getTran) { 
     		$btran = BookTransport::find($getTran->id);
-    		$btran->book_id        = $req->bookid;
+    		$btran->book_id        = $req->book_id;
 	    	$btran->service_id     = $req->tran_name;
 	 		$btran->project_number = $req->project_number;
 	    	$btran->country_id     = $req->country;
@@ -91,9 +94,19 @@ class OperationController extends Controller
 	    	$btran->save();
 	    	$message = "Transport Successfully Updated";
     	}else{
+            $booking=new Booking();
+            $booking->book_project=$req->project_number;
+            $booking->user_id=auth()->user()->id;
+            $booking->book_client=$project->project_client;
+            $booking->country_id=$req->country;
+            $booking->book_checkin=$req->start_date;
+            $booking->tour_id=$req->tran_name;
+            $booking->book_price=$req->price;
+            $booking->book_kprice=$req->kprice;
+            $booking->save();
 	    	$btran = New BookTransport;
-	    	$btran->book_id        = $req->bookid;
-	    	$btran->service_id     = $req->x;
+	    	$btran->book_id        = $booking->id;
+	    	$btran->service_id     = $req->tran_name;
 	 		$btran->project_number = $req->project_number;
 	    	$btran->country_id     = $req->country;
 	    	$btran->province_id    = $req->city;
@@ -108,6 +121,7 @@ class OperationController extends Controller
             $btran->flightno       = $req->flightno;
             $btran->remark         = $req->remark;
 	    	$btran->save();
+
 	    	$message = "Transport Successfully Added";
 	    }
         return back()->with(['message'=> $message,  'status'=> 'success', 'status_icon'=> 'fa-check-circle']); 
@@ -193,7 +207,8 @@ class OperationController extends Controller
 
     public function assignGuide(Request $req){
     	$guidb=BookGuide::where(['project_number'=>$req->project_number,'book_id'=>$req->bookid])->first();
-    	if ($guidb) {
+    	$project=Project::where('project_number',$req->project_number)->first();
+        if ($guidb) {
     		$aguide = BookGuide::find($guidb->id);
   			$aguide->project_number = $req->project_number;
   			$aguide->start_date     = $req->start_date;
@@ -210,15 +225,26 @@ class OperationController extends Controller
   			$aguide->amount 		= $req->price * $req->pax;
   			$aguide->kamount 		= $req->kprice * $req->pax;
   			$aguide->save();
-  			$message = "Guide Applied Successfully";
+  			$message = "Entrance Successfully Updated";
     	}else{
+            $booking=new Booking();
+            $booking->book_project=$req->project_number;
+            $booking->user_id=auth()->user()->id;
+            $booking->book_client=$project->project_client;
+            $booking->country_id=$req->country;
+            $booking->province_id=$req->city;
+            $booking->book_checkin=$req->start_date;
+            $booking->tour_id=$req->tran_name;
+            $booking->book_price=$req->price;
+            $booking->book_kprice=$req->kprice;
+            $booking->save();
     		$aguide = New BookGuide;
   			$aguide->project_number = $req->project_number;
   			$aguide->start_date     = $req->start_date;
   			$aguide->country_id     = $req->country;
   			$aguide->province_id    = $req->city;
   			$aguide->service_id     = $req->tran_name;
-  			$aguide->book_id		= $req->bookid;
+  			$aguide->book_id		= $booking->id;
   			$aguide->language_id    = $req->language;
             $aguide->phone          = $req->phone;
   			$aguide->supplier_id    = $req->guide_name;
@@ -235,6 +261,8 @@ class OperationController extends Controller
 
     public function assignMisc(Request $req){
         $aMisc = BookMisc::find($req->bookid);
+        $project=Project::where(['project_number'=>$req->project_number])->first();
+       
         if ($aMisc) {
             $aMisc->project_number = $req->project_number;
             $aMisc->country_id     = $req->country;
@@ -249,11 +277,26 @@ class OperationController extends Controller
             $aMisc->save();
             $message = "Miscellaneouse update Successfully";
         }else{
+             
+            $booking=new Booking();
+            $booking->book_project=$req->project_number;
+            $booking->user_id=auth()->user()->id;
+            $booking->book_client=$project->project_client;
+            $booking->country_id=$req->country;
+            $booking->province_id=$req->city;
+            $booking->book_checkin=$req->start_date;
+            $booking->tour_id=$req->service_type;
+            $booking->book_pax=$req->book_pax;
+            $booking->book_price=$req->price;
+            $booking->book_kprice=$req->kprice;
+            $booking->book_amount=$req->price * $req->book_pax;
+            $booking->book_kamount=$req->kprice * $req->book_pax;
+            $booking->save();
             $eMisc = New BookMisc;
             $eMisc->project_number = $req->project_number;
             $eMisc->country_id     = $req->country;
             $eMisc->province_id    = $req->city;
-            $eMisc->book_id        = $req->bookid;
+            $eMisc->book_id        = $booking->id;
             $eMisc->service_id     = $req->service_type;
             $eMisc->book_pax       = $req->book_pax;
             $eMisc->price          = $req->price;
@@ -288,6 +331,7 @@ class OperationController extends Controller
     }
 
     public function updateTeetime(Request $req){
+        //dd($req->bookid);
         $ateetime = Booking::find($req->bookid);
         $ateetime->book_golf_time = $req->hour.":".$req->minute."&nbsp;".$req->start;
         $ateetime->save();

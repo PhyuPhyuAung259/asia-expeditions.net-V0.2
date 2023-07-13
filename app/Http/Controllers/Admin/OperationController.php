@@ -33,7 +33,7 @@ class OperationController extends Controller
     	}elseif ($opstype == "golf") {
             $booking = Booking::golfBook($projectNo)->get();
         }
-        dd($booking);
+        //dd($booking);
     	return view('admin.operation.booking_'.$opstype, compact("booking","project", "opstype"));
     }
 

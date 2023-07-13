@@ -88,7 +88,8 @@
 		        	<div class="col-md-12 col-xs-12">
 			            <div class="form-group">
 			                <label>Start Date</label> 
-			            	<input type="text" name="start_date" class="form-control book_date" placeholder="Start Date" value="{{date('Y-m-d')}}">	
+			            	<input type="text" name="star
+							t_date" class="form-control book_date" placeholder="Start Date" value="{{date('Y-m-d')}}">	
 			            </div> 
 		            </div>		           
 		            <div class="col-md-6 col-xs-6">

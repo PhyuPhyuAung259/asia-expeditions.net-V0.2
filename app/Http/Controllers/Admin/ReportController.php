@@ -21,7 +21,7 @@ class ReportController extends Controller
     public function getHotelVoucher(Request $req, $project, $hotelId, $bookid, $action){
     	$project = Project::where('project_number', $project)->first();
         if (empty($project)) {
-            $message =  $projectNo;
+            $message =  $project;
             return view('errors.error', compact('message', 'action'));
         }
         $bhotel = HotelBooked::find($hotelId);

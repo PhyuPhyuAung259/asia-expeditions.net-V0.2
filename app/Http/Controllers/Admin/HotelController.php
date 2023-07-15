@@ -19,6 +19,7 @@ class HotelController extends Controller
     //
     public function hotelList(){
     	$hotels = Business::where('name', 'hotels')->first();
+        
     	return view('admin.hotel.hotel', compact('hotels'));
     } 
 
@@ -51,7 +52,7 @@ class HotelController extends Controller
     public function getRoomApplied(Request $req){
         $locationid = isset($req->location) ? $req->location: \Auth::user()->country_id;
         $roomHotel = Room::getHotelRoomRate($locationid);
-        return view('admin.hotel.roomAppliedHotel', compact('roomHotel', 'locationid'));
+        return view('admin.hotel.roomAppliedHotel',compact('roomHotel', 'locationid'));
     }
 
     public function getHotelRate($hotelId, $roomId){
@@ -211,6 +212,7 @@ class HotelController extends Controller
         }else{
             $hotelrates = \App\HotelRate::whereBetween('start_date', [$startDate, $endDate])->orderBy("start_date", "ASC")->get();
         }      
+       
         return view('admin.hotel.categoryApplyPrice', compact('hotelrates',  'startDate', 'endDate', 'htoelName'));    
     } 
 

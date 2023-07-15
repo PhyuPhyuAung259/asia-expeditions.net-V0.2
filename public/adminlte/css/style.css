@@ -7,6 +7,9 @@ body {
   overflow-x: hidden;
   overflow-y: auto;      
 }
+tr.custom-border > td {
+  border-bottom: 2px solid #000 !important; /* Your desired border color */
+}
 
   .modal {
       background: rgba(0, 0, 0, 0);

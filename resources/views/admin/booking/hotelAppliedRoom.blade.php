@@ -45,9 +45,10 @@ $subactive ='booked/hotel';
                       $rate = App\RoomRate::where(['supplier_id'=>$hotel->id, 'room_id'=>$room->id])
                           // ->whereBetween('start_date',[$project->book_checkin, $project->book_checkout])
                           ->whereDate('start_date','<=', $project->book_checkin)
-                          // ->whereDate('end_date','>=', $project->book_checkout)
+                           ->whereDate('end_date','>=', $project->book_checkout)
                           ->first();
-// dd($rate,$project->book_checkin,$room->id,$hotel->id);
+                         // dd($project->book_checkin,$rate);
+                    // dd($rate,$project->book_checkin,$room->id,$hotel->id);
                     ?>
                     <tr>
                       <td class="container_room" style="padding-right:10px; vertical-align: middle;">

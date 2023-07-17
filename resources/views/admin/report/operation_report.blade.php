@@ -150,8 +150,9 @@
 							<td class="text-right">{{Content::money($hotel->ndouble)}}</td>
 							<td class="text-right">{{Content::money($hotel->nextra)}}</td>
 							<td class="text-right" width="150px">{{Content::money($hotel->nchextra)}}</td>
-							<td class="text-left" width="120px">{{Content::money($hotel->net_amount)}}
+							<td class="text-left" width="300px">{{Content::money($hotel->net_amount)}}
 								<span class="pull-right hidden-print">
+									<a href="#" data-id="{{$hotel->id}}" data-remark="{{$hotel->remark}}" class="btn btn-primary btn-xs BtnEdit" data-toggle="modal" data-target="#myModal">Add Remark</a>
 									<a title="Hotel Voucher" target="_blank" href="{{route('hVoucher', ['project'=>$hotel->project_number, 'bhotelid'=> $hotel->id, 'bookid'=> $hotel->book_id, 'type'=>'hotel-voucher', 'checkin'=> $hotel->checkin, 'checkout'=> $hotel->checkout])}}"><i style="font-size:16px;position: relative;" class="fa fa-newspaper-o"></i></a>&nbsp;
 									<a title="Hotel Booking Form" target="_blank" href="{{route('hVoucher', ['project'=>$hotel->project_number, 'bhotelid'=> $hotel->id, 'bookid'=> $hotel->book_id, 'type'=>'hotel-booking-form', 'checkin'=> $hotel->checkin, 'checkout'=> $hotel->checkout])}}"><i class="fa fa-list-alt" style="font-size:16px;position: relative;"></i></a>&nbsp;
 									<span class="changeStatus" data-type="hotel" data-id="{{$hotel->id}}" style="cursor: pointer;">
@@ -682,7 +683,7 @@
 								</td>
 								<td class="text-right" colspan="2">
 									@if($misckTotal > 0) 
-										<h5><trong>Total {{Content::currency(1)}}: {{Content::money($misckTotal)}}</strong></h5>
+										<h5><strong>Total {{Content::currency(1)}}: {{Content::money($misckTotal)}}</strong></h5>
 									@endif
 								</td>
 							</tr>
@@ -737,7 +738,42 @@
 		  </form>
 		</div><br><br>
 	</div>
-
+	<div class="modal" id="myModal" role="dialog" data-backdrop="static" data-keyboard="true">
+		<div class="modal-dialog modal-md">
+		  <form method="POST" action="{{route('addHotelRemark')}}">
+			<div class="modal-content">       
+			  <input type="hidden" name="bhotelId" id="seviceid"> 
+			  <div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title"><strong>Add Remark</strong></h4>
+			  </div>
+			  <div class="modal-body">
+				{{csrf_field()}} 
+				<div class="row">
+				  <div class="col-md-12">
+					<div class="form-group">
+					  <label>Remark</label>
+					  <textarea class="form-control" rows="4" id="Reremark" name="remark" placeholder="Remark here..."></textarea>
+					</div>
+				  </div>
+				</div>
+				<div class="modal-footer" style="text-align: center;">
+					<button type="submit" class="btn btn-success btn-flat btn-sm">Save</button>
+					<a href="#" class="btn btn-danger btn-flat btn-sm" data-dismiss="modal">Close</a>
+				</div>
+			  </div>     
+			</div>   
+		  </form>
+		</div>
+	  </div>
+	  <script type="text/javascript">
+		$(document).ready(function(){
+		  $(".BtnEdit").on('click', function(){
+			$("#seviceid").val($(this).data('id'));
+			$("#Reremark").val($(this).data('remark'))
+		  })
+		})
+	  </script>
 	<script type="text/javascript" src="{{asset('js/jquery.table2excel.min.js')}}"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){

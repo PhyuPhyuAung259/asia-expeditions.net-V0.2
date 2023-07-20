@@ -205,6 +205,38 @@ $subactive ='booking/project';
                   </div>
                   <div class="panel panel-default">
                     <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                          <div class="form-group">
+                            <div><label>Project Prefix</label>&nbsp;</div>
+                            <label style="font-weight:400;"> 
+                              <input type="radio" name="project_prefix" value="AE">
+                              <span style="position: relative;top:-2px;">AE</span>
+                            </label>&nbsp;&nbsp;
+                            <label style="font-weight: 400;">
+                                <input type="radio" name="project_prefix" value="AM">
+                                <span style="position: relative;top:-2px;">AM</span>
+                            </label> 
+                          </div>
+                        </div>
+                        <div class="col-md-6 col-xs-6">
+                          <div class="form-group">
+                            <div><label>Prefix</label>&nbsp;</div>
+                            <label style="font-weight:400;"> 
+                              <input type="radio" name="prefix" value="Main">
+                              <span style="position: relative;top:-2px;">Main</span>
+                            </label>&nbsp;&nbsp;
+                            <label style="font-weight: 400;">
+                                <input type="radio" name="prefix" value="Sub">
+                                <span style="position: relative;top:-2px;">Sub</span>
+                            </label>
+                          </div>
+                        </div>                       
+                      </div>
+                    </div>
+                  </div>
+                  <div class="panel panel-default">
+                    <div class="panel-body">
                       <div class="btn-group" style="display: block;">
                         <button type="button" class="form-control" data-toggle="dropdown" aria-haspopup="false" aria-expanded="false" data-backdrop="static" data-keyboard="false" role="dialog" data-backdrop="static" data-keyboard="false" {{$permission}}>
                          <span class="pull-left"><i class="fa fa-user-plus" style="color: #5aabf1;"></i> User Tags</span><span class="pull-right"><i class="caret"></i></span>

@@ -140,7 +140,14 @@ class ProjectController extends Controller
                 $aPro->project_book_consultant = $req->consultant;
                 $aPro->project_location = $req->location;
                 $aPro->country_id       = $req->location;
-                $aPro->project_prefix   = $req->location == 30 ? "AE":"AM";
+                if($req->project_prefix!==null){
+                    $aPro->project_prefix   = $req->project_prefix;
+                }else{
+                    $aPro->project_prefix   ="AE";
+                }
+
+                //$aPro->project_prefix   = $req->location == 30 ? "AE":"AM";
+              // dd($aPro->project_prefix);
                 $aPro->project_hight    = $req->pro_hightlight;
                 $aPro->project_desc     = $req->pro_desc;
                 $aPro->project_add_desc = $req->pro_add_desc;

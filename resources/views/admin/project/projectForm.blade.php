@@ -210,7 +210,7 @@ $subactive ='booking/project';
                           <div class="form-group">
                             <div><label>Project Prefix</label>&nbsp;</div>
                             <label style="font-weight:400;"> 
-                              <input type="radio" name="project_prefix" value="AE">
+                              <input type="radio" name="project_prefix" value="AE" checked>
                               <span style="position: relative;top:-2px;">AE</span>
                             </label>&nbsp;&nbsp;
                             <label style="font-weight: 400;">

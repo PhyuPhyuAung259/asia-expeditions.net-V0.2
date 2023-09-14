@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great! 
 |
 */   
-  
+
 // Route::get('/','HomeController@index');
 Route::get('/admin', function(){ 
 	// return $location = "httwww.geoplugin.net/php.gp?ip=".$_SERVER['REMOTE_ADDR'];

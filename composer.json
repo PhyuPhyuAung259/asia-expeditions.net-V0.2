@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": ">=7.0.0",
+        "php": ">=7.2.28",
         "barryvdh/laravel-dompdf": "^0.9.0",
         "fideloper/proxy": "~3.3",
         "guzzlehttp/guzzle": "^7.4",
@@ -14,7 +14,8 @@
         "laravel/tinker": "~1.0",
         "league/flysystem-rackspace": "~1.0",
         "maatwebsite/excel": "^3.0",
-        "unisharp/laravel-filemanager": "~1.8"
+        "unisharp/laravel-filemanager": "~1.8",
+        "illuminate/encryption": "^8.0"
     },
     "require-dev": {
         "filp/whoops": "~2.0",

@@ -90,7 +90,7 @@ class UserController extends Controller
 		
     	$aUser = User::find($req->eid);
     	$aUser->fullname = $req->fullname;
-    	$aUser->position = $req->position; asset
+    	$aUser->position = $req->position;
     	$aUser->postal   = $req->zipcode;
         $aUser->email = $req->email;
         $aUser->company_id = $req->company;

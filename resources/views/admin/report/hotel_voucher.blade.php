@@ -61,7 +61,7 @@
 				</td>
 				<td style="border-top: none; width: 34%; vertical-align: top; padding:2px;">
 					<div  style="padding: 1px;margin-bottom: 0px; background-color: #ddd0; border:none;">
-						<div style="margin: 0px 0px 4px 0px;" class="form-control input-sm">{{$booking['book_pax']}}</div>
+						<div style="margin: 0px 0px 4px 0px;" class="form-control input-sm">{{$project['project_pax']}}</div>
 					</div>
 				</td>
 			</tr>

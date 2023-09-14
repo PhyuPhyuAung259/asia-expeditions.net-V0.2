@@ -147,7 +147,7 @@ class ProjectController extends Controller
                 }
 
                 //$aPro->project_prefix   = $req->location == 30 ? "AE":"AM";
-              // dd($aPro->project_prefix);
+                // dd($aPro->project_prefix);
                 $aPro->project_hight    = $req->pro_hightlight;
                 $aPro->project_desc     = $req->pro_desc;
                 $aPro->project_add_desc = $req->pro_add_desc;

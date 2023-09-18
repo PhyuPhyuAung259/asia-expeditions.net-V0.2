@@ -51,7 +51,7 @@
 			                  		@endif
 
 			                  		@if($EntJournal == Null)
-					                    <span style="position: relative;top:-5px;" class="btnEditTran" data-type="entrance_fee" data-country="{{$ent->country_id}}" data-province="{{$ent->province_id}}" data-restmenu="{{{ $ent->entrance->id or ''}}}"  data-bookpax="{{ $ent->book_pax}}" data-supplier="{{$ent['supplier']}}" data-price="{{$ent->price}}" data-kprice="{{$ent->kprice}}" data-bookdate="{{$ent->start_date}}"  data-remark="{{$ent->remark}}" data-id="{{$ent->id}}" data-toggle="modal" data-target="#myModal">
+					                    <span style="position: relative;top:-5px;" class="btnEditTran" data-type="entrance_fee" data-country="{{$ent->country_id}}" data-province="{{$ent->province_id}}" data-restmenu="{{{ $ent->entrance->id or ''}}}"  data-bookpax="{{ $ent->book_pax}}" data-supplier="{{$ent['supplier']}}" data-price="{{$ent->price}}" data-kprice="{{$ent->kprice}}" data-bookdate="{{Content::dateformat($ent->start_date)}}"  data-remark="{{$ent->remark}}" data-id="{{$ent->id}}" data-toggle="modal" data-target="#myModal">
 					                      <i style="padding:1px 2px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
 					                    </span>
 				                    
@@ -88,8 +88,9 @@
 		        	<div class="col-md-12 col-xs-12">
 			            <div class="form-group">
 			                <label>Start Date</label> 
-			            	<input type="text" name="star
-							t_date" class="form-control book_date" placeholder="Start Date" value="{{date('Y-m-d')}}">	
+							<input type="date" id="start_date" name="start_date" class="form-control book_date" placeholder="Start Date" >	
+			            	<!-- <input type="text" name="star
+							t_date" class="form-control book_date" placeholder="Start Date" value="{{date('Y-m-d')}}">	 -->
 			            </div> 
 		            </div>		           
 		            <div class="col-md-6 col-xs-6">
@@ -131,13 +132,13 @@
 		             <div class="col-md-6">
 			            <div class="form-group">
 			                <label>Transportation<span style="color:#b12f1f;">*</span></label>
-			               	<select class="form-control" id="dropdown-transport_service" name="transportation"></select>
+			               	<select class="form-control transportation" id="dropdown-transport_service" name="transportation"></select>
 			            </div>
 		            </div>      
 		            <div class="col-md-6 col-xs-6">
 		              <div class="form-group">
 		                <label>Pax No.</label>
-		                <input type="number" name="pax" id="pax" class="form-control text-center">
+		                <input type="number" name="pax" id="pax" class="form-control text-center pax">
 		              </div>
 		            </div>
 		            <div class="col-md-3 col-xs-6">
@@ -155,7 +156,7 @@
 		            <div class="col-md-12 col-xs-12">
 		              <div class="form-group">
 		                <label>Remark</label>
-		                <textarea class="form-control" id="remark" name="remark" rows="5" placeholder="Remark..."></textarea>
+		                <textarea class="form-control remark" id="remark" name="remark" rows="5" placeholder="Remark..."></textarea>
 		              </div>
 		            </div>
 		        </div>
@@ -170,6 +171,35 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function(){
+	$(document).on("click", ".btnEditTran", function(){
+			
+			// $("#title_of_tour").text("Edit For " + $(this).data('label'));
+			// });
+			// $("#title_of_tour")$("#tour_id").val()
+			// alert("")
+		  var start_date=$this.data("bookdate");
+		  var country=$this.data("country");
+		  var city=$this.data('province');
+		  var restmenu=$this.data("restmenu");
+		  var pax=$this.data("bookpax");
+		  var transportation=$this.data('supplier');
+		  var price=$this.data('price');
+		  var kprice=$this.data('kprice');
+		  var remark=$this.data('remark');
+  
+	  //	$("#title_of_tour").text("Transportation Assignment Editing For" + tour_name );
+		  $(".book_date").val(start_date);
+		  $(".country").val(country);
+		  $(".province").val(city);
+		  $(".rest_menu").val(restmenu);
+		  $(".editprice").val(price);
+		  $(".editprice").val(kprice);
+		  $(".remark").val(remark);
+		  $(".pax").val(pax) ;
+		  $(".transportation").val(transportation);
+  
+		  $("#myModal").modal("show");
+	  });
      $(".datatable").DataTable();
   });
 </script>

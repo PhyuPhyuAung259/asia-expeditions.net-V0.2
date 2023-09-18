@@ -39,6 +39,9 @@
 								if(isset($bg)){
 								$JournalGuide = \App\AccountJournal::where(['supplier_id'=>$bg->supplier_id, 'business_id'=>6,'project_number'=>$project->project_number, 'book_id'=>$tran->id, 'type'=>1 ,'status'=>1])->first();
 								}
+								else{
+									$JournalGuide=null;
+								}
 								
 							?>
 				                <tr>
@@ -61,7 +64,7 @@
 									<td class="text-right">{{ isset($bg->price)?Content::money($bg->price):''}}</td>
 									<td class="text-right">{{ isset($bg->price)? Content::money($bg->kprice):''}}</td>
 									<td class="text-right">  
-										@if (isset($JournalGuide))
+										
 											
 										   
 										@if($JournalGuide == Null)
@@ -85,7 +88,7 @@
 										@else
 											<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>
 										@endif
-										@endif  
+									
 									</td>                     
 				                </tr>
 		                @endforeach

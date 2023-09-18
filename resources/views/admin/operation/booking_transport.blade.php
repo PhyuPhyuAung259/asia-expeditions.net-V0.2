@@ -39,9 +39,13 @@
 						            <?php 
 									 
 							            $pro   = App\Province::find($tran->province_id);
+										// dd($tran);
 							        	$btran = App\BookTransport::where(['project_number'=>$tran->book_project,'book_id'=>$tran->id])->first();
+										//dd($btran);
 										if(isset($btran)){
 										$TranJournal = App\AccountJournal::where(['supplier_id'=>$btran->transport_id, 'business_id'=>7,'project_number'=>$project->project_number, 'book_id'=>$tran->id, 'type'=>1, 'status'=>1])->first();
+										}else{
+											$TranJournal=null;
 										}
 						            ?>
 					                <tr>
@@ -63,23 +67,23 @@
 					                  <td class="text-right">{{ isset($btran->price)?Content::money($btran->price):''}}</td>
 					                  <td class="text-right">{{ isset($btran->kprice)? Content::money($btran->kprice):''}}</td>
 					                  <td class="text-right"> 
-										@if(isset($TranJournal))    
+										   
 					                  	@if($TranJournal == Null)    
 						                  	@if(isset($btran->id))
 												<span class="btn btn-acc btn-xs btnRefresh" title="Clear this service" data-type="clear-transport" data-id="{{{$btran->id or ''}}}"><i class="fa fa-refresh"></i></span>
 											@endif      
-						                    <label title="Edit Service" class="btnEditTran"   
+						                    <label title="Edit Service" class="btnEditTran" id="btnEditTran"  data-startdate=">{{Content::dateformat($tran->book_checkin)}}"
 						                    	data-label="{{$tran->tour_name}}" data-type="vehicle" data-restmenu="{{{$btran->service_id or ''}}}" 
 						                    	data-restname="{{{$btran->transport_id or ''}}}" data-vehicle="{{{$btran->vehicle_id or ''}}}" 
 						                    	data-country="{{{$btran->country_id or ''}}}" data-province="{{{$btran->province_id or ''}}}" 
 						                    	data-price="{{{$btran->price or ''}}}" data-kprice="{{{$btran->kprice or ''}}}" 
-						                    	data-phone="{{{$btran->phone or ''}}}" data-id="{{$tran->id}}" data-toggle="modal" data-target="#myModal">
+						                    	data-phone="{{{$btran->phone or ''}}}" data-id="{{$tran->id}}" data-toggle="modal" data-target="#myModal" >
 						                      <i style="font-size:17px; color: #03A9F4;" class="btn btn-xs fa fa-pencil-square-o"></i>
 						                    </label>
 						                @else
 						                	<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>
-					                   	@endif 
-										@endif
+					                   	@endif
+									
 					                    @if(isset($btran->id))
 										<a target="_blank" href="{{route('getBookingVoucher', [$tran->book_project, $tran->id])}}" title="View Restaurant Booking">
 							               	<label class="fa fa-list-alt btn btn-xs" style="font-size:17px; color: #527686;"></label>
@@ -98,7 +102,7 @@
 	</div>
 </div>
 
-<div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="true">
+<div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="true" >
 	<div class="modal-dialog modal-lg">
 	    <form method="POST" action="{{route('assignTransport')}}">
 	      <div class="modal-content">        
@@ -108,19 +112,19 @@
 	        </div>
 	        <div class="modal-body">
 	          {{csrf_field()}}    
-	          <input type="hidden" name="bookid" id="tour_id">
+	          <input type="hidden" name="book_id" id="tour_id">
 	          <input type="hidden" name="project_number" id="project_number" value="{{$project->project_number}}">
 		        <div class="row">
 					<div class="col-md-12 col-xs-12">
 						<div class="form-group">
 							<label>Start Date</label> 
-							<input type="date" name="start_date" class="form-control book_date" placeholder="Start Date"">	
+							<input type="date" id="start_date" name="start_date" class="form-control book_date" placeholder="Start Date" >	
 						</div> 
 					</div>
 		            <div class="col-md-4 col-xs-6">
 		              <div class="form-group">
 		                <label>Country <span style="color:#b12f1f;">*</span></label> 
-		                <select class="form-control country" id="country" name="country" data-type="booking_transport" data-locat="driver_data"required>
+		                <select class="form-control country" id="country" name="country" data-type="booking_transport" data-locat="driver_data" required>
 		                    <option value="">--Choose--</option>
 		                  @foreach(App\Country::Where('country_status',1)->wherehas('transportservice')->orderBy('country_name')->get() as $con)
 		                    <option value="{{$con->id}}">{{$con->country_name}}</option>
@@ -212,17 +216,43 @@
 	          <button type="submit" class="btn btn-success btn-flat btn-sm" >Save</button>
 	          <a href="#" class="btn btn-danger btn-flat btn-sm" data-dismiss="modal">Close</a>
 	        </div>
+			
 	      </div>      
 	    </form>
 	</div>
 </div>
 <script type="text/javascript">
   	$(document).ready(function(){
-  		$(document).on("click", ".btnEditTran", function(){
-  			$("#title_of_tour").text("For " + $(this).data('label'));
-  		});
+  		 $(document).on("click", ".btnEditTran", function(){
+			
+  		$("#title_of_tour").text("Edit For " + $(this).data('label'));
+  		// });
   		// $("#title_of_tour")$("#tour_id").val()
   		// alert("")
+		var start_date=$this.data("startdate");
+		var tour_name=$this.data("label");
+		var restmenu=$this.data("restmenu");
+		var restname=$this.data("restname");
+		var vehicle=$this.data('vehicle');
+		var country=$this.data('country');
+		var price=$this.data('price');
+		var kprice=$this.data('kprice');
+		var phone=$this.data('phone');
+		var id=$this.data('id');
+
+	//	$("#title_of_tour").text("Transportation Assignment Editing For" + tour_name );
+		$("#dropdown-transervice").val(label);
+		$("#dropdown-booking_transport").val(restname);
+		$("#dropdown_vehicle").val(vehicle);
+		$("#country").val(country);
+		$("#price").val(price);
+		$("#kprice").val(kprice);
+		$("#phone").val(phone);
+		$("#tour_id").val(id) ;
+		$("#start_date").val(start_date);
+
+		$("#myModal").modal("show");
+	});
      $(".datatable").DataTable();
   	});
 </script>

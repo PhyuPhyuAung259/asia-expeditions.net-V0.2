@@ -88,13 +88,13 @@
 		        	<div class="col-md-3 col-xs-6">
 			            <div class="form-group">
 			                <label>Start Date</label> 
-			            	<input type="text" name="start_date" class="form-control book_date" placeholder="Start Date" value="{{date('Y-m-d')}}">	
+			            	<input type="date" name="start_date" class="form-control book_date" placeholder="Start Date">	
 			            </div> 
 		            </div>
 		            <div class="col-md-3 col-xs-6">
 			            <div class="form-group">
 			                <label>Booking Date</label> 
-			            	<input type="text" name="book_date" class="form-control book_date" placeholder="Booking Date" value="{{date('Y-m-d')}}">
+			            	<input type="date" name="book_date" class="form-control book_date" placeholder="Booking Date">
 			            </div> 
 		            </div>
 		            <div class="col-md-3 col-xs-6">

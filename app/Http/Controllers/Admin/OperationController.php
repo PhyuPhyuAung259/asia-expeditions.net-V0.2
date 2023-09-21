@@ -94,7 +94,7 @@ class OperationController extends Controller
 	    	$btran->price 	       = $req->price;
 	    	$btran->kprice         = $req->kprice;
             $btran->start_date     =$req->start_date;
-         //  dd($btran->start_date);
+          
 	    	$btran->save();
 	    	$message = "Transport Successfully Updated";
     	}else{

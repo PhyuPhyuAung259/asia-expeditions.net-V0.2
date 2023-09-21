@@ -72,14 +72,17 @@
 						                  	@if(isset($btran->id))
 												<span class="btn btn-acc btn-xs btnRefresh" title="Clear this service" data-type="clear-transport" data-id="{{{$btran->id or ''}}}"><i class="fa fa-refresh"></i></span>
 											@endif      
-						                    <label title="Edit Service" class="btnEditTran" id="btnEditTran"  data-startdate=">{{Content::dateformat($tran->book_checkin)}}"
+						                    <!-- <label title="Edit Service" class="btnEditTran" id="btnEditTran"  data-startdate=">{{Content::dateformat($tran->book_checkin)}}"
 						                    	data-label="{{$tran->tour_name}}" data-type="vehicle" data-restmenu="{{{$btran->service_id or ''}}}" 
 						                    	data-restname="{{{$btran->transport_id or ''}}}" data-vehicle="{{{$btran->vehicle_id or ''}}}" 
 						                    	data-country="{{{$btran->country_id or ''}}}" data-province="{{{$btran->province_id or ''}}}" 
 						                    	data-price="{{{$btran->price or ''}}}" data-kprice="{{{$btran->kprice or ''}}}" 
 						                    	data-phone="{{{$btran->phone or ''}}}" data-id="{{$tran->id}}" data-toggle="modal" data-target="#myModal" >
 						                      <i style="font-size:17px; color: #03A9F4;" class="btn btn-xs fa fa-pencil-square-o"></i>
-						                    </label>
+						                    </label> -->
+											<a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id])}}" title="Edit Transport">
+                                			<label class="icon-list ic_edit"></label>
+                             			</a>&nbsp;
 						                @else
 						                	<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>
 					                   	@endif

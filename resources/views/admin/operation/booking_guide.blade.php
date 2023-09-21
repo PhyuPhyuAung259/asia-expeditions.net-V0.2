@@ -71,7 +71,7 @@
 											@if(isset($bg->id))
 											<span class="btn btn-acc btn-xs btnRefresh" title="Clear this service" data-type="clear-guide" data-id="{{{$bg->id or ''}}}"><i class="fa fa-refresh"></i></span>
 											@endif     
-											<button class="btnEditTran"  style="padding:0px;border:none;"  
+											<!-- <button class="btnEditTran"  style="padding:0px;border:none;"  
 												data-type="apply_guide"
 												data-restmenu="{{{$bg->service_id or ''}}}" 
 												data-transport="{{{$bg->supplier_id or ''}}}" 
@@ -84,7 +84,10 @@
 												data-pro_of_bus_id="6" 
 												data-id="{{$tran->id}}" data-toggle="modal" data-target="#myModal">
 											  <i style="padding:1px 2px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
-											</button> 
+											</button>  -->
+											<a target="_blank" href="{{route('editguideoperation', ['type'=>'guide', 'project_no'=>$tran->book_project, 'id'=>$tran->id])}}" title="Edit Guide">
+                                			<label class="icon-list ic_edit"></label>
+                             			</a>&nbsp;
 										@else
 											<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>
 										@endif

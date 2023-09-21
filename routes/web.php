@@ -151,6 +151,7 @@ Route::group(['middleware' => ['IsLogin']], function(){
 
 		//edit operation route 
 		Route::get("edit/{type}/{id}","Admin\EditOperationController@editOperation")->name('editoperation');
+		Route::get("edit/{type}/{project_no}/{id}","Admin\EditOperationController@editGuideOperation")->name('editguideoperation');
 		Route::post("transport/added/vehicle", "Admin\ServiceController@CreateVehicle")->name('addVehicle');
 		Route::post("transport/service/added", "Admin\ServiceController@createtranService")->name('addtranService');
 		Route::get("golf/service", "Admin\ServiceController@golfService")->name('golfService');

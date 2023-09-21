@@ -28,6 +28,7 @@ class OperationController extends Controller
     		 $booking = Booking::tourBook($projectNo)->get();   
     	}elseif ($opstype == 'restaurant') {            
     		$booking = \App\BookRestaurant::where('project_number', $projectNo)->orderBy('start_date', 'ASC')->get();
+            
     	}elseif ($opstype == 'entrance') {
     		$booking = \App\BookEntrance::where('project_number', $projectNo)->orderBy('start_date', 'ASC')->get();
     	}elseif ($opstype == "golf") {
@@ -181,7 +182,7 @@ class OperationController extends Controller
     		$entrance->service_id     = $req->rest_menu;
     		$entrance->country_id 	  = $req->country;
     		$entrance->province_id    = $req->city;
-            $entrance->supplier_id    = $req->transportation;
+           // $entrance->supplier_id    = $req->transportation;
     		$entrance->book_pax       = $req->pax;
     		$entrance->price 		  = $req->price;
     		$entrance->kprice 		  = $req->kprice;
@@ -197,7 +198,7 @@ class OperationController extends Controller
     		$entrance->service_id     = $req->rest_menu;
     		$entrance->country_id 	  = $req->country;
     		$entrance->province_id    = $req->city;
-            $entrance->supplier_id    = $req->transportation;
+           // $entrance->supplier_id    = $req->transportation;
     		$entrance->book_pax       = $req->pax;
     		$entrance->price 		  = $req->price;
     		$entrance->kprice 		  = $req->kprice;

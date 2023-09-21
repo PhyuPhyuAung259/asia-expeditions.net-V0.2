@@ -30,6 +30,7 @@
 			            </thead>
 				            <tbody>
 			                @foreach($booking as $ent)
+							 
 			                <tr>
 			                  	<td>{{Content::dateformat($ent->start_date)}}</td>
 				                <td>{{{$ent->entrance->name or ''}}}</td>
@@ -40,7 +41,8 @@
 			                  	<td class="text-right">{{Content::money($ent->kamount)}}</td>
 			                  	<td class="text-right">
 			                  		<!-- $journal = AccountJournal::where(['book_id'=>$ent->id, '']) -->
-			                  		<?php	$EntJournal = App\AccountJournal::where(['business_id'=>55,'project_number'=>$project->project_number, 'book_id'=>$ent->id, 'type'=>1, 'status'=>1])->first(); ?>
+			                  		<?php	 
+									 $EntJournal = App\AccountJournal::where(['business_id'=>55,'project_number'=>$project->project_number, 'book_id'=>$ent->id, 'type'=>1, 'status'=>1])->first(); ?>
 			                  		@if($ent['supplier_id'] > 0)
 			                  			<a target="_blank" href="{{route('opsVoucher',['type'=>'entrance', 'project'=>$ent->project_number,'supplier'=>$ent->id])}}" title="View Service Voucher">
 				                        	<label class="icon-list ic_inclusion"></label>
@@ -51,10 +53,12 @@
 			                  		@endif
 
 			                  		@if($EntJournal == Null)
-					                    <span style="position: relative;top:-5px;" class="btnEditTran" data-type="entrance_fee" data-country="{{$ent->country_id}}" data-province="{{$ent->province_id}}" data-restmenu="{{{ $ent->entrance->id or ''}}}"  data-bookpax="{{ $ent->book_pax}}" data-supplier="{{$ent['supplier']}}" data-price="{{$ent->price}}" data-kprice="{{$ent->kprice}}" data-bookdate="{{Content::dateformat($ent->start_date)}}"  data-remark="{{$ent->remark}}" data-id="{{$ent->id}}" data-toggle="modal" data-target="#myModal">
+					                    <!-- <span style="position: relative;top:-5px;" class="btnEditTran" data-type="entrance_fee" data-country="{{$ent->country_id}}" data-province="{{$ent->province_id}}" data-restmenu="{{{ $ent->entrance->id or ''}}}"  data-bookpax="{{ $ent->book_pax}}" data-supplier="{{$ent['supplier']}}" data-price="{{$ent->price}}" data-kprice="{{$ent->kprice}}" data-bookdate="{{$ent->start_date}}"  data-remark="{{$ent->remark}}" data-id="{{$ent->id}}" data-toggle="modal" data-target="#myModal">
 					                      <i style="padding:1px 2px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
-					                    </span>
-				                    
+					                    </span> -->
+										<a target="_blank" href="{{route('editoperation', ['type'=>'entrance', 'id'=>$ent->id])}}" title="Edit Entrance Fee">
+                                			<label class="icon-list ic_edit"></label>
+                             			</a>&nbsp;
 								        <a href="javascript:void(0)" class="RemoveHotelRate" data-type="apply_entrance" data-id="{{$ent->id}}" title="Delete this ">
 				                          <label class="icon-list ic_remove"></label>
 				                        </a>
@@ -71,7 +75,7 @@
 	    </section>
 	</div>
 </div>
-
+<!-- entrabce fee create start -->
 <div class="modal in" id="myModal" role="dialog" data-backdrop="static" data-keyboard="true">
 	<div class="modal-dialog modal-lg">
 	    <form method="POST" action="{{route('assignEntrance')}}">
@@ -108,7 +112,7 @@
 		            <div class="col-md-6 col-xs-6">
 		              <div class="form-group">
 		                <label>City Name <span style="color:#b12f1f;">*</span></label>
-		                <select class="form-control province" name="city" data-type="entrance_fee" id="dropdown-entrance" required>
+		                <select class="form-control city" name="city" data-type="entrance_fee" id="dropdown-entrance" required>
 		                  <option value="">City</option>
 		                  @foreach(App\Province::getEntranPro(\Auth::user()->country_id) as $pro)
 		                    <option value="{{$pro->id}}">{{$pro->province_name}}</option>
@@ -126,15 +130,16 @@
 			               		<option value="{{$rm->id}}" data-price="{{$rm->price}}" data-kprice="{{$rm->kprice}}">{{$rm->name}}</option>
 			               		@endforeach
 			               	</select>
+
 			            </div>
 		            </div>    
 
-		             <div class="col-md-6">
+		             <!-- <div class="col-md-6">
 			            <div class="form-group">
 			                <label>Transportation<span style="color:#b12f1f;">*</span></label>
 			               	<select class="form-control transportation" id="dropdown-transport_service" name="transportation"></select>
 			            </div>
-		            </div>      
+		            </div>       -->
 		            <div class="col-md-6 col-xs-6">
 		              <div class="form-group">
 		                <label>Pax No.</label>
@@ -169,37 +174,12 @@
 	    </form>
 	</div>
 </div>
+<!-- entrance fee create end -->
+
+
 <script type="text/javascript">
   $(document).ready(function(){
-	$(document).on("click", ".btnEditTran", function(){
-			
-			// $("#title_of_tour").text("Edit For " + $(this).data('label'));
-			// });
-			// $("#title_of_tour")$("#tour_id").val()
-			// alert("")
-		  var start_date=$this.data("bookdate");
-		  var country=$this.data("country");
-		  var city=$this.data('province');
-		  var restmenu=$this.data("restmenu");
-		  var pax=$this.data("bookpax");
-		  var transportation=$this.data('supplier');
-		  var price=$this.data('price');
-		  var kprice=$this.data('kprice');
-		  var remark=$this.data('remark');
-  
-	  //	$("#title_of_tour").text("Transportation Assignment Editing For" + tour_name );
-		  $(".book_date").val(start_date);
-		  $(".country").val(country);
-		  $(".province").val(city);
-		  $(".rest_menu").val(restmenu);
-		  $(".editprice").val(price);
-		  $(".editprice").val(kprice);
-		  $(".remark").val(remark);
-		  $(".pax").val(pax) ;
-		  $(".transportation").val(transportation);
-  
-		  $("#myModal").modal("show");
-	  });
+
      $(".datatable").DataTable();
   });
 </script>

@@ -13,6 +13,7 @@
 	    <section class="content"> 
 		    <div class="row">
 		      	@include('admin.include.message')
+				
 		        <section class="col-lg-12 connectedSortable">
 		           <h3 class="border" style="text-transform:capitalize;">Booking Restaurant for Project No. <b>{{$project->project_number}} </b> <span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Restaurant</a></h3>
 		            <table class="datatable table table-hover table-striped">
@@ -31,7 +32,7 @@
 			            </thead>
 			            <tbody>
 			                @foreach($booking as $rest)
-			                <?php $RJournal = App\AccountJournal::where(['supplier_id'=>$rest['supplier_id'], 'business_id'=>2,'project_number'=>$project->project_number, 'book_id'=>$rest->id, 'type'=>1, 'status'=>1])->first(); ?>
+			                <?php  $RJournal = App\AccountJournal::where(['supplier_id'=>$rest['supplier_id'], 'business_id'=>2,'project_number'=>$project->project_number, 'book_id'=>$rest->id, 'type'=>1, 'status'=>1])->first(); ?>
 			                <tr>
 			                  	<td>{{Content::dateformat($rest->start_date)}}</td>
 				                <td>{{{$rest->supplier->supplier_name or ''}}}</td>         
@@ -43,9 +44,12 @@
 			                  	<td class="text-right">{{Content::money($rest->kamount)}}</td>
 			                  	<td class="text-right">    
 			                  		@if($RJournal == Null)                  
-					                    <span class="btnEditTran" data-bus_type="2" data-type="booking_restaurant" data-country="{{$rest->country_id}}" data-province="{{$rest->province_id}}" data-restname="{{{$rest->supplier->id or ''}}}" data-restmenu="{{{$rest->rest_menu->id or ''}}}" data-bookpax="{{ $rest->book_pax}}" data-price="{{$rest->price}}" data-kprice="{{$rest->kprice}}" data-bookdate="{{$rest->start_date}}" data-bookingdate="{{$rest->book_date}}" data-remark="{{$rest->remark}}" data-id="{{$rest->id}}" data-toggle="modal" data-target="#myModal">
+					                    <!-- <span class="btnEditTran" data-bus_type="2" data-type="booking_restaurant" data-country="{{$rest->country_id}}" data-province="{{$rest->province_id}}" data-restname="{{{$rest->supplier->id or ''}}}" data-restmenu="{{{$rest->rest_menu->id or ''}}}" data-bookpax="{{ $rest->book_pax}}" data-price="{{$rest->price}}" data-kprice="{{$rest->kprice}}" data-bookdate="{{$rest->start_date}}" data-bookingdate="{{$rest->book_date}}" data-remark="{{$rest->remark}}" data-id="{{$rest->id}}" data-toggle="modal" data-target="#myModal">
 					                      <i style="padding:1px 2px; position: relative;top: -5px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
-					                    </span>
+					                    </span> -->
+										<a target="_blank" href="{{route('editoperation', ['type'=>'restaurant', 'id'=>$rest->id])}}" title="Edit Restaurant">
+                                			<label class="icon-list ic_edit"></label>
+                             			</a>&nbsp;
 					                @else 
 					                	<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>  
 				                    @endif
@@ -63,6 +67,7 @@
 				                </td>                     
 			                </tr>
 			                @endforeach
+							
 			            </tbody>
 		            </table>
 		        </section>

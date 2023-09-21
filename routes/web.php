@@ -149,6 +149,8 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::get("transport/driver/add", "Admin\ServiceController@getDriver")->name('getDriver');
 		Route::get("transport/vihecle/", "Admin\ServiceController@getVehicle")->name('getVehicle');
 
+		//edit operation route 
+		Route::get("edit/{type}/{id}","Admin\EditOperationController@editOperation")->name('editoperation');
 		Route::post("transport/added/vehicle", "Admin\ServiceController@CreateVehicle")->name('addVehicle');
 		Route::post("transport/service/added", "Admin\ServiceController@createtranService")->name('addtranService');
 		Route::get("golf/service", "Admin\ServiceController@golfService")->name('golfService');

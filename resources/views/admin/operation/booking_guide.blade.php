@@ -4,6 +4,7 @@
   $active = 'restaurant/menu'; 
   $subactive = 'transport/service';
   use App\component\Content;
+
 ?>
 @section('content')
 <div class="wrapper">
@@ -33,7 +34,9 @@
 		              <tbody>
 		                @foreach($booking as $tran)
 				            <?php
+						//	dd($tran);
 				            	$pro = App\Province::find($tran->province_id);
+							
 				            	$bg  = App\BookGuide::where(['project_number'=>$tran->book_project, 'book_id'=>$tran->id])->first();
 						 		 
 								if(isset($bg)){
@@ -85,7 +88,7 @@
 												data-id="{{$tran->id}}" data-toggle="modal" data-target="#myModal">
 											  <i style="padding:1px 2px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
 											</button>  -->
-											<a target="_blank" href="{{route('editguideoperation', ['type'=>'guide', 'project_no'=>$tran->book_project, 'id'=>$tran->id])}}" title="Edit Guide">
+											<a target="_blank" href="{{route('editguideoperation', ['type'=>'guide', 'project_no'=>$tran->book_project, 'id'=>$tran->id , 'tour_id'=>$tran->tour_id])}}" title="Edit Guide">
                                 			<label class="icon-list ic_edit"></label>
                              			</a>&nbsp;
 										@else

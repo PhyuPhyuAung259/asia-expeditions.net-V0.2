@@ -213,6 +213,7 @@ class OperationController extends Controller
 
     public function assignGuide(Request $req){
     	$guidb=BookGuide::where(['project_number'=>$req->project_number,'book_id'=>$req->bookid])->first();
+        $btour=Booking::where(['id'=>$req->bookid,'book_project'=>$req->project_number])->first();
     	$project=Project::where('project_number',$req->project_number)->first();
         if ($guidb) {
     		$aguide = BookGuide::find($guidb->id);
@@ -231,8 +232,31 @@ class OperationController extends Controller
   			$aguide->amount 		= $req->price * $req->pax;
   			$aguide->kamount 		= $req->kprice * $req->pax;
   			$aguide->save();
-  			$message = "Entrance Successfully Updated";
-    	}else{
+  			$message = "Guide Successfully Updated";
+    	}else if($btour){
+           $btour=Booking::find($req->bookid);
+           $btour->book_price=$req->price;
+           $btour->book_kprice=$req->kprice;
+           $btour->save();
+           $aguide = New BookGuide;
+  			$aguide->project_number = $req->project_number;
+  			$aguide->start_date     = $req->start_date;
+  			$aguide->country_id     = $req->country;
+  			$aguide->province_id    = $req->city;
+  			$aguide->service_id     = $req->tran_name;
+  			$aguide->book_id		= $req->bookid;
+  			$aguide->language_id    = $req->language;
+            $aguide->phone          = $req->phone;
+  			$aguide->supplier_id    = $req->guide_name;
+  			$aguide->book_pax       = $req->pax;
+  			$aguide->price  		= $req->price;
+  			$aguide->kprice  		= $req->kprice;
+  			$aguide->amount 		= $req->price * $req->pax;
+  			$aguide->kamount 		= $req->kprice * $req->pax;
+  			$aguide->save();
+  			$message = "Guide Successfully Updated";
+        }
+        else{
             $booking=new Booking();
             $booking->book_project=$req->project_number;
             $booking->user_id=auth()->user()->id;

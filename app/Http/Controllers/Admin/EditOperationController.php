@@ -27,7 +27,7 @@ class EditOperationController extends Controller
         }
         if($type =="restaurant"){
             $editrestaurant=BookRestaurant::find($id);
-         
+        // dd($editrestaurant);
              return view("admin/operation/editrestaurant",compact ('editrestaurant'));
         }
         if($type =="Transport"){
@@ -38,9 +38,11 @@ class EditOperationController extends Controller
     }
 
     public function editGuideOperation(Request $request,$type,$project_no, $id){
-      // dd( $project_no);
+       
         $guide=BookGuide::where(['project_number'=>$project_no,'book_id'=>$id])->first();
-        return view("admin/operation/editguide",compact ('guide'));
+     // dd($guide);
+        $btour=Booking::where(['id'=>$id,'book_project'=>$project_no,'tour_id'=>$request->tour_id])->first();
+        return view("admin/operation/editguide",compact ('guide','btour'));
     }
 }
 

@@ -91,9 +91,10 @@
                                         <div class="col-md-6 col-xs-12">
                                             <div class="form-group">
                                                 <label>Menu </label>
-                                                <select class="form-control rest_menu" name="rest_menu" id="dropdown-booking_restaurant_menu">
+                                               
                                                 @if($editrestaurant->supplier_id !==null)
-                                                    <option value="{{$editrestaurant->menu_id}}"> <?php  $menu = DB::table('restaurant_menu')->where('id', $editrestaurant->menu_id)->first();?> {{$menu->title}}	</option>
+                                                <select class="form-control rest_menu" name="rest_menu" id="dropdown-booking_restaurant_menu">
+                                                    <option value="{{$editrestaurant->menu_id}}"> <?php  $menu = DB::table('restaurant_menu')->where('id', $editrestaurant->menu_id)->first();?> {{{ $menu->title or '' }}}	</option>
                                                     <?php 
                                                     $menu=DB::table('restaurant_menu')
                                                                 ->where('supplier_id',$editrestaurant->supplier_id)
@@ -102,9 +103,13 @@
                                                     @foreach($menu as $restmenu)
                                                         <option value="{{$restmenu->id}}">{{$restmenu->title}}</option>
                                                     @endforeach
-                                                @endif
                                                 </select>
+                                                @endif
+                                                
                                             </div>
+                                        </div>
+                                        <div class="col-md-12 col-xs-12">
+                                        <strong style="color:red;">To make changes to the restaurant_menu, you will need to select the restaurant again.</strong>
                                         </div>
                                         <div class="col-md-6 col-xs-6">
                                         <div class="form-group">
@@ -130,6 +135,8 @@
                                             <textarea class="form-control" id="remark" name="remark" rows="5" placeholder="Remark..."></textarea>
                                         </div>
                                         </div>
+                                         
+                                        
                                     </div>
                                 </div>
                                 <div class="modal-footer" >

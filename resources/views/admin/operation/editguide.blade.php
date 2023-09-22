@@ -161,20 +161,20 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 col-xs-6 ">
-                                            <div class="form-group">
-                                                <label>Service Name</label>
-                                                <select class="form-control tran_name" name="tran_name" data-type="apply_language"  id="dropdown-apply_guide">
-                                                    @if($guide->service_id !== null)
-                                                    <option value="$guide->service_id"> <?php  $service = DB::table('guide_service')->where('id', $guide->service_id)->first();?> {{{$service->title or ''}}}</option>
-                                                    <?php
-                                                    $service=DB::table('guide_service')->where('province_id',$guide->province_id)->get();
-                                                    ?>
-                                                    @foreach($service as $gservice)
-                                                        <option value="{{$gservice->id}}">{{$gservice->title}}</option>
-                                                    @endforeach
-                                                @endif	
-                                                </select>
-                                            </div>
+                                                <div class="form-group">
+                                                    <label>Service Name</label>
+                                                    <select class="form-control tran_name" name="tran_name" data-type="apply_language"  id="dropdown-apply_guide">
+                                                        @if($guide->service_id !== null)
+                                                        <option value="$guide->service_id"> <?php  $service = DB::table('guide_service')->where('id', $guide->service_id)->first();?> {{$service->title or ''}}</option>
+                                                        <?php
+                                                        $service=DB::table('guide_service')->where('province_id',$guide->province_id)->get();
+                                                        ?>
+                                                        @foreach($service as $gservice)
+                                                            <option value="{{$gservice->id}}">{{$gservice->title}}</option>
+                                                        @endforeach
+                                                    @endif	
+                                                    </select>
+                                                </div>
                                             </div>
                                             
                                             <div class="col-md-6 col-xs-6">
@@ -194,6 +194,10 @@
                                                     </select>
                                                 </div>
                                             </div>
+                                            <div class="col-md-12 col-xs-12 ">
+                                                <strong style="color:red;">To make changes to the Language, you will need to select the Service Name again.</strong>
+                                            </div>
+                                        
                                             <div class="col-md-3 col-xs-6 ">
                                                 <div class="form-group">
                                                     <label>Guide Name <span style="color:#b12f1f;">*</span></label>

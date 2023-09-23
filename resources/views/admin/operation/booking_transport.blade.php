@@ -80,7 +80,7 @@
 						                    	data-phone="{{{$btran->phone or ''}}}" data-id="{{$tran->id}}" data-toggle="modal" data-target="#myModal" >
 						                      <i style="font-size:17px; color: #03A9F4;" class="btn btn-xs fa fa-pencil-square-o"></i>
 						                    </label> -->
-											<a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id])}}" title="Edit Transport">
+											<a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id])}}" title="Edit Transport">
                                 			<label class="icon-list ic_edit"></label>
                              			</a>&nbsp;
 						                @else

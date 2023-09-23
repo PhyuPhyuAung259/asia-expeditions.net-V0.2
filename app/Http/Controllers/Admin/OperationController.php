@@ -74,7 +74,7 @@ class OperationController extends Controller
 
     public function assignTransport(Request $req){
     	$getTran = BookTransport::where(['project_number'=> $req->project_number, 'book_id'=> $req->book_id])->first();
-       
+        $btransport=Booking::where(['id'=>$req->book_id,'book_project'=>$req->project_number])->first();
         $project=Project::where(['project_number'=>$req->project_number])->first();
     	if ( $getTran) { 
     		$btran = BookTransport::find($getTran->id);
@@ -97,7 +97,32 @@ class OperationController extends Controller
           
 	    	$btran->save();
 	    	$message = "Transport Successfully Updated";
-    	}else{
+    	}else if($btransport){
+            $btransport=Booking::find($req->book_id);
+            $btransport->book_price=$req->price;
+            $btransport->book_kprice=$req->kprice;
+            $btransport->save();
+            $btran = New BookTransport;
+	    	$btran->book_id        = $req->book_id;
+	    	$btran->service_id     = $req->tran_name;
+	 		$btran->project_number = $req->project_number;
+	    	$btran->country_id     = $req->country;
+	    	$btran->province_id    = $req->city;
+            $btran->transport_id   = $req->transport;
+            $btran->driver_id   = $req->driver_name;
+            $btran->transport_phone = $req->phone1;
+            $btran->driver_phone   = $req->phone2;
+	    	$btran->vehicle_id     = $req->vehicle;
+	    	$btran->price 	       = $req->price;
+	    	$btran->kprice         = $req->kprice;
+            $btran->pickup_time    = $req->pickup_time;
+            $btran->flightno       = $req->flightno;
+            $btran->remark         = $req->remark;
+            $btran->start_date     = $req->start_date;
+	    	$btran->save();
+            $message = "Transport Successfully Updated";
+         }
+        else{
             $booking=new Booking();
             $booking->book_project=$req->project_number;
             $booking->user_id=auth()->user()->id;

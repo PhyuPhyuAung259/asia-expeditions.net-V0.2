@@ -36,6 +36,12 @@ class EditOperationController extends Controller
             // dd($btran);
             return view("admin/operation/editTransport",compact ('editTran','btransport'));
         }
+        if($type=="misc"){
+            //$editmisc=DB::table('misc_book')->where('book_id',$id)->first();
+            $bmisc=Booking::where(['id'=>$id,'book_project'=>$request->project_no,'tour_id'=>$request->tour_id])->first();
+            
+            return view("admin/operation/editmisc",compact ('bmisc'));
+        }
     }
 
     public function editGuideOperation(Request $request,$type,$project_no, $id){

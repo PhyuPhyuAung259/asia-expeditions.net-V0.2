@@ -316,6 +316,7 @@ class OperationController extends Controller
 
     public function assignMisc(Request $req){
         $aMisc = BookMisc::find($req->bookid);
+        $bmisc=Booking::where(['id'=>$req->bookid,'book_project'=>$req->project_number])->first();
         $project=Project::where(['project_number'=>$req->project_number])->first();
        
         if ($aMisc) {
@@ -331,7 +332,27 @@ class OperationController extends Controller
             $aMisc->remark         = $req->remark;
             $aMisc->save();
             $message = "Miscellaneouse update Successfully";
-        }else{
+        }else if($bmisc){
+            // $bmisc=Booking::find($req->book_id);
+            // $bmisc->book_price=$req->price;
+            // $bmisc->book_kprice=$req->kprice;
+            // $bmisc->save();
+            $emisc = New BookMisc;
+            $emisc->project_number = $req->project_number;
+            $emisc->country_id     = $req->country;
+            $emisc->province_id    = $req->city;
+            $emisc->book_id        = $req->bookid;
+            $emisc->service_id     = $req->service_type;
+            $emisc->book_pax       = $req->book_pax;
+            $emisc->price          = $req->price;
+            $emisc->kprice         = $req->kprice;
+            $emisc->amount         = $req->price * $req->book_pax;
+            $emisc->kamount        = $req->kprice * $req->book_pax;
+            $emisc->remark         = $req->remark;
+            $emisc->save();
+            $message = "MISC Successfully Updated";
+         }
+        else{
              
             $booking=new Booking();
             $booking->book_project=$req->project_number;

@@ -91,10 +91,13 @@
 					                  	@endforeach
 					                @endif
 				                </td>
-				                <td class="text-center">                      
-				                    <span class="btnEditTran" data-country="{{$tran->country_id}}" data-province="{{$tran->province_id}}" data-id="{{$tran->id}}" data-toggle="modal" data-target="#myModal">
+				                <td class="text-center"> 
+								<a target="_blank" href="{{route('editoperation', ['type'=>'misc', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id])}}" title="Edit Misc">
+								<i style="padding:1px 2px;" class="fa fa-plus-circle btn btn-info btn-xs"> </i>
+                             	</a>&nbsp;            
+				                    <!-- <span class="btnEditTran" data-country="{{$tran->country_id}}" data-province="{{$tran->province_id}}" data-id="{{$tran->id}}" data-toggle="modal" data-target="#myModal">
 				                      	<i style="padding:1px 2px;" class="fa fa-plus-circle btn btn-info btn-xs"> </i> 
-				                    </span>                   
+				                    </span>                    -->
 				                </td>                     
 			                </tr>
 		                @endforeach
@@ -160,12 +163,16 @@
 				               	</select>
 				            </div>
 			            </div>
+						
 			            <div class="col-md-6 col-xs-6">
 				            <div class="form-group">
 				                <label>Pax No.</label>
 				               	<input type="number" name="book_pax" id="book_pax" class="form-control text-center" value="1">
 				            </div>
 			            </div>
+						<div class="col-md-12 col-xs-12 ">
+                            <strong style="color:red;">To make changes to the Service Type, you will need to select the City Name again.</strong>
+                        </div>
 			            <div class="col-md-6 col-xs-6">
 				            <div class="form-group">
 				                <label>Price {{Content::currency()}}</label>

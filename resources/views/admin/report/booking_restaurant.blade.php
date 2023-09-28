@@ -1,7 +1,7 @@
 @extends('layout.backend')
 @section('title', 'Restaurant Assignment')
 <?php
-  $active = 'service'; 
+  $active = 'restaurant/menu'; 
   $subactive = 'restaurant/service';
   use App\component\Content;
 ?>
@@ -13,6 +13,7 @@
 	    <section class="content"> 
 		    <div class="row">
 		      	@include('admin.include.message')
+				
 		        <section class="col-lg-12 connectedSortable">
 		           <h3 class="border" style="text-transform:capitalize;">Booking Restaurant for Project No. <b>{{$project->project_number}} </b> <span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Restaurant</a></h3>
 		            <table class="datatable table table-hover table-striped">
@@ -31,6 +32,7 @@
 			            </thead>
 			            <tbody>
 			                @foreach($booking as $rest)
+			                <?php  $RJournal = App\AccountJournal::where(['supplier_id'=>$rest['supplier_id'], 'business_id'=>2,'project_number'=>$project->project_number, 'book_id'=>$rest->id, 'type'=>1, 'status'=>1])->first(); ?>
 			                <tr>
 			                  	<td>{{Content::dateformat($rest->start_date)}}</td>
 				                <td>{{{$rest->supplier->supplier_name or ''}}}</td>         
@@ -40,27 +42,37 @@
 				                <td class="text-right">{{Content::money($rest->amount)}}</td>
 				                <td class="text-right">{{Content::money($rest->kprice)}}</td>
 			                  	<td class="text-right">{{Content::money($rest->kamount)}}</td>
-			                  	<td class="text-right">                      
-				                    <span class="btnEditTran" data-type="rest" data-country="{{$rest->country_id}}" data-province="{{$rest->province_id}}" data-restname="{{{$rest->supplier->id or ''}}}" data-restmenu="{{{$rest->rest_menu->id or ''}}}" data-bookpax="{{ $rest->book_pax}}" data-price="{{$rest->price}}" data-kprice="{{$rest->kprice}}" data-bookdate="{{$rest->start_date}}" data-bookingdate="{{$rest->book_date}}" data-remark="{{$rest->remark}}" data-id="{{$rest->id}}" data-toggle="modal" data-target="#myModal">
-				                      <i style="padding:1px 2px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
-				                    </span>  
+			                  	<td class="text-right">    
+			                  		@if($RJournal == Null)                  
+					                    <!-- <span class="btnEditTran" data-bus_type="2" data-type="booking_restaurant" data-country="{{$rest->country_id}}" data-province="{{$rest->province_id}}" data-restname="{{{$rest->supplier->id or ''}}}" data-restmenu="{{{$rest->rest_menu->id or ''}}}" data-bookpax="{{ $rest->book_pax}}" data-price="{{$rest->price}}" data-kprice="{{$rest->kprice}}" data-bookdate="{{$rest->start_date}}" data-bookingdate="{{$rest->book_date}}" data-remark="{{$rest->remark}}" data-id="{{$rest->id}}" data-toggle="modal" data-target="#myModal">
+					                      <i style="padding:1px 2px; position: relative;top: -5px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
+					                    </span> -->
+										<a target="_blank" href="{{route('editoperation', ['type'=>'restaurant', 'id'=>$rest->id])}}" title="Edit Restaurant">
+                                			<label class="icon-list ic_edit"></label>
+                             			</a>&nbsp;
+					                @else 
+					                	<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>  
+				                    @endif
 				                    <a target="_blank" href="{{route('restBooking',['project'=> $rest->project_number,'restid'=> $rest->id])}}" title="View Restaurant Booking">
-				                        <img src="#" class="icon-list ic_inclusion">
+				                        <label class="icon-list ic_inclusion"></label>
 				                    </a>
 				                    <a target="_blank" href="{{route('restVoucher',['project'=> $rest->project_number,'restid'=> $rest->id])}}" title="View Restaurant Voucher">
-				                        <img src="#" class="icon-list ic_invoice_drop">
+				                        <label class="icon-list ic_invoice_drop"></label>
 				                    </a> 
-							        <a href="javascript:void(0)" class="RemoveHotelRate" data-type="apply_rest" data-id="{{$rest->id}}" title="Delete this ">
-			                          <img src="#" class="icon-list ic_remove">
-			                        </a>
+				                    @if($RJournal == Null)     
+								        <a href="javascript:void(0)" class="RemoveHotelRate" data-type="apply_rest" data-id="{{$rest->id}}" title="Delete this ">
+				                          <label class="icon-list ic_remove"></label>
+				                        </a>
+			                        @endif
 				                </td>                     
 			                </tr>
 			                @endforeach
+							
 			            </tbody>
 		            </table>
 		        </section>
 		    </div>
-	    </section>
+	    </section> 
 	</div>
 </div>
 
@@ -68,46 +80,46 @@
 	<div class="modal-dialog modal-lg">
 	    <form method="POST" action="{{route('assignRestuarant')}}">
 	      <div class="modal-content">        
-	        <div class="modal-header" style="padding: 5px 13px;">
+	        <div class="modal-header">
 	          <button type="button" class="close" data-dismiss="modal">&times;</button>
-	          <h4 class="modal-title"><strong id="form_title">Restaurant Booking</strong></h4>
+	          <h4 class="modal-title"><strong id="form_title">Restaurant Booking For Project Number: {{$project->project_number}}</strong></h4>
 	        </div>
 	        <div class="modal-body">
 	          {{csrf_field()}}    
 	          	<input type="hidden" name="restId" id="tour_id">
+	          	<input type="hidden" name="bookid" value="{{{$booking->id or ''}}}">
 	          	<input type="hidden" name="project_number" id="project_number" value="{{$project->project_number}}">
 		        <div class="row">
-		        	<div class="col-md-6 col-xs-6">
+		        	<div class="col-md-3 col-xs-6">
 			            <div class="form-group">
 			                <label>Start Date</label> 
-			            	<input type="text" name="start_date" class="form-control book_date start_date" placeholder="Start Date">	
+			            	<input type="date" name="start_date" class="form-control book_date" placeholder="Start Date">	
 			            </div> 
 		            </div>
-		            <div class="col-md-6 col-xs-6">
+		            <div class="col-md-3 col-xs-6">
 			            <div class="form-group">
 			                <label>Booking Date</label> 
-			            	<input type="text" name="book_date" class="form-control book_date booking_date" placeholder="Booking Date">	
+			            	<input type="date" name="book_date" class="form-control book_date" placeholder="Booking Date">
 			            </div> 
 		            </div>
-		            <div class="col-md-6 col-xs-6">
+		            <div class="col-md-3 col-xs-6">
 		              <div class="form-group">
 		                <label>Country <span style="color:#b12f1f;">*</span></label> 
-		                <select class="form-control country" id="country" name="country" data-type="country" required>
-		                    <option value="">Country</option>
-		                  @foreach(App\Country::where('country_status', 1)->orderBy('country_name')->get() as $con)
+		                <select class="form-control country" id="country" name="country" data-type="country"  data-bus_type="2" data-locat="data" data-title="2" required>
+		                    <option>--Choose--</option>
+		                  @foreach(App\Country::getRestCon() as $con)
 		                    <option value="{{$con->id}}">{{$con->country_name}}</option>
 		                  @endforeach
 		                </select>
 		              </div> 
 		            </div>
-		            <div class="col-md-6 col-xs-6">
+		            <div class="col-md-3 col-xs-6">
 		              <div class="form-group">
 		                <label>City Name <span style="color:#b12f1f;">*</span></label> 
-		                <select class="form-control province" name="city" data-type="rest_name" id="dropdown-data" required>
-		                  <option value="">City</option>
-		                  @foreach(App\Province::where(['province_status'=> 1])->orderBy('province_name')->get() as $pro)
-		                    <option value="{{$pro->id}}">{{$pro->province_name}}</option>
-		                  @endforeach
+		                <select class="form-control province" name="city" data-type="booking_restaurant" id="dropdown-country" required>
+			                @foreach(App\Province::getRestPro() as $pro)
+			                    <option value="{{$pro->id}}">{{$pro->province_name}}</option>
+			                @endforeach
 		                </select>
 		              </div> 
 		            </div>
@@ -116,22 +128,15 @@
 		            <div class="col-md-6">
 		              <div class="form-group">
 		                <label>Restaurant Name</label>
-		               	<select class="form-control rest_name" name="rest_name" data-type="rest_menu" id="dropdown-transervice">
-		               		<option>Select Service</option>
-		               		@foreach(App\Supplier::where(['business_id'=> 2 , 'supplier_status'=> 1])->orderBy('supplier_name', 'ASC')->get() as $rest)
-		               		<option value="{{$rest->id}}">{{$rest->supplier_name}}</option>
-		               		@endforeach
+		               	<select class="form-control rest_name" name="rest_name" data-type="booking_restaurant_menu" id="dropdown-booking_restaurant">
+		               		
 		               	</select>
 		              </div>
 		            </div>
 		            <div class="col-md-6 col-xs-12">
 			            <div class="form-group">
 			                <label>Menu </label>
-			               	<select class="form-control rest_menu" name="rest_menu" id="dropdown-rest_menu">
-			               		<option>Select Menu</option>
-			               		@foreach(App\RestaurantMenu::whereNotIn('title', [''])->get() as $rm)
-			               		<option value="{{$rm->id}}" data-price="{{$rm->price}}" data-kprice="{{$rm->kprice}}">{{$rm->title}}</option>
-			               		@endforeach
+			               	<select class="form-control rest_menu" name="rest_menu" id="dropdown-booking_restaurant_menu">
 			               	</select>
 			            </div>
 		            </div>
@@ -161,7 +166,7 @@
 		            </div>
 		        </div>
 	        </div>
-	        <div class="modal-footer" style="padding: 5px 13px;">
+	        <div class="modal-footer" >
 	          <button type="submit" class="btn btn-success btn-flat btn-sm" >Publish</button>
 	          <a href="#" class="btn btn-danger btn-flat btn-sm" data-dismiss="modal">Cancel</a>
 	        </div>

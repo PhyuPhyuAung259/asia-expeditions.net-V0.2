@@ -21,6 +21,11 @@
 						<b>Revised Date</b> {{$project->project_revise}}
 					</p> 
 				</div>
+				<div class="pull-right">
+				<a class="btn btn-info" target="_blank" href="{{route('proFormEdit', ['project'=> $project->project_number])}}" title="Edit Project">
+                         Edit Project
+                        </a>
+				</div>
 				<?php $clientByProject = App\Admin\ProjectClientName::where('project_number', $project->project_number)->get();?>
 				@if($Probooked->Count() > 0 )
 				<div class="pull-right hidden-print checkingAction" style="display: none;">
@@ -54,12 +59,14 @@
 				@endif
 				@if($Probooked->Count() > 0 )
 					<div class="hidden-print">
-						<label class="container-CheckBox"> Check All
+						<label class="container-CheckBox"> Check All to print services
 						  <input type="checkbox" class="checkall" id="check_all" >
 						  <span class="checkmark"></span>
 						</label>
+						
 					</div>
 				@endif
+
 				<!-- Hotel Start  -->
 				<?php $hotelBook= \App\HotelBooked::where(['project_number'=>$project->project_number])->orderBy("checkin");?>	
 				<table class="table operation-sheed">
@@ -106,6 +113,7 @@
 							<th class="text-center">Extra</th>
 							<th class="text-center" width="188">Ch-Extra</th>
 							<th class="text-left" width="188">Amount</th>
+							<th>Operation</th>
 						</tr>
 						@foreach($hotelBook->get() as $hotel)
 						<?php 
@@ -121,7 +129,9 @@
 									</label>
 								</span>
 							</td>
-							<td>{{{ $hotel->hotel->supplier_name or ''}}} <small style="color: #9E9E9E;">{{isset($hotel->remark)? '('.$hotel->remark.')' :''}}</small></td>
+							<td>{{{ $hotel->hotel->supplier_name or ''}}} 
+								<!-- <small style="color: #9E9E9E;">{{isset($hotel->remark)? '('.$hotel->remark.')' :''}}</small> -->
+							</td>
 							<td>{{{ $hotel->room->name or ''}}}</td>
 							<td class="text-center addOption">
 								<div class="numberOfRoom" ><span {{$hjnal === null ? '' : "style=background-color:#f6f6f6;cursor:no-drop"}} title="{{$hjnal === null ? 'onClick to Add Discount Percentage' : ''}}">{{$hotel->no_of_room}}</span> {!! $hotel->discount > 0 ? "+ <span style='color: #3c8dbc'>$hotel->discount(%)</span> " : '' !!}</div>
@@ -163,6 +173,14 @@
 										@endif
 									</span>
 								</span>
+							</td>
+							<td>
+							<!-- <a target="_blank" href="{{route('bookingEdit', ['url'=>'hotel', 'id'=>$hotel->book_id])}}" title="Edit hotel">
+                                <label class="icon-list ic_edit"></label>
+                              </a>&nbsp;
+							  <a target="_blank" href="{{route('bapplyRoom', ['pro'=> $hotel->book_project,'hotelid'=>$hotel->hotel_id,'bookid'=> $hotel->book_id])}}" title="Apply room for this hotel" >
+                              <i class="fa fa-hotel (alias)" style="font-size: 19px;color: #c38015;"></i>
+                            </a>&nbsp; -->
 							</td>
 						</tr>
 						@endforeach
@@ -251,6 +269,7 @@
 							<th class="text-right">Amount </th>
 							<th class="text-right">Price {{Content::currency(1)}}</th>
 							<th class="text-center" width="160px">Amount</th>
+							<th>Operation</th>
 						</tr>
 						@foreach($golfBook->get() as $gf)			
 							<?php 
@@ -258,6 +277,7 @@
 							?>	
 							<tr>
 								<td>
+									 
 									<label class="container-CheckBox"> {{$gf->supplier_name}}
 									  <input type="checkbox" class="checkall" name="checkedgolf[]" value="{{$gf->id}}" >
 									  <span class="checkmark"></span>
@@ -279,6 +299,11 @@
 											<i class="fa fa-check-circle"></i>
 										@endif
 									</span>
+								</td>
+								<td>
+									<!-- <a class="btnEditTran" style="padding:0px;border:none;" data-id="{{$gf->id}}" data-toggle="modal" data-target="#golfModal">
+										<i style="padding:1px 2px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
+									</a>  -->
 								</td>
 							</tr>
 						@endforeach
@@ -369,6 +394,7 @@
 							<th width="100px;">Phone</th>
 							<th class="text-right" width="160px" >Price {{Content::currency()}}</th>
 							<th class="text-right" width="160px" >Price {{Content::currency(1)}}</th>
+							<th>Operation</th>
 						</tr>			
 						@foreach($tranBook->get() as $tran)
 							<?php 
@@ -399,6 +425,14 @@
 				                </td> 
 				                <td class="text-right">{{ Content::money($price) }}</td>
 			                  	<td class="text-right">{{ Content::money($kprice) }}</td>
+								<td>
+									<a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id])}}" title="Edit Transport">
+                                		<label class="icon-list ic_edit"></label>
+                             		</a>&nbsp;
+									 <a target="_blank" href="{{route('getBookingVoucher', [$tran->book_project, $tran->id])}}" title="View Transport Booking">
+							               	<label class="fa fa-list-alt btn btn-xs" style="font-size:17px; color: #527686;"></label>
+							            </a>  
+								</td>
 							</tr>				
 						@endforeach
 						<tr>
@@ -437,6 +471,7 @@
 								<th>Language</th>
 								<th class="text-right">Price {{Content::currency()}}</th>
 								<th class="text-right" width="160px">Price{{Content::currency(1)}}</th>
+								<th>Operation</th>
 							</tr>			
 							@foreach($guideBook->get() as $tran)
 							<?php 
@@ -467,6 +502,13 @@
 								<td>{{{$bg->language->name or ''}}}</td>
 								<td class="text-right">{{Content::money($price)}}</td>
 								<td class="text-right">{{Content::money($kprice)}}</td>
+								<td><a target="_blank" href="{{route('editguideoperation', ['type'=>'guide', 'project_no'=>$tran->book_project, 'id'=>$tran->id , 'tour_id'=>$tran->tour_id])}}" title="Edit Guide">
+                                			<label class="icon-list ic_edit"></label>
+                             			</a>&nbsp;
+										 <!-- <a target="_blank" href="{{route('getBookingVoucher', [$tran->book_project, $tran->id])}}" title="View Transport Booking">
+							               	<label class="fa fa-list-alt btn btn-xs"></label>
+							            </a>  </td> -->
+								</td>
 							</tr>				
 							@endforeach
 							<tr>
@@ -503,6 +545,7 @@
 				                <th class="text-right">Amount</th>
 				                <th class="text-right">Price {{Content::currency(1)}}</th>
 				                <th class="text-right">Amount</th>
+								<th>Operation</th>
 			                </tr>		
 							@foreach($restBook->get() as $rest)
 							<tr>
@@ -519,6 +562,9 @@
 				                <td class="text-right">{{Content::money($rest->amount)}}</td>
 				                <td class="text-right">{{Content::money($rest->kprice)}}</td>
 			                  	<td class="text-right">{{Content::money($rest->kamount)}}</td>
+								<td><a target="_blank" href="{{route('editoperation', ['type'=>'restaurant', 'id'=>$rest->id])}}" title="Edit Restaurant">
+                                			<label class="icon-list ic_edit"></label>
+                             			</a>&nbsp;</td>
 							</tr>				
 							@endforeach
 							<tr>
@@ -550,6 +596,7 @@
 			                  	<th class="text-right">Amount</th>
 			                  	<th class="text-right">Price {{Content::currency(1)}}</th>
 			                  	<th class="text-right" width="160px">Amount</th>
+								<th>Operation</th>
 							</tr>			
 							@foreach($EntranceBook->get() as $rest)
 							<?php $pro = \App\Province::find($rest->province_id); ?>
@@ -566,6 +613,11 @@
 				                <td class="text-right">{{Content::money($rest->amount)}}</td>
 				                <td class="text-right">{{Content::money($rest->kprice)}}</td>
 			                  	<td class="text-right">{{Content::money($rest->kamount)}}</td>
+								<td>
+									<a target="_blank" href="{{route('editoperation', ['type'=>'entrance', 'id'=>$rest->id])}}" title="Edit Entrance Fee">
+                                			<label class="icon-list ic_edit"></label>
+                             		</a>&nbsp;
+								</td>
 							</tr>				
 							@endforeach
 							<tr>
@@ -598,7 +650,8 @@
 							<tr style="background-color:#f4f4f4;">
 								<th>Date</th>
 								<!-- <th width="120px">City</th> -->
-								<th colspan="10">Title</th>						
+								<th colspan="10">Title</th>	
+								<th>Operation</th>					
 							</tr>			
 							@foreach($MiscBook->get() as $tour)
 								<?php 
@@ -616,7 +669,7 @@
 							            @if($miscService->count() > 0) 
 							            	<hr style="border-top:none; border-bottom: 1px solid #ddd;padding: 5px 0px; margin-top:0px; margin-bottom: 0px;">
 						                  	<div class="row "style="font-style: italic;">
-							                  	<label class="col-md-6 ">
+							                  	<label class="col-md-4 ">
 							                  		<strong class="pcolor">Service Name</strong>
 							                  	</label>
 							                  	<label class="col-md-1 ">
@@ -641,6 +694,9 @@
 							                  	</label>
 							                  	<label class="col-md-2 pcolor text-right">
 								                  	<strong class="pcolor">Amount</strong>
+							                  	</label>
+												  <label class="col-md-2 pcolor text-right">
+								                  	<strong class="pcolor">Operation</strong>
 							                  	</label>
 						                  	</div>		                
 							            	@foreach($miscService as $misc)
@@ -667,11 +723,19 @@
 							                  	<label class="col-md-2 text-right" style="font-weight: 400;">
 							                  		<span>{{Content::money($misc->kamount)}}</span> 
 							                  	</label>
+												  <label class="col-md-2 text-right" style="font-weight: 400;">
+							                  		<span><a class="btnEditTran" data-type="apply_misc" href="#" data-id="{{$misc->id}}" data-country="{{$misc->country_id}}" data-province="{{$misc->province_id}}" data-pax="{{$misc->book_pax}}" data-restmenu="{{$misc->service_id}}" data-price="{{$misc->price}}" data-kprice="{{$misc->kprice}}" data-remark="{{$misc->remark}}" data-toggle="modal" data-target="#miscModal"><i style="font-size: 16px;" class="fa fa-pencil"></i></a></span> 
+							                  	</label>
 							                  	<div class="clearfix"></div>
 						                  	</div>
 						                  	@endforeach
 						                @endif
-				                  	</td>	                                     
+				                  	</td>
+									<td style="border-left:solid thin dark">
+									<a target="_blank" href="{{route('editoperation', ['type'=>'misc', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id])}}" title="Edit Misc">
+								<i style="padding:1px 2px;" class="fa fa-plus-circle btn btn-info btn-xs"> </i>
+                             	</a>&nbsp; 
+									</td>	                                     
 				                </tr>			
 							@endforeach
 							<tr>
@@ -738,6 +802,7 @@
 		  </form>
 		</div><br><br>
 	</div>
+	<!-- Remark modal start -->
 	<div class="modal" id="myModal" role="dialog" data-backdrop="static" data-keyboard="true">
 		<div class="modal-dialog modal-md">
 		  <form method="POST" action="{{route('addHotelRemark')}}">
@@ -765,7 +830,158 @@
 			</div>   
 		  </form>
 		</div>
-	  </div>
+	</div>
+	<!-- Remark modal end -->
+	<!-- misc modal start -->
+	<div class="modal fade" id="miscModal" role="dialog" data-backdrop="static" data-keyboard="true">
+		<div class="modal-dialog modal-lg">
+			<form method="POST" action="{{route('assignMisc')}}">
+				<div class="modal-content">        
+					<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><strong> Miscellaneouse Assignment</strong></h4>
+					</div>
+					<div class="modal-body">
+					{{csrf_field()}}    
+						<input type="hidden" name="bookid" id="tour_id">
+						<input type="hidden" name="project_number" id="project_number" value="{{$project->project_number}}">
+						<div class="row">
+							<div class="col-md-12 col-xs-12">
+								<div class="form-group">
+									<label>Start Date</label> 
+									<input type="date" name="start_date" class="form-control book_date" placeholder="Start Date"">	
+								</div> 
+							</div>	
+							<div class="col-md-6 col-xs-6">
+								<div class="form-group">
+									<label>Country <span style="color:#b12f1f;">*</span></label> 
+									<select class="form-control country" id="country" name="country" data-type="country" data-pro_of_bus_id="misc_type" data-locat="data" data-title="6" required>
+										<option value="">--Choose--</option>
+									@foreach(App\Country::countryByProject() as $con)
+										<option value="{{$con->id}}">{{$con->country_name}}</option>
+									@endforeach
+									</select>
+								</div> 
+							</div>
+							<div class="col-md-6 col-xs-6">
+								<div class="form-group">
+									<label>City Name <span style="color:#b12f1f;">*</span></label> 
+									<select class="form-control province" name="city" data-type="apply_misc" id="dropdown-country"  data-title="Miscellaneouse" required>
+									<option value="">--Choose--</option>
+									@foreach(App\Province::where(['province_status'=> 1])->orderBy('province_name')->get() as $pro)
+										<option value="{{$pro->id}}">{{$pro->province_name}}</option>
+									@endforeach
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6 col-xs-6">
+								<div class="form-group">
+									<label>Service Type</label>
+									<select class="form-control tran_name service_type" name="service_type" id="dropdown-apply_misc">
+										<option>Select Service</option>
+										@foreach(App\MISCService::where(['status'=> 1])->orderBy('name', 'ASC')->get() as $sv)
+										<option value="{{$sv->id}}" data-price="{{$sv->price}}" data-kprice="{{ $sv->kprice }}">{{$sv->name}}</option>
+										@endforeach
+									</select>
+								</div>
+							</div>
+							
+							<div class="col-md-6 col-xs-6">
+								<div class="form-group">
+									<label>Pax No.</label>
+									<input type="number" name="book_pax" id="book_pax" class="form-control text-center" value="1">
+								</div>
+							</div>
+							<div class="col-md-12 col-xs-12 ">
+								<strong style="color:red;">To make changes to the Service Type, you will need to select the City Name again.</strong>
+							</div>
+							<div class="col-md-6 col-xs-6">
+								<div class="form-group">
+									<label>Price {{Content::currency()}}</label>
+									<input type="text" name="price" id="price" class="form-control" placeholder="00.0" >
+								</div>
+							</div>
+							<div class="col-md-6 col-xs-6">
+								<div class="form-group">
+									<label>Price {{Content::currency(1)}}</label>
+									<input type="text" name="kprice" id="kprice" class="form-control" placeholder="00.0" >
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12">
+								<div class="form-group">
+									<label>Remark</label>
+									<textarea class="form-control" name="remark" id="remark" rows="5" placeholder="Remark here..."></textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer" style="text-align: center;">
+						<button type="submit" class="btn btn-success btn-flat btn-sm">Publish</button>
+						<a href="#" class="btn btn-danger btn-flat btn-sm" data-dismiss="modal">Cancel</a>
+					</div>
+				</div>      
+			</form>
+		</div>
+	</div>
+	<!-- misc modal end -->
+	<!-- golf modal start -->
+	<div class="modal fade" id="golfModal" role="dialog" data-backdrop="static" data-keyboard="true">
+		<div class="modal-dialog modal-md">
+			<form method="POST" action="{{route('updateTeetime')}}">
+				<div class="modal-content">        
+					<div class="modal-header" >
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title"><strong id="form_title">What time you want to play</strong></h4>
+					</div>
+					<div class="modal-body">
+						{{csrf_field()}}    
+						<input type="hidden" name="bookid" id="tour_id">
+						<div class="row">
+							<div class="col-md-4 col-xs-6">
+								<div class="form-group">
+									<label>Hours</label>
+									<select class="form-control" name="hour">
+										@for($i=12; $i>= 1; $i--)
+										<option value="{{$i}}">{{$i}}</option>
+										@endfor
+									</select>
+								</div>
+							</div>
+							<div class="col-md-4 col-xs-3">
+								<div class="form-group">
+									<label>Minute</label>
+									<select class="form-control" name="minute">
+										@for($i=59; $i>= 0; $i--)
+											<?php $mi = $i <= 9 ? "0".$i : $i; ?>
+											<option value="{{$mi}}">{{$mi}}</option>
+										@endfor
+								</select>
+								</div>
+							</div>	
+							<div class="col-md-4 col-xs-3">
+							<div class="form-group">
+								<label>Start</label>
+								<select class="form-control" name="start">
+									<option value="AM">AM</option>
+									<option value="PM">PM</option>
+								</select>
+							</div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+					<button type="submit" class="btn btn-success btn-flat btn-sm">Confirm</button>
+					<a href="#" class="btn btn-danger btn-flat btn-sm" data-dismiss="modal">Cancel</a>
+					</div>
+				</div>      
+			</form>
+		</div>
+	</div>
+	<!-- golf modal end -->
 	  <script type="text/javascript">
 		$(document).ready(function(){
 		  $(".BtnEdit").on('click', function(){

@@ -21,7 +21,7 @@
             {{csrf_field()}}
             <div class="col-sm-8 pull-right">
               <div class="col-md-2">
-                <input type="text" name="" value="{{{$projectNo or ''}}}" id="projectNum">
+                
                 <input class="form-control input-sm" type="text" id="from_date" name="start_date" placeholder="From Date" value="{{{$startDate or ''}}}"> 
               </div>
               <div class="col-md-2" style="padding-right: 0px;">
@@ -37,8 +37,9 @@
               </div>             
               <div class="col-md-2">
                 <select class="form-control input-sm" name="sort_location">
-                  <option value="AE" {{$locat == 'AE' ? 'selected':''}}>AE</option>
+                  
                   <option value="AM" {{$locat == 'AM' ? 'selected':''}}>AM</option>
+                  <option value="AE" {{$locat == 'AE' ? 'selected':''}}>AE</option>
                 </select>
               </div>
               <div class="col-md-2" style="padding: 0px;">
@@ -50,7 +51,8 @@
               <thead>
                 <tr>
                   <th width="48px">File No.</th>
-                  <th>Client Name & Pax</th>
+                  <th>Client Name</th>
+                  <th>No of Pax</th>
                   <th class="text-center">Status</th>
                   <th>Flight Arrival</th>
                   <th width="123px">Flight Departure</th>
@@ -74,6 +76,7 @@
                         <span style="font-weight: 700; color: #3F51B5;">x {{$pro->project_pax}}</span>
                       @endif
                     </td> 
+                    <td>{{{$pro->project_pax or ''}}}</td>
                     <td class="text-center">
                       <div class="btn-group">
                         <span style="cursor: pointer;-webkit-box-shadow:none;box-shadow:none;" class=" dropdown-toggle" data-toggle="dropdown"> 

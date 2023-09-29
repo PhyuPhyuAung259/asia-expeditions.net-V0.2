@@ -1,5 +1,5 @@
 @extends('layout.backend')
-@section('title', 'Add Driver ')
+@section('title', 'Add Driver')
 <?php
   $active = 'service'; 
   $subactive ='guide/service';

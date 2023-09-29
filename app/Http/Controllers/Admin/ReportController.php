@@ -31,6 +31,7 @@ class ReportController extends Controller
         $bcruise = CruiseBooked::find($hotelId);
           $booking = Booking::find($bookid);
     	if ($action == "hotel-voucher") {
+        
     		return view('admin.report.hotel_voucher', compact('project', 'bhotel', 'booking', "hotel"));
     	}elseif ($action == "hotel-booking-form") {
     		return view('admin.report.hotel_booking_form', compact('project', 'bhotel', 'booking', "hotel"));
@@ -47,6 +48,7 @@ class ReportController extends Controller
         if ($view_type == "passenger-manifast") {
             return view("admin.report.passenger_manifast", compact("clientByProject", "project"));    
         }elseif ($view_type == "project_quotation_printing") {           
+
         	$type = "Proposal";
             $tourCheck  = $req->group_tour_pax ? $req->group_tour_pax : [];
             $hotelCheck = $req->hotel_option ? $req->hotel_option : [];
@@ -274,5 +276,47 @@ class ReportController extends Controller
             
         }
         return view('admin.report.report_supplier_booked', compact('start_date', 'end_date', 'bus_id', 'supplier_name', 'bookeds', 'supp'));
+    }
+
+    public function tourReport(){
+        return view('admin.report.tour_report');
+    }
+
+    public function searchTour(Request $req){
+        $startDate  = $req->start_date;
+        $endDate    = $req->end_date;
+        $location   =$req->location;
+        if(!empty($startDate) && !empty($endDate) && $location==0 ){
+            $tours = DB::table('tours')
+                    ->join('booking', 'tours.id', '=', 'booking.tour_id')
+                    ->whereBetween('booking.book_checkin', [$startDate, $endDate])
+                    ->where(function ($query) {
+                        $query->whereNotNull('booking.tour_id')
+                            ->orWhere('booking.tour_id', '!=', 0);
+                    })
+                    ->whereNotIn('tours.tour_type', [19,0])
+                    ->groupBy('tours.id') // Group by tour.id to ensure uniqueness
+                    ->orderByDesc(DB::raw('MAX(tours.tour_count)'))
+                    ->limit(10)
+                    ->get();          
+        }
+        if(!empty($startDate) && !empty($endDate) && $location!=0 ){
+            $tours = DB::table('tours')
+                    ->join('booking', 'tours.id', '=', 'booking.tour_id')
+                    ->whereBetween('booking.book_checkin', [$startDate, $endDate])
+                    ->where(function ($query) {
+                        $query->whereNotNull('booking.tour_id')
+                            ->orWhere('booking.tour_id', '!=', 0);
+                    })
+                    ->whereNotIn('tours.tour_type', [19,0])
+                    ->where('booking.country_id','=',$location)
+                    ->groupBy('tours.id') // Group by tour.id to ensure uniqueness
+                    ->orderByDesc(DB::raw('MAX(tours.tour_count)'))
+                    ->limit(10)
+                    ->get();
+                    
+                    
+        }
+        return view('admin.report.tour_report',compact('tours'));
     }
 }

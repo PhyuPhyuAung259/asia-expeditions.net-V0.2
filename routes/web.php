@@ -98,6 +98,7 @@ Route::group(['middleware' => ['IsLogin']], function(){
 
 
 		Route::get('booked/hotel/apply/{project}-{hotel}-{bookid}/room', 'Admin\BookingController@bookedApplyroom')->name('bapplyRoom');
+		Route::get('edit/booked/hotel/apply/{project}-{hotel}-{bookid}/room', 'Admin\BookingController@editbookedApplyroom')->name('editbapplyRoom');
 		Route::POST('booked/hotel/apply/room/remark', 'Admin\BookingController@addHotelRemark')->name('addHotelRemark');
 		Route::get('booked/cruise/apply/{project}-{hotel}-{bookid}/room', 'Admin\BookingController@bookedCruise')->name('bookedCruise');
 		Route::post('booking/applied/room', 'Admin\BookingController@hotelbookedRoomApplied')->name('bookingAppliedroom');
@@ -241,6 +242,8 @@ Route::group(['middleware' => ['IsLogin']], function(){
 
 		Route::get("hotelrate/remve/{hotel}/{booking}/{type}", "Admin\AdminController@delPriceRate")->name('RhPrice');
 		// report section
+		Route::get('tour_report',"Admin\ReportController@tourReport")->name('tour_report');
+		Route::post("tour_report", "Admin\ReportController@searchTour")->name("searchTour");
 		Route::get('hotel/booking/{project}/{hotelid}/{bookid}/{action}',"Admin\ReportController@getHotelVoucher")->name('hVoucher');
 
 		Route::get("project/booked/{projectNo}/{type}", "Admin\ReportController@getProjectBooked")->name('getProjectBooked');

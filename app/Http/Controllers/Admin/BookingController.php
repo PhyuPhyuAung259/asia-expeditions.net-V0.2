@@ -68,7 +68,7 @@ class BookingController extends Controller
         }
         // return $req->all();
     }
-
+    
     public function hotelbookedRoomApplied(Request $req){
         try {
             if(isset($req->roomtype)){
@@ -106,6 +106,9 @@ class BookingController extends Controller
                 }
                 return back()->with(['message'=> 'Hotel Rate Applied successfully', 'status'=> 'success', 'status_icon'=> 'fa-check-circle']);
             }
+            if(isset($req->bhotel_id)){
+                dd($req->bhotel_id);
+            }
         } catch (Exception $e) {
             return back()->with(['message'=> 'Something went wrong please try again', 'status'=> 'warning', 'status_icon'=> 'fa-exclamation-circle']);
         }
@@ -119,6 +122,15 @@ class BookingController extends Controller
         // dd($project);
         //dd('bookid=' . $proNo ,$hotel, $project); 
         return view('admin.booking.hotelAppliedRoom', compact('hotel', 'project'));
+    }
+    public function editbookedApplyroom(Request $req,$proNo, $hotelId,$bookid){
+        $bhotel=HotelBooked::find($req->bhotel_id);
+        $hotel = Supplier::find($hotelId);
+        // $bookid= Booking::find($bookid); 
+        $project= Booking::find($bookid);
+        // dd($project);
+        //dd($bhotel,$proNo ,$hotel, $project); 
+        return view('admin.booking.hotelAppliedRoom', compact('hotel', 'project', 'bhotel'));
     }
 
     public function bookedCruise ($proNo, $cruiseId,$bookid){

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\component\Content;
 use App\Project;
+use App\Tour;
 use App\Booking;
 use App\HotelBooked;
 use App\CruiseBooked;
@@ -189,6 +190,9 @@ class ProjectController extends Controller
                         $abook->book_date     = date('Y-m-d');
                         $abook->book_time     = date('H:i:s');
                         $abook->save();
+                        $tour=Tour::find($abook->tour_id);
+                        $tour->tour_count=$tour->tour_count+1;
+                        $tour->save();
                     }
                 }
 

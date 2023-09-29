@@ -54,7 +54,7 @@ use App\component\Content;
 				<th class="text-right" style="width: 22%;">Client Name</th>
 				<td class="text-left" style="width: 18%;">{{$project['project_client']}}</td>
 				<th class="text-right" style="width: 22%;">No. of Pax:</th>
-				<td class="text-left" style="width: 18%;">{{$booking['book_pax']}}</td>
+				<td class="text-left" style="width: 18%;">{{$project['project_pax']}}</td>
 			</tr>
 			<tr>
 				<th class="text-right" style="width: 22%;">Check-In:</th>

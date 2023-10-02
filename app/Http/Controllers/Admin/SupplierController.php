@@ -42,6 +42,7 @@ class SupplierController extends Controller
     }
      // supplier report
     public function getSupplierReport(Request $req, $supId, $type){
+        
         $currentAction = $req->path();
         $supplier = Supplier::find($supId);
         $essittype = isset($req->type) ? $req->type : '';

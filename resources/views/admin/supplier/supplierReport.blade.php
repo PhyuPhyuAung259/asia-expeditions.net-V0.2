@@ -12,6 +12,9 @@
 	}
 	elseif ($type == 'restaurants') {
 		$title = 'Restaurants';
+	}
+	elseif ($type == 'transport') {
+		$title = 'Transport';
 	}else{
 		$title = '';
 	} 
@@ -96,6 +99,8 @@
 			@include('admin.report.flight_report')
 		@elseif($type == "restaurants")
 			@include('admin.report.restaurant_report')
+		@elseif($type == "transport")
+			@include('admin.report.transport_report')
 		@endif
 
 

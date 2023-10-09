@@ -242,8 +242,8 @@ Route::group(['middleware' => ['IsLogin']], function(){
 
 		Route::get("hotelrate/remve/{hotel}/{booking}/{type}", "Admin\AdminController@delPriceRate")->name('RhPrice');
 		// report section
-		Route::get('tour_report',"Admin\ReportController@tourReport")->name('tour_report');
-		Route::post("tour_report", "Admin\ReportController@searchTour")->name("searchTour");
+		Route::get('report',"Admin\ReportController@tourReport")->name('report');
+		Route::post("report", "Admin\ReportController@searchReport")->name("searchReport");
 		Route::get('hotel/booking/{project}/{hotelid}/{bookid}/{action}',"Admin\ReportController@getHotelVoucher")->name('hVoucher');
 
 		Route::get("project/booked/{projectNo}/{type}", "Admin\ReportController@getProjectBooked")->name('getProjectBooked');

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\component\Content;
 use App\Project;
 use App\Tour;
+use App\GolfMenu;
 use App\Booking;
 use App\HotelBooked;
 use App\CruiseBooked;
@@ -308,6 +309,9 @@ class ProjectController extends Controller
                         $abook->book_date      = date('Y-m-d');
                         $abook->book_time      = date('H:i:s');
                         $abook->save();
+                        $golf=GolfMenu::find($abook->program_id);
+                        $golf->golf_count=$golf->golf_count+1;
+                        $golf->save();
                     }
                 }
             return back()->with(['message'=> 'Project successfully Created',  'status'=> 'success', 'status_icon'=> 'fa-check-circle']);

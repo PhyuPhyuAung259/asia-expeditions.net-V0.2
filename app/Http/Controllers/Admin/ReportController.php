@@ -282,41 +282,80 @@ class ReportController extends Controller
         return view('admin.report.tour_report');
     }
 
-    public function searchTour(Request $req){
+    public function searchReport(Request $req){
         $startDate  = $req->start_date;
         $endDate    = $req->end_date;
         $location   =$req->location;
-        if(!empty($startDate) && !empty($endDate) && $location==0 ){
-            $tours = DB::table('tours')
-                    ->join('booking', 'tours.id', '=', 'booking.tour_id')
-                    ->whereBetween('booking.book_checkin', [$startDate, $endDate])
-                    ->where(function ($query) {
-                        $query->whereNotNull('booking.tour_id')
-                            ->orWhere('booking.tour_id', '!=', 0);
-                    })
-                    ->whereNotIn('tours.tour_type', [19,0])
-                    ->groupBy('tours.id') // Group by tour.id to ensure uniqueness
-                    ->orderByDesc(DB::raw('MAX(tours.tour_count)'))
-                    ->limit(10)
-                    ->get();          
+    
+        $type       =$req->type;
+        if($type==1){
+            if(!empty($startDate) && !empty($endDate) && $location==0 ){
+                $tours = DB::table('tours')
+                        ->join('booking', 'tours.id', '=', 'booking.tour_id')
+                        ->whereBetween('booking.book_checkin', [$startDate, $endDate])
+                        ->where(function ($query) {
+                            $query->whereNotNull('booking.tour_id')
+                                ->orWhere('booking.tour_id', '!=', 0);
+                        })
+                        ->whereNotIn('tours.tour_type', [19,0])
+                        ->groupBy('tours.id') // Group by tour.id to ensure uniqueness
+                        ->orderByDesc(DB::raw('MAX(tours.tour_count)'))
+                        ->limit(10)
+                        ->get();          
+            }
+            if(!empty($startDate) && !empty($endDate) && $location!=0 ){
+                $tours = DB::table('tours')
+                        ->join('booking', 'tours.id', '=', 'booking.tour_id')
+                        ->whereBetween('booking.book_checkin', [$startDate, $endDate])
+                        ->where(function ($query) {
+                            $query->whereNotNull('booking.tour_id')
+                                ->orWhere('booking.tour_id', '!=', 0);
+                        })
+                        ->whereNotIn('tours.tour_type', [19,0])
+                        ->where('booking.country_id','=',$location)
+                        ->groupBy('tours.id') // Group by tour.id to ensure uniqueness
+                        ->orderByDesc(DB::raw('MAX(tours.tour_count)'))
+                        ->limit(10)
+                        ->get();
+                      
+                        
+            }
+            return view('admin.report.tour_report',compact('tours'));
         }
-        if(!empty($startDate) && !empty($endDate) && $location!=0 ){
-            $tours = DB::table('tours')
-                    ->join('booking', 'tours.id', '=', 'booking.tour_id')
-                    ->whereBetween('booking.book_checkin', [$startDate, $endDate])
-                    ->where(function ($query) {
-                        $query->whereNotNull('booking.tour_id')
-                            ->orWhere('booking.tour_id', '!=', 0);
-                    })
-                    ->whereNotIn('tours.tour_type', [19,0])
-                    ->where('booking.country_id','=',$location)
-                    ->groupBy('tours.id') // Group by tour.id to ensure uniqueness
-                    ->orderByDesc(DB::raw('MAX(tours.tour_count)'))
-                    ->limit(10)
-                    ->get();
-                    
-                    
+        if($type==2){
+            if(!empty($startDate) && !empty($endDate) && $location==0 ){
+                $golf = DB::table('golfmenu')
+                        ->join('booking', 'golfmenu.id', '=', 'booking.program_id')
+                        ->whereBetween('booking.book_checkin', [$startDate, $endDate])
+                        ->where(function ($query) {
+                            $query->whereNotNull('booking.program_id')
+                                ->orWhere('booking.program_id', '!=', 0);
+                        })
+                        ->groupBy('booking.program_id') // Group by tour.id to ensure uniqueness
+                        ->orderByDesc(DB::raw('MAX(golfmenu.golf_count)'))
+                        ->limit(10)
+                        ->get();  
+                      
+                          
+            }
+            if(!empty($startDate) && !empty($endDate) && $location!=0 ){
+                $golf = DB::table('golfmenu')
+                        ->join('booking', 'golfmenu.id', '=', 'booking.program_id')
+                        ->whereBetween('booking.book_checkin', [$startDate, $endDate])
+                        ->where(function ($query) {
+                            $query->whereNotNull('booking.program_id')
+                                ->orWhere('booking.program_id', '!=', 0);
+                        })
+                        ->where('booking.country_id','=',$location)
+                        ->groupBy('booking.program_id') // Group by tour.id to ensure uniqueness
+                        ->orderByDesc(DB::raw('MAX(golfmenu.golf_count)'))
+                        ->limit(10)
+                        ->get();
+                        
+                        
+            }
+            return view('admin.report.golf1_report',compact('golf'));
         }
-        return view('admin.report.tour_report',compact('tours'));
+      
     }
 }

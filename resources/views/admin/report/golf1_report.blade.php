@@ -1,5 +1,5 @@
 @extends('layout.backend')
-@section('title', 'Tour Report')
+@section('title', 'Golf Report')
 <?php
   $active = 'reports'; 
   $subactive = 'tour_report';
@@ -14,7 +14,7 @@
     <section class="content"> 
       <div class="row">
         <section class="col-lg-12 connetedSortable">
-          <h3 class="border">Tour Report</h3>
+          <h3 class="border">Golf Report</h3>
           <form method="POST" action="{{route('searchReport')}}">
             {{csrf_field()}}
             <div class="col-sm-8 pull-right">
@@ -52,24 +52,27 @@
             <table class="datatable table table-hover table-striped">
               <thead>
                 <tr>
-                  <th width="280px">Tour Name</th>
+                  
+                  <th  width="280px">Supplier Name</th>
                   <th>Country</th>
                   <th>City</th>
-                  <th>Tour Type</th>
-                  <th>No of Tour</th>
-                 
+                  <th width="300px">Course Name</th>
+                  <th>No of Golf</th>
                 </tr>
               </thead>
               <tbody>
-               @if(!empty($tours))
-                @foreach($tours as $tour)
+               @if(!empty($golf))
+                @foreach($golf as $golf_data)
                   
                   <tr>
-                    <td>{{$tour->tour_name}}</td>
-                    <td><?php  $country = DB::table('country')->where('id', $tour->country_id)->first();?> {{{$country->country_name or ''}}} </td> 
-                    <td> <?php  $province = DB::table('province')->where('id', $tour->province_id)->first();?> {{{$province->province_name or ''}}} </td>
-                    <td><?php  $type = DB::table('business')->where('id', $tour->tour_type)->first();?> {{{$type->name or ''}}}</td>
-                    <td>{{$tour->tour_count}}</td>
+                   
+                    <td>
+                      <?php $supplier=DB::table('suppliers')->where('id', $golf_data->golf_id)->first();?> {{$supplier->supplier_name}}
+                    </td>
+                    <td><?php  $country = DB::table('country')->where('id', $golf_data->country_id)->first();?> {{{$country->country_name or ''}}} </td> 
+                    <td> <?php  $province = DB::table('province')->where('id', $golf_data->province_id)->first();?> {{{$province->province_name or ''}}} </td>
+                    <td>{{$golf_data->name}}</td>
+                    <td>{{$golf_data->golf_count}}</td>
                     
                                      
                   </tr>

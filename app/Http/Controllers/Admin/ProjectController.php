@@ -141,7 +141,9 @@ class ProjectController extends Controller
                 $aPro->project_book_ref = $req->reference;
                 $aPro->project_book_consultant = $req->consultant;
                 $aPro->project_location = $req->location;
-                $aPro->country_id       = $req->location;
+                $aPro->country_id       = $req->loaction;
+              
+
                 if($req->project_prefix!==null){
                     $aPro->project_prefix   = $req->project_prefix;
                 }else{
@@ -220,6 +222,7 @@ class ProjectController extends Controller
                         $abook->book_date     = date('Y-m-d');
                         $abook->book_time     = date('H:i:s');
                         $abook->save();
+                     
                     }
                 }
 
@@ -538,6 +541,7 @@ class ProjectController extends Controller
                         $bhotel->net_amount     = $hbk->net_amount;
                         $bhotel->remark         = $hbk->remark;
                         $bhotel->save();
+
                     }
                 }
 

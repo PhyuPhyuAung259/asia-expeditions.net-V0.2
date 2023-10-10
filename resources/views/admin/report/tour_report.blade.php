@@ -43,7 +43,6 @@
                     <option value="3">Hotel</option>
                 </select>
               </div>
-
               <div class="col-md-2 ml-5" style="padding: 0px;margin-left:10px;">
                 <button class="btn btn-primary btn-sm" type="submit">Search</button>
               </div>          
@@ -69,9 +68,7 @@
                     <td><?php  $country = DB::table('country')->where('id', $tour->country_id)->first();?> {{{$country->country_name or ''}}} </td> 
                     <td> <?php  $province = DB::table('province')->where('id', $tour->province_id)->first();?> {{{$province->province_name or ''}}} </td>
                     <td><?php  $type = DB::table('business')->where('id', $tour->tour_type)->first();?> {{{$type->name or ''}}}</td>
-                    <td>{{$tour->tour_count}}</td>
-                    
-                                     
+                    <td>{{$tour->tour_count}}</td>                  
                   </tr>
                 @endforeach
                 @endif

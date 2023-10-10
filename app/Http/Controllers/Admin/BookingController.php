@@ -106,9 +106,7 @@ class BookingController extends Controller
                 }
                 return back()->with(['message'=> 'Hotel Rate Applied successfully', 'status'=> 'success', 'status_icon'=> 'fa-check-circle']);
             }
-            if(isset($req->bhotel_id)){
-                dd($req->bhotel_id);
-            }
+           
         } catch (Exception $e) {
             return back()->with(['message'=> 'Something went wrong please try again', 'status'=> 'warning', 'status_icon'=> 'fa-exclamation-circle']);
         }

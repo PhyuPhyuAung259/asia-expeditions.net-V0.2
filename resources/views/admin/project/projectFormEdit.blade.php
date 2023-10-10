@@ -172,7 +172,7 @@ $subactive ='booking/project';
                     <div class="col-md-12 col-xs-12">
                       <div class="form-group">
                         <script src="{{asset('adminlte/editor/tinymce.min.js')}}"></script>
-                        <label>Description</label>
+                        <label>Description for Invoice</label>
                         <textarea class="form-control my-editor " name="pro_desc" rows="6" placeholder="Enter Here ...">{{{$project->project_desc or old('pro_desc')}}}</textarea>   
                       </div>
                     </div>
@@ -196,7 +196,7 @@ $subactive ='booking/project';
                     </div>
                     <div class="col-md-6 col-xs-12">
                       <div class="form-group">
-                        <label>Remarks</label>
+                        <label>Remarks for Operation</label>
                         <textarea class="form-control" name="pro_note" rows="6" placeholder="Included/Excluded" >{{{$project->project_note or old('pro_note')}}}</textarea>
                       </div>
                     </div>

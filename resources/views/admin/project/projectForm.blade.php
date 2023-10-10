@@ -123,17 +123,19 @@ $subactive ='booking/project';
                         <label>Travel Consultant</label> 
                         <input class="form-control" type="text" placeholder="Travel Consultant" name="consultant" value="{{{$project->project_book_consultant or old('consultant')}}}" {{$permission}}>
                       </div> 
-                    </div>                                  
-                    <div class="col-md-3 col-xs-12">
-                      <div class="form-group">
+                    </div>     
+                                                <!-- Default Cambodia -->
+                    <div class="col-md-3 col-xs-6">
+                    <div class="form-group">
                         <label>Location</label>
-                        <select  class="form-control" name="location" {{$permission}}>
-                          @foreach(App\Country::where('country_status',1)->orderBy('country_name')->get() as $con)
-                            <option value="{{$con->id}}" {{isset($project->country_id) ? ($project->country_id == $con->id? 'selected':''):'' }}>{{$con->country_name}}</option>
+                        <select class="form-control" name="location">
+                          @foreach(App\Country::orderByRaw("CASE WHEN country_name = 'Cambodia' THEN 0 ELSE 1 END, country_name")->get(); as $con)
+                            <option value="{{$con->id}}">{{$con->country_name}}</option>
                           @endforeach
                         </select>
                       </div>
                     </div>
+                    
                     <div class="col-md-6 col-xs-6">
                       <div class="form-group">
                         <script src="{{asset('/adminlte/editor/tinymce.min.js')}}"></script>
@@ -150,7 +152,7 @@ $subactive ='booking/project';
                     </div>
                     <div class="col-md-6 col-xs-6">
                       <div class="form-group">
-                        <label>Description</label>
+                        <label>Description for Invoice</label>
                         @if(isset($_GET['ref']))
                           <div class="form-control" disabled {{strlen($project->project_desc) > 0 ? 'style=height:auto;' : "" }}>
                             {!! $project->project_desc !!}
@@ -374,7 +376,32 @@ $subactive ='booking/project';
       </section>
     </div>  
   </div>
+ 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+            $('#country').change(function() {
+                var countryId = $(this).val();
 
-
-  @include('admin.include.datepicker')
+                $.ajax({
+                    url: '/cities/' + countryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        var citySelect = $('#city');
+                        citySelect.empty();
+                        if (response.length === 0) {
+                            citySelect.append('<option value="">No cities available</option>');
+                        } else {
+                            $.each(response, function(key, value) {
+                                citySelect.append('<option value="' + value.id + '">' +
+                                    value.province_name + '</option>');
+                            });
+                        }
+                    }
+                });
+            });
+        });
+</script>
+@include('admin.include.datepicker')
 @endsection

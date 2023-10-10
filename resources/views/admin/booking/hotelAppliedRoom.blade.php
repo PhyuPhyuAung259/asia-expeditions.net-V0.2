@@ -3,7 +3,9 @@
 <?php $active = 'booked/project';
 $subactive ='booked/hotel';
   use App\component\Content;
-
+if(isset($req->bhotel_id)){
+  dd($req->bhotel_id);
+}
 ?>
 @section('content')
   <div class="wrapper">
@@ -16,6 +18,7 @@ $subactive ='booked/hotel';
           <div class="col-lg-12"><h3 class="border"><small>Room Applied for</small> <strong>{{$hotel->supplier_name}}</strong> <small>Hotel</small>, <strong style="font-size: 14px;">CheckIn:{{Content::dateformat($project->book_checkin)}}, CheckOut:{{Content::dateformat($project->book_checkout)}}</strong></h3></div>
           <form method="POST" action="{{route('bookingAppliedroom')}}">
             {{csrf_field()}}
+            <input type="hidden" name="bookId" value="{{{$bhotel->id or ''}}}">
             <input type="hidden" name="bookId" value="{{$project->id}}">
             <input type="hidden" name="projectNo" value="{{$project->book_project}}">
             <input type="hidden" name="hotelId" value="{{$hotel->id}}">
@@ -53,8 +56,8 @@ $subactive ='booked/hotel';
                     <tr>
                       <td class="container_room" style="padding-right:10px; vertical-align: middle;">
                         <label class="container-CheckBox" style="margin-bottom: 0px;">{{$room->name}}
-                          <input type="checkbox" id="checkRoom" class="checkRoom" name="roomtype[]" value="{{$room->id}}" > 
-                          <span class="checkmark hidden-print" ></span>
+                        <input type="checkbox" id="checkRoom" class="checkRoom" name="roomtype[]" value="{{$room->id}}" >                           
+                        <span class="checkmark hidden-print" ></span>
                         </label>
                       </td>
                       <td colspan="6">
@@ -92,7 +95,8 @@ $subactive ='booked/hotel';
                             <tr>
                               <td class="container_category" style="width: 13%;">
                                 <label class="container-CheckBox" style="margin-bottom: 0px;">{{$cat->name}}
-                                  <input type="checkbox" id="roomCat" class="checkRoom" name="roomCat{{$room->id}}[]" value="{{$cat->id}}" data-selling="{{$selling_price}}" data-net="{{$net_price}}">
+                                  <!-- <input type="checkbox" id="roomCat" class="checkRoom" name="roomCat{{$room->id}}[]" value="{{$cat->id}}" data-selling="{{$selling_price}}" data-net="{{$net_price}}" > -->
+                                  <input type="checkbox" id="roomCat" class="checkRoom" name="roomCat{{$room->id}}[]" value="{{$cat->id}}" data-selling="{{$selling_price}}" data-net="{{$net_price}}" >
                                   <span class="checkmark hidden-print" ></span>
                                 </label>
                             
@@ -156,6 +160,7 @@ $subactive ='booked/hotel';
                   $hbooked = App\HotelBooked::where(['hotel_id'=>$hotel->id, 'book_id'=>$project->id])->orderBy('room_id', 'ASC'); 
                   ?>
                     @foreach($hbooked->get() as $bhotel)
+  
                     <tr>
                       <td>{{{$bhotel->hotel->supplier_name or ''}}}</td>
                       <td style="font-size: 12px;">{{Content::dateformat($bhotel->checkin)}} -> {{Content::dateformat($bhotel->checkout)}}</td>
@@ -167,6 +172,10 @@ $subactive ='booked/hotel';
                       <td class="text-center">{!! $bhotel->sextra != 0 ? "$status":"" !!}</td>
                       <td class="text-center">{!! $bhotel->schextra != 0 ? "$status":"" !!}</td>
                       <td class="text-right">
+                      <a target="_blank" href="{{route('editbapplyRoom', ['pro'=> $bhotel->project_number,'hotelid'=>$bhotel->hotel_id,'bookid'=> $bhotel->book_id,'bhotel_id'=>$bhotel->id])}}" title="Edit Applied Room">
+                          <label class="icon-list ic_inclusion" style="margin: -4px 0px;"></label>
+                        </a>
+                        &nbsp;
                         <a href="#" data-id="{{$bhotel->id}}" data-remark="{{$bhotel->remark}}" class="btn btn-primary btn-xs BtnEdit" data-toggle="modal" data-target="#myModal">Add Remark</a>
                         <a target="_blank" href="{{route('hVoucher', ['project'=>$bhotel->project_number, 'bhotelid'=> $bhotel->id, 'bookid'=> $project->id, 'type'=>'hotel-voucher'])}}" title="Hotel Voucher">
                           <label class="icon-list ic_inclusion" style="margin: -4px 0px;"></label>

@@ -101,6 +101,8 @@
 			@include('admin.report.restaurant_report')
 		@elseif($type == "transport")
 			@include('admin.report.transport_report')
+		@elseif($type == "RestaurantInfo")
+			@include('admin.report.restaurant_information')
 		@endif
 
 

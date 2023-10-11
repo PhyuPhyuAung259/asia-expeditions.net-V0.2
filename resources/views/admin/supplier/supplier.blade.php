@@ -143,8 +143,10 @@
                       <td class="text-center hidden-xs">
                         @if($sup->supplier_status == 1)
                           <label class="icon-list ic_active"></label>
+                       
                         @else
                           <label class="icon-list ic_inactive"></label>
+                           
                         @endif
                       </td>
                       @if(isset($supplierName))
@@ -185,6 +187,16 @@
                             <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> isset($sup->business->slug)? $sup->business->slug :''])}}?type=contract" title="View report hotel contract">
                               <label  class="icon-list ic_invoice_drop"></label>
                             </a>
+                          @endif
+                          @if($supplierName == "transport")
+                            <a target="_blank" href="{{route('getDriver', ['id'=> $sup->id])}}" title="Preview Driver">
+                              <i style="padding:1px 2px; position: relative;top:-5px;" class="btn btn-primary btn-xs a fa fa-list-alt"></i>
+                            </a>
+                          @endif
+                          @if($supplierName== "restaurants")
+                          <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> 'RestaurantInfo'])}}" title="View {{{$business->name or 'supplier'}}} information Report">
+                          <label class="icon-list ic_report"></label>
+                        </a> 
                           @endif
                         @endif 
                         <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> isset($sup->business->slug)? $sup->business->slug :''])}}" title="View {{{$business->name or 'supplier'}}} Report">

@@ -286,10 +286,10 @@ class ReportController extends Controller
         $startDate  = $req->start_date;
         $endDate    = $req->end_date;
         $location   =$req->location;
-    
+        $hotel      =$req->hotel;
         $type       =$req->type;
         if($type==1){
-            if(!empty($startDate) && !empty($endDate) && $location==0 ){
+            if(!empty($startDate) && !empty($endDate) && $location==0 && $hotel==0){
                 $tours = DB::table('tours')
                         ->join('booking', 'tours.id', '=', 'booking.tour_id')
                         ->whereBetween('booking.book_checkin', [$startDate, $endDate])
@@ -303,7 +303,7 @@ class ReportController extends Controller
                         ->limit(10)
                         ->get();          
             }
-            if(!empty($startDate) && !empty($endDate) && $location!=0 ){
+            if(!empty($startDate) && !empty($endDate) && $location!=0 && $hotel==0){
                 $tours = DB::table('tours')
                         ->join('booking', 'tours.id', '=', 'booking.tour_id')
                         ->whereBetween('booking.book_checkin', [$startDate, $endDate])
@@ -323,7 +323,7 @@ class ReportController extends Controller
             return view('admin.report.tour_report',compact('tours'));
         }
         if($type==2){
-            if(!empty($startDate) && !empty($endDate) && $location==0 ){
+            if(!empty($startDate) && !empty($endDate) && $location==0  && $hotel==0){
                 $golf = DB::table('golfmenu')
                         ->join('booking', 'golfmenu.id', '=', 'booking.program_id')
                         ->whereBetween('booking.book_checkin', [$startDate, $endDate])
@@ -338,7 +338,7 @@ class ReportController extends Controller
                       
                           
             }
-            if(!empty($startDate) && !empty($endDate) && $location!=0 ){
+            if(!empty($startDate) && !empty($endDate) && $location!=0  && $hotel==0 ){
                 $golf = DB::table('golfmenu')
                         ->join('booking', 'golfmenu.id', '=', 'booking.program_id')
                         ->whereBetween('booking.book_checkin', [$startDate, $endDate])
@@ -355,6 +355,23 @@ class ReportController extends Controller
                         
             }
             return view('admin.report.golf1_report',compact('golf'));
+        }
+        if($type==3){
+            $hotelid=$req->hotel;
+            
+            if(!empty($startDate) && !empty($endDate) && $hotel !=0){
+                $hotel = DB::table('booking')
+                        ->whereBetween('booking.book_checkin', [$startDate, $endDate])
+                        ->where('booking.hotel_id','=',$req->hotel)
+                        ->get();   
+            }
+            else if(empty($startDate) && empty($endDate) && $hotel !=0){
+                $hotel = DB::table('booking') 
+                        ->where('booking.hotel_id','=',$req->hotel)
+                        ->get();       
+            }
+         
+            return view('admin.report.hotel_booking_report',compact('hotel','hotelid','startDate','endDate'));
         }
       
     }

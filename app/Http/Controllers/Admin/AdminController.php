@@ -29,6 +29,7 @@ use App\CruiseBooked;
 use App\RestaurantMenu;
 use App\AccountName;
 use App\SlideShow;
+
 use Illuminate\Support\Carbon;
 class AdminController extends Controller
 {
@@ -41,6 +42,12 @@ class AdminController extends Controller
         $cities = Province::where('country_id', $country)->get();
         
         return response()->json($cities);
+    }
+    public function getHotels(Request $request, $country)
+    {
+        $hotels = Supplier::where(['country_id'=>$country,'business_id'=>1] )->get();
+        
+        return response()->json($hotels);
     }
     public function delPriceRate ($hotelid, $bookid, $type) {
       if ($type == "hotel") {

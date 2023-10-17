@@ -27,7 +27,7 @@
               </div>
                         
               <div class="col-md-2" style="padding-right: 0px;">
-                <select class="form-control input-sm" name="location">
+                <select class="form-control input-sm" name="country" id="country">
                   <option value="0">Location</option>
                   @foreach(App\Country::where('country_status',1)->get() as $country)
                   <option value="{{$country->id}}">{{$country->country_name}}</option>
@@ -35,16 +35,23 @@
                 </select>
               </div>
 
-              <div class="col-md-2" style="padding-right: 0px;">
-                <select class="form-control input-sm" name="type">
-                    <option value="0">Report Type</option>
+              <div class="col-md-2" id="hotels" style="padding-right: 0px; display:none;">
+              <select class="col-md-2 form-control input-sm  " name="hotel" id="hotel"  >
+                  <option value="0">Hotel</option>
+                </select>
+              </div>
+                 
+             
+              <div class="col-md-2" style="padding-right: 0px;" >
+                <select class="form-control input-sm" name="type" id="type"  onchange="enableHotel(this)">
+                    <option value="0">Type</option>
                     <option value="1">Tour</option>
                     <option value="2">Golf</option>
                     <option value="3">Hotel</option>
                 </select>
               </div>
 
-              <div class="col-md-2 ml-5" style="padding: 0px;margin-left:10px;">
+              <div class="col-md-1 ml-5" style="padding: 0px;margin-left:10px;">
                 <button class="btn btn-primary btn-sm" type="submit">Search</button>
               </div>          
             </div>
@@ -87,12 +94,42 @@
   </div>
 </div>
 <script type="text/javascript">
+    function enableHotel(selectElement){
+   console.log(selectElement.value);
+   var hotelElement=document.getElementById('hotels');
+   if(selectElement.value === '3'){
+    hotelElement.style.display='block';
+   }else{
+    hotelElement.style.display='none';
+   }
+  };
   $(document).ready(function(){
     $(".datatable").DataTable({
       language: {
         searchPlaceholder: "Number No., File No.",
       },
        order: [[4, 'desc']]
+    });
+    $('#country').change(function() {
+      var countryId = $(this).val();
+        $.ajax({
+          url: '/hotels/' + countryId,
+          type: 'GET',
+          dataType: 'json',
+          success: function(response) {
+              var hotelSelect = $('#hotel');
+              hotelSelect.empty();
+              if (response.length === 0) {
+                  hotelSelect.append('<option value="0">No hotels available</option>');
+              } else {
+                hotelSelect.append('<option value="0">Choose Hotel</option>');
+                   $.each(response, function(key, value) {
+                      hotelSelect.append('<option value="' + value.id + '">' +
+                          value.supplier_name + '</option>');
+                  });
+              }
+          }
+       });               
     });
   });
 </script>

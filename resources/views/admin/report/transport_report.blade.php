@@ -3,16 +3,17 @@
 	<thead style="background-color: rgb(245, 245, 245); font-weight: 600;">
 		<tr>
 			<td style="padding: 8px;">Name</td>
+			<td style="padding: 8px;">Transport Service</td>
 			<td style="padding: 8px;">Price US</td>	
 			<td style="padding: 8px;">Price Kyat</td>	
 		</tr>
 	</thead>
 	<tbody>
-		<?php $data = App\TransportMenu::where('supplier_id', $supplier->id)->get(); 
-        ?>
+		<?php $data = App\TransportMenu::where('supplier_id', $supplier->id)->get();?>
 		@foreach($data as $key => $tran)
-			<tr style="border: 1px solid #eee;">
+			<tr style="border-bottom: 3px solid #black;">
 				<td style="padding: 8px;">{{$tran->name}}</td>
+				<td style="padding: 8px;"><?php $transervice = App\TransportService::where('id', $tran->transport_id)->first();?> {{{$transervice->title or ''}}} </td>
 				<td style="padding: 8px;">{{$tran->price}} <span class="pcolor">{{Content::currency()}}</span></td>
 				<td style="padding: 8px;">{{$tran->kprice}} <span class="pcolor">{{Content::currency(1)}}</span></td>
 			</tr>

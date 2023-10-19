@@ -363,12 +363,17 @@ class ReportController extends Controller
                 $hotel = DB::table('booking')
                         ->whereBetween('booking.book_checkin', [$startDate, $endDate])
                         ->where('booking.hotel_id','=',$req->hotel)
+                        ->whereNotNull('booking.book_fileno')
+                        ->whereNotIn('booking.book_fileno', [0,''])
                         ->get();   
             }
             else if(empty($startDate) && empty($endDate) && $hotel !=0){
                 $hotel = DB::table('booking') 
                         ->where('booking.hotel_id','=',$req->hotel)
-                        ->get();       
+                        ->whereNotNull('booking.book_fileno')
+                        ->whereNotIn('booking.book_fileno', [0,''])
+                        ->get();   
+                       
             }
          
             return view('admin.report.hotel_booking_report',compact('hotel','hotelid','startDate','endDate'));

@@ -61,19 +61,16 @@ $total_no_of_booked_night=0;
       <tbody>
         @if(!empty($hotel))
         @foreach($hotel as $hotels)
-        <?php $hotelb= DB::table("hotelb")->where(['project_number'=>$hotels->book_project,'hotel_id'=>$hotels->hotel_id])->first();?>
+        <?php $hotelb= DB::table("hotelb")->where(['book_id'=>$hotels->id,'hotel_id'=>$hotels->hotel_id])->first();?>
          @if(!empty($hotelb->project_number))
-        <?php $client_info= DB::table("project_client_name")->where('project_number', $hotelb->project_number)->get(); ?>
+        <?php $client_info= DB::table("project")->where('project_number', $hotelb->project_number)->first(); ?>
             <tr>
               <td>
-                Project Number &nbsp;&nbsp; : &nbsp;&nbsp; {{{$client_info->project_number or $hotels->book_project}}} <br>
-                Client Name &nbsp;&nbsp; : &nbsp;&nbsp; {{{$client_info->client_name or $hotels->book_client}}} <br>
-                Phone &nbsp;&nbsp; : &nbsp;&nbsp; {{{$client_info->phone or ''}}} <br>
+                Project Number &nbsp;&nbsp; : &nbsp;&nbsp; {{{$client_info->project_fileno or ''}}} <br>
+                Client Name &nbsp;&nbsp; : &nbsp;&nbsp; {{{$client_info->project_client or ''}}} <br>
               </td>
               <td><?php $agent=DB::table("suppliers")
-                              ->join('booking', 'suppliers.id', '=', 'booking.book_agent')
-                              ->where('booking.book_project','=',$hotelb->project_number)
-                              ->whereNotNull('booking.book_agent')
+                              ->where('id',$client_info->supplier_id)
                               ->first();?>
                               {{{$agent->supplier_name or ''}}}</td>
               <td>{{{$hotelb->checkin or ''}}}</td>

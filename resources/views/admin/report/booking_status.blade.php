@@ -33,7 +33,7 @@
 					<p><label style="width:90px; margin-bottom:0px;">Tour Date:</label> {{Content::dateformat($project->project_start)}} - {{Content::dateformat($project->project_end)}}</p>
 				</td>
 				<td style="width:50%;">
-					<p><label style="width:106px; margin-bottom: 0px;">Agent Name:</label> {{{$project->supplier->supplier_name or ''}}}</p>
+					<!-- <p><label style="width:106px; margin-bottom: 0px;">Agent Name:</label> {{{$project->supplier->supplier_name or ''}}}</p> -->
 					<p><label style="width:106px; margin-bottom: 0px;">Reference No.:</label> {{$project->project_book_ref}}</p>
 					<p><label style="width:106px; margin-bottom: 0px;">
 					Flight No./:Arrival</label>{{{$project->flightArr->flightno or ''}}} - {{{$project->flightArr->arr_time or ''}}}, &nbsp;&nbsp;<b> 

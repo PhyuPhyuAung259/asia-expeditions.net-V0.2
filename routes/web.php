@@ -256,9 +256,11 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::get('project/invoice/{project}/{type}',"Admin\ReportController@getInvoice")->name('getInvoice');
 
 		Route::get('arrival_report',"Admin\ReportController@getClientarrival")->name('clientArrival');
+		Route::get('gross_p&l',"Admin\ReportController@getgrossprofit_loss")->name('gross_p&l');
 		Route::get('quotation',"Admin\ReportController@getQuotation")->name('getQuotation');
 
 		Route::post("arrival_report", "Admin\ReportController@searchArrival")->name("searchArrival");
+		Route::post("gross_p&l", "Admin\ReportController@searchGross")->name("searchGross");
 
 		Route::get('operation/{type}/voucher/{projectNo}/{ospBid}', 'Admin\OperationController@opsVoucher')->name('opsVoucher');
 		Route::get('operation/{type}/reservation/{projectNo}/{ospBid}', 'Admin\OperationController@opsReservation')->name('opsReservation');

@@ -59,6 +59,7 @@
                   <th width="162px">Start Date-End Date</th>
                   <th width="280px">Guide Name</th>
                   <th class="text-center">Preview</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -121,7 +122,7 @@
                       <a target="_blank" href="{{route('previewProject', ['project'=>$pro->project_number, 'type'=>'sales'])}}" title="Prview Details">
                         <label style="cursor: pointer;" class="icon-list ic_del_drop"></label>
                       </a>     
-                    </td>                     
+                    </td>               
                   </tr>
                 @endforeach
               </tbody>

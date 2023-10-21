@@ -117,6 +117,17 @@ class ReportController extends Controller
         
         return view('admin.report.arrival_report', compact('projects'));
     }
+
+    public function getgrossprofit_loss(){       
+        $Enddate = date("Y-m-d", strtotime("+1 month"));
+        $d =  Content::diffDate(date('Y-m-d'), $Enddate); 
+        $nextMonth = date('Y-m-').$d;
+        $currentDate = date('Y-m-d');
+        $projects = Project::Where(['project_status'=> 1])->whereBetween('project_start', [$currentDate, $nextMonth])->whereNotIn('project_fileno', [""," Null"])->orderBy('project_start', 'DESC')->get();
+        
+        return view('admin.report.gross_p&l', compact('projects'));
+    }
+ 
  
     public function getQuotation(){
         $Enddate = date("Y-m-d", strtotime("+1 month"));
@@ -225,6 +236,51 @@ class ReportController extends Controller
         }
         //dd($agentid,$projects);
         return view('admin.report.arrival_report', compact('projects','projectNo', 'agentid', 'startDate', 'endDate', 'sort_main', 'location'));
+    }
+    public function searchGross(Request $req){
+        $Enddate    = date("Y-m-d", strtotime("+1 month"));
+        $d          =  Content::diffDate(date('Y-m-d'), $Enddate); 
+        $nextMonth  = date('Y-m-').$d;
+        $currentDate= date('Y-m-d');
+        $startDate  = $req->start_date;
+        $endDate    = $req->end_date;
+        $projectNo  = $req->textSearch;
+        $agentid    = $req->agent;
+        $location   = isset($req->sort_location) ? $req->sort_location : 'AE';
+        $sort_main  = $req->sort_main;
+        if (!empty($projectNo)) {
+            $projects = Project::Where(['active'=>1,'project_status'=>1,'project_fileno'=> $projectNo])
+                ->orWhere('project_number',$projectNo)
+                ->orWhere('project_client', 'like', $projectNo. '%')
+                ->whereNotIn('project_fileno', ['','Null', 0])
+                ->orderBy('project_start', 'DESC')->get();
+        
+        }elseif (!empty($startDate) && !empty($endDate) && $agentid!=0) {
+            $projects = Project::Where(['active'=>1,'project_status'=>1, 'project_prefix'=> $location, 'supplier_id'=> $agentid])
+                ->whereNotIn('project_fileno', ['Null','',0])
+                ->whereBetween('project_start', [$startDate, $endDate])
+                ->orderBy('project_start', 'DESC')->get();
+        }elseif (!empty($startDate) && !empty($endDate) && $agentid==0) {
+             
+            $projects = Project::Where(['active'=>1,'project_status'=>1, 'project_prefix'=> $location])
+                ->whereNotIn('project_fileno', ['Null','',0])
+                ->whereBetween('project_start', [$startDate, $endDate])
+                ->orderBy('project_start', 'DESC')->get();
+        }
+        elseif (empty($startDate) && empty($endDate) && $agentid==0) {
+             
+            $projects = Project::Where(['active'=>1,'project_status'=>1, 'project_prefix'=> $location])
+                ->whereNotIn('project_fileno', ['Null','',0])
+                ->orderBy('project_start', 'DESC')->get();
+        }
+        else{           
+            $projects = Project::Where(['active'=>1,'project_status'=>1,'project_fileno'=> $projectNo, 'project_prefix'=> $location])
+                ->whereBetween('project_start', [$currentDate, $nextMonth])
+                ->whereNotIn('project_fileno', ['','Null', 0])
+                ->orderBy('project_start', 'DESC')->get();
+        }
+        //dd($agentid,$projects);
+        return view('admin.report.gross_p&l', compact('projects','projectNo', 'agentid', 'startDate', 'endDate', 'sort_main', 'location'));
     }
 
     public function reportSupplierBooked(Request $req) {

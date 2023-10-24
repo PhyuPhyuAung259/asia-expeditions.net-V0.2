@@ -1,4 +1,7 @@
-<?php  use App\component\Content;?>
+<?php  use App\component\Content;
+
+?>
+@if($sub_type=="Trans with Price")
 <table class="table" id="roomrate">
 	<thead style="background-color: rgb(245, 245, 245); font-weight: 600;">
 		<tr>
@@ -20,6 +23,27 @@
 		@endforeach
 	</tbody>
 </table>
+@elseif($sub_type=="Trans without Price")
+<table class="table" id="roomrate">
+	<thead style="background-color: rgb(245, 245, 245); font-weight: 600;">
+		<tr>
+			<td style="padding: 8px;">Name</td>
+			<td style="padding: 8px;">Transport Service</td>
+			
+		</tr>
+	</thead>
+	<tbody>
+		<?php $data = App\TransportMenu::where('supplier_id', $supplier->id)->get();?>
+		@foreach($data as $key => $tran)
+			<tr style="border-bottom: 3px solid #black;">
+				<td style="padding: 8px;">{{$tran->name}}</td>
+				<td style="padding: 8px;"><?php $transervice = App\TransportService::where('id', $tran->transport_id)->first();?> {{{$transervice->title or ''}}} </td>
+				
+			</tr>
+		@endforeach
+	</tbody>
+</table>
+@endif
 <table class="table" id="roomrate">
 	<thead style="background-color: rgb(245, 245, 245); font-weight: 600;">
 		<tr>

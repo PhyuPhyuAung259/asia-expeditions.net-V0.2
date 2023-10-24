@@ -42,6 +42,7 @@ class SupplierController extends Controller
     }
      // supplier report
     public function getSupplierReport(Request $req, $supId, $type){
+        $sub_type=$req->sub_type;
         
         $currentAction = $req->path();
         $supplier = Supplier::find($supId);
@@ -55,7 +56,7 @@ class SupplierController extends Controller
         }else{
             $priceType = "";
             // return $supplier;
-            return view('admin.supplier.supplierReport', compact('supplier', 'type' ,'currentAction', 'priceType'));
+            return view('admin.supplier.supplierReport', compact('supplier', 'type' ,'currentAction', 'priceType','sub_type' ));
         }
     }
 

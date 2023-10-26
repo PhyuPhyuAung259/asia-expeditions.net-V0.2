@@ -194,10 +194,10 @@
                         </a> 
                           @endif
                         @endif 
-                        <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> isset($sup->business->slug)? $sup->business->slug :'','sub_type'=>'Trans with Price'])}}" title="View {{{$business->name or 'supplier'}}} Report">
+                        <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> isset($sup->business->slug)? $sup->business->slug :'','sub_type'=>'with Price'])}}" title="View {{{$business->name or 'supplier'}}} Report">
                           <label class="icon-list ic_report"></label>
                         </a> 
-                        <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> isset($sup->business->slug)? $sup->business->slug :'','sub_type'=>'Trans without Price'])}}" title="View {{{$business->name or 'supplier'}}} Service Report">
+                        <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> isset($sup->business->slug)? $sup->business->slug :'','sub_type'=>'without Price'])}}" title="View {{{$business->name or 'supplier'}}} Service Report">
                           <label class="icon-list ic_report"></label>
                         </a>            
                         <a href="javascript:void(0)" class="RemoveHotelRate" data-type="supplier" data-id="{{$sup->id}}" title="Remove this Flight Number ?">

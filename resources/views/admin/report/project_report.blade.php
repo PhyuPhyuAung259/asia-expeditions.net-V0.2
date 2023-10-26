@@ -196,7 +196,9 @@ $user = App\User::find($project->check_by);
 						<td>{{$tour->tour_name}}</td>
 						@if($type == "details")
 							<td class="text-center">{{$tour->book_pax}}</td>
-							<td class="text-right">{{Content::money($tour->book_price)}}</td>
+							<?php $tour_price = \App\TourPrice::where(['tour_id'=>$tour->tour_id,'pax_no'=>$tour->book_pax])->first();
+							?>
+							<td class="text-right">{{Content::money($tour_price->sprice)}}</td>
 							<td class="text-right">{{$tour->book_amount}}</td>
 						@endif
 

@@ -96,8 +96,8 @@
 							<ul id="dep_time" class="list-unstyled" style="padding-top: 5px;">
 							  	@foreach($flschedule->get() as $key => $cl)                            
 								    <li class="ulList" data-id="{{$cl->id}}" data-fieldname="dep_time"
-								    	data-name="{{$cl->flightno .'-'. $cl->arr_time}}">
-								    	<span>{{$cl->flightno}} - A:{{$cl->arr_time}}</span>
+								    	data-name="{{$cl->flightno .'-'. $cl->dep_time}}">
+								    	<span>{{$cl->flightno}} - D:{{$cl->dep_time}}</span>
 								    </li>								    
 							    @endforeach     
 							</ul>

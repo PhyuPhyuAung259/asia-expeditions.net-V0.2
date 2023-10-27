@@ -1,7 +1,7 @@
 <?php  use App\component\Content;
 
 ?>
-@if($sub_type=="Trans with Price")
+@if($sub_type=="with Price")
 <table class="table" id="roomrate">
 	<thead style="background-color: rgb(245, 245, 245); font-weight: 600;">
 		<tr>
@@ -23,7 +23,7 @@
 		@endforeach
 	</tbody>
 </table>
-@elseif($sub_type=="Trans without Price")
+@elseif($sub_type=="without Price")
 <table class="table" id="roomrate">
 	<thead style="background-color: rgb(245, 245, 245); font-weight: 600;">
 		<tr>

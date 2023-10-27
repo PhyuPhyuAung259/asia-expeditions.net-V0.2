@@ -48,10 +48,11 @@
             $guide_service=DB::table('guide_service')->where('id', $guide->guide_service_id)->first();
           
         ?>
-        ?>
-			<tr style="border-bottom: 3px solid #black;">
-				<td style="padding: 8px;"> {{$guide_service->title}} </td>
-				<td style="padding: 8px;">{{$guide->name}} <span class="pcolor">{{Content::currency()}}</span></td>
+       
+		<tr style="border-bottom: 3px solid #black;">
+				<td style="padding: 8px;"> {{{$guide_service->title or ''}}} </td>
+                <td style="padding: 8px;"> {{{$guide->name or ''}}} </td>
+				 
 				
 			</tr>
 		@endforeach

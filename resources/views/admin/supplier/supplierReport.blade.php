@@ -15,8 +15,11 @@
 	}
 	elseif ($type == 'transport') {
 		$title = 'Transport';
-	}elseif ($type == 'tour-guide'){
+	}
+	elseif ($type == 'tour-guide') {
 		$title = 'Guide';
+	}else{
+		$title = '';
 	} 
 
 	if ($priceType == "contract") {
@@ -101,12 +104,12 @@
 			@include('admin.report.restaurant_report')
 		@elseif($type == "transport")
 			@include('admin.report.transport_report')
-		@elseif($type == "RestaurantInfo")
-			@include('admin.report.restaurant_information')
 		@elseif($type == "tour-guide")
 			@include('admin.report.guide_report')
+		@elseif($type == "RestaurantInfo")
+			@include('admin.report.restaurant_information')
 		@endif
-
+		
 
 
   	</div>

@@ -555,7 +555,7 @@
 									  <span class="checkmark"></span>
 									</label>
 								</td>								
-				                <td colspan="2">{{{$rest->supplier->supplier_name or ''}}} {{$rest->id}}</td>         
+				                <td colspan="2">{{{$rest->supplier->supplier_name or ''}}} </td>         
 				                <td colspan="3">{{{$rest->rest_menu->title or ''}}}</td>
 				                <td>{{$rest->book_pax}}</td>
 				                <td class="text-right">{{Content::money($rest->price)}}</td>

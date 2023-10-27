@@ -190,7 +190,7 @@
                           @endif
                           @if($supplierName== "restaurants")
                           <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> 'RestaurantInfo'])}}" title="View {{{$business->name or 'supplier'}}} information Report">
-                          <label class="icon-list ic_report"></label>
+                          <label class="icon-list ic_report"></label> 
                         </a> 
                           @endif
                         @endif 

@@ -123,8 +123,9 @@
 					<td>{{Content::dateformat($gb->book_checkin)}}</td>
 					<td>{{{$gb->golf->supplier_name or ''}}}</td>
 					<td colspan="6">{{{$gb->golf_service->name or ''}}}</td>
-					<td class="text-center">{{$gb->book_pax}}</td>
+					
 					<td class="text-center">{{$gb->book_golf_time}}</td>
+					<td class="text-center">{{$gb->book_pax}}</td>
 					<td class="text-center"><b>{{$gb->book_confirm !=0? 'OK':'RQ'}}</b></td>
 				</tr>
 				@endforeach

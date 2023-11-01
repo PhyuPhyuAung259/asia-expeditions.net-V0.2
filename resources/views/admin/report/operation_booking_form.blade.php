@@ -6,6 +6,8 @@
 	}else{
 		$title = $title;
 	}
+	$user= App\User::find($project->UserID);
+	dd($user);
 ?>
 @extends('layout.backend')
 @section('title', $title)
@@ -171,7 +173,7 @@
 					@endforeach
 				@endif
 				<tr>
-					<td colspan="2" style="border:none;">Request By:............................</td>
+					<td colspan="2" style="border:none;">Request By:{{{ $user->fullname}}}</td>
 					<td colspan="" style="border:none;">Reviewed By:............................</td>
 					<td colspan="" style="border:none;">Confirmed By:............................</td>
 				</tr>
@@ -191,11 +193,16 @@
 					<th>Date</th>
 					<th>Description</th>
 					<th>Service Name</th>
+					 
+					@if($golfb->get()->count() > 0)
+					<th>Tee Time</th>
+					<th class="text-center">No of Pax</th>
+					@else 
 					<th class="text-center">Qty</th>
-					<th class="text-center">Price {{Content::currency()}}</th>
+					@endif
+					<th class="text-center">Price</th>
 					<th class="text-center">Amount</th>
-					<th class="text-center">Price {{Content::currency(1)}}</th>
-					<th class="text-center">Amount</th>
+					
 				</tr>
 				<?php 
 					$n = 0;
@@ -223,10 +230,9 @@
 						<td>{{{$hb->hotel->supplier_name or ''}}}</td>
 						<td>{{{$hb->room->name or ''}}}</td>
 						<td class="text-center">{{$hb->book_day}}</td>
-						<td class="text-right">{{$hprice}}</td>
-						<td class="text-right">{{$hb->net_amount}}</td>
-						<td class="text-right"></td>
-						<td class="text-right"></td>
+						<td class="text-right">{{$hprice}}  {{Content::currency()}}</td>
+						<td class="text-right">{{$hb->net_amount or $hb->net-kamount}}</td>
+					
 					</tr>
 					@endforeach
 				@endif
@@ -242,10 +248,14 @@
 						<td>{{{$fb->supplier->supplier_name or ''}}}</td>
 						<td>{{{$fb->fagent->supplier_name or ''}}}</td>				
 						<td class="text-center">{{$fb->book_pax}}</td>
-						<td class="text-right">{{Content::money($fb->book_price)}}</td>
-						<td class="text-right">{{Content::money($fb->book_namount)}}</td>
-						<td class="text-right">{{Content::money($fb->book_nkprice)}}</td>
-						<td class="text-right">{{Content::money($fb->book_kamount)}}</td>
+						<td class="text-right">
+							@if(!empty($fb->book_price))
+								{{$fb->book_price}}  {{Content::currency()}}
+							@else
+								{{$fb->book_kprice}}  {{Content::currency(1)}}
+							@endif
+						<td class="text-right">{{Content::money($fb->book_namount or $fb->book_nkamount)}}</td>
+						
 					</tr>
 					@endforeach
 				@endif
@@ -259,10 +269,14 @@
 						<td>{{{$gb->golf->supplier_name or ''}}}</td>
 						<td >{{{$gb->golf_service->name or ''}}}</td>
 						<td class="text-center">{{$gb->book_pax}}</td>
-						<td class="text-right">{{Content::money($gb->book_nprice)}}</td>
+						<td class="text-center">{{$gb->book_golf_time}}</td>
+						<td class="text-right">@if(!empty($gb->book_price))
+								{{$gb->book_price}}  {{Content::currency()}}
+							@else
+								{{$gb->book_kprice}}  {{Content::currency(1)}}
+							@endif</td>
 						<td class="text-right">{{Content::money($gb->book_namount)}}</td>
-						<td class="text-right">{{Content::money($gb->book_nkprice)}}</td>
-						<td class="text-right">{{Content::money($gb->book_nkamount)}}</td>
+						 
 					</tr>
 					@endforeach
 				@endif
@@ -291,8 +305,7 @@
 						<td class="text-center">{{$cb->book_day}}</td>
 						<td class="text-right">{{Content::money($hprice)}}</td>
 						<td class="text-right">{{Content::money($cb->net_amount)}}</td>
-						<td></td>
-						<td></td>
+						
 					</tr>
 					@endforeach
 				@endif
@@ -313,10 +326,20 @@
 						<td>{{{$service->title or ''}}}</td>
 				        <td>{{{$vehicle->name or ''}}}</td>
 						<td class="text-center"></td>
-						<td class="text-right">{{Content::money($price)}}</td>
-						<td class="text-right">{{Content::money($price)}}</td>
-						<td class="text-right">{{Content::money($kprice)}}</td>
-						<td class="text-right">{{Content::money($kprice)}}</td>
+						<td class="text-right">
+						@if(!empty($price))
+								{{$price}}  {{Content::currency()}}
+							@else
+								{{$kprice}}  {{Content::currency(1)}}
+							@endif	
+						</td>
+						<td class="text-right">@if(!empty($price))
+								{{$price}}  {{Content::currency()}}
+							@else
+								{{$kprice}}  {{Content::currency(1)}}
+							@endif	
+						</td>
+						
 					</tr>
 					@endforeach
 				@endif

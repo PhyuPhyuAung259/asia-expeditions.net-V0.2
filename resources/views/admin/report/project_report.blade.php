@@ -92,10 +92,10 @@ $user = App\User::find($project->check_by);
 												@endif
 												@if(!empty($prow->book_tour_details) || !empty($prow->tour->tour_desc))
 													@if(isset($prow->book_tour_details))
-			<a class="hidden-print btn btn-default btn-xs btnEditTour" data-toggle="modal" data-target="#myModal" href="#" data-id="{{$prow->id}}" data-title="{{{$prow->tour->tour_name or ''}}}" data-desc="{{ $prow->book_tour_details }}" >Edit</a>
+														<a class="hidden-print btn btn-default btn-xs btnEditTour" data-toggle="modal" data-target="#myModal" href="#" data-id="{{$prow->id}}" data-title="{{{$prow->tour->tour_name or ''}}}" data-desc="{{ $prow->book_tour_details }}" >Edit</a>
 													@else
 													
-			<a class="hidden-print btn btn-default btn-xs btnEditTour" data-toggle="modal" data-target="#myModal" href="#" data-id="{{$prow->id}}" data-title="{{{$prow->tour->tour_name or ''}}}" data-desc="{{ $prow->tour->tour_desc }}">Edit</a>
+														<a class="hidden-print btn btn-default btn-xs btnEditTour" data-toggle="modal" data-target="#myModal" href="#" data-id="{{$prow->id}}" data-title="{{{$prow->tour->tour_name or ''}}}" data-desc="{{ $prow->tour->tour_desc }}">Edit</a>
 													@endif
 												@endif
 												<?php										

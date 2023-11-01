@@ -33,6 +33,7 @@
             <table class="datatable table table-hover table-striped">
               <thead>
                 <tr>
+                  <th>Id</th>
                   <th>Title</th>
                   <th class="text-center">Supplier</th>
                   <th>Province</th>
@@ -42,6 +43,7 @@
               <tbody>
                 @foreach($tranService as $tran)
                 <tr>
+                  <td>{{$tran->id}}</td>
                   <td>{{$tran->title}}</td>
                   <td width="120px" class="text-center">
                     <?php $title = ""; ?>

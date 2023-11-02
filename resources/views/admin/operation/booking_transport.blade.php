@@ -14,7 +14,9 @@
 		    <div class="row">
 		      	@include('admin.include.message')
 		        <section class="col-lg-12 connectedSortable">
-		          <h3 class="border" style="text-transform:capitalize;">Booking Transportation for Project No. <b>{{$project->project_number}} </b> <span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Transport</a></h3>
+		          <h3 class="border" style="text-transform:capitalize;">Booking Transportation for Project No. <b>{{$project->project_number}} </b> 
+				  <!-- <span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Transport</a> -->
+				</h3>
 		          	<div class="table-responsive">
 		          		<table class="datatable table table-hover table-striped">
 				            <thead>
@@ -82,6 +84,9 @@
 						                    </label> -->
 											<a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id])}}" title="Edit Transport">
                                 			<label class="icon-list ic_edit"></label>
+                             			</a>&nbsp;
+										 <a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id, 'sub_type'=>'additional transport'])}}" title="Edit Transport">
+                                			<label class="icon-list ic_book_add"></label>
                              			</a>&nbsp;
 						                @else
 						                	<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>

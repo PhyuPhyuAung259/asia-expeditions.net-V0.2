@@ -7,7 +7,7 @@
 		$title = $title;
 	}
 	$user= App\User::find($project->UserID);
-	dd($user);
+	 
 ?>
 @extends('layout.backend')
 @section('title', $title)

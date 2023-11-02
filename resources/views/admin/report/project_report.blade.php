@@ -174,7 +174,7 @@ $user = App\User::find($project->check_by);
 		</table>
 	@if($booking->count() > 0)
 		<h4><strong style="text-transform: capitalize;">Program Summary</strong></h4>
-		<?php $tourBook = \App\Booking::tourBook($book->book_project); ?>
+		<?php $tourBook = \App\Booking::tourDetailsBook($book->book_project); ?>
 		@if(!empty($book->book_project))		
 			<div><strong style="text-transform: uppercase;">EXCURSION OVERVIEW</strong></div>
 			<table class="table" id="roomrate">
@@ -189,19 +189,23 @@ $user = App\User::find($project->check_by);
 					@endif
 				</tr>			
 				@foreach($tourBook->get() as $tour)
-					<?php $pro = \App\Province::find($tour->province_id); ?>
+					<?php 
+					
+					$pro = \App\Province::find($tour->province_id); ?>
 					<tr>
+					
 						<td>{{Content::dateformat($tour->book_checkin)}}</td>
 						<td>{{{ $pro->province_name or ''}}}</td>
 						<td>{{$tour->tour_name}}</td>
+					
 						@if($type == "details")
 							<td class="text-center">{{$tour->book_pax}}</td>
 							<?php $tour_price = \App\TourPrice::where(['tour_id'=>$tour->tour_id,'pax_no'=>$tour->book_pax])->first();
 							?>
-							<td class="text-right">{{Content::money($tour_price->sprice)}}</td>
+							<td class="text-right">{{{$tour_price->sprice or ""}}}</td>
 							<td class="text-right">{{$tour->book_amount}}</td>
 						@endif
-
+					
 						@if($type == "details-net")
 							<td class="text-center">{{$tour->book_pax}}</td>
 							<td class="text-right">{{Content::money($tour->book_nprice)}}</td>

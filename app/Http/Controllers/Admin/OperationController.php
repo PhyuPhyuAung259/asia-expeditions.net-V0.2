@@ -73,9 +73,11 @@ class OperationController extends Controller
     }
 
     public function assignTransport(Request $req){
+        
     	$getTran = BookTransport::where(['project_number'=> $req->project_number, 'book_id'=> $req->book_id])->first();
         $btransport=Booking::where(['id'=>$req->book_id,'book_project'=>$req->project_number])->first();
         $project=Project::where(['project_number'=>$req->project_number])->first();
+      //  dd($getTran,$btransport);
     	if ( $getTran) { 
     		$btran = BookTransport::find($getTran->id);
     		$btran->book_id        = $req->book_id;
@@ -129,7 +131,7 @@ class OperationController extends Controller
             $booking->book_client=$project->project_client;
             $booking->country_id=$req->country;
             $booking->book_checkin=$req->start_date;
-            $booking->tour_id=$req->tran_name;
+            $booking->tour_id=$req->tour_id;
             $booking->book_price=$req->price;
             $booking->book_kprice=$req->kprice;
             $booking->save();
@@ -150,7 +152,7 @@ class OperationController extends Controller
             $btran->flightno       = $req->flightno;
             $btran->remark         = $req->remark;
             $btran->start_date     = $req->start_date;
-            
+          //  dd($btran);
 	    	$btran->save();
 
 	    	$message = "Transport Successfully Added";

@@ -85,7 +85,7 @@
 											<a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id])}}" title="Edit Transport">
                                 			<label class="icon-list ic_edit"></label>
                              			</a>&nbsp;
-										 <a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id, 'sub_type'=>'additional transport'])}}" title="Edit Transport">
+										 <a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id, 'sub_type'=>'additional transport'])}}" title="Additional Transport">
                                 			<label class="icon-list ic_book_add"></label>
                              			</a>&nbsp;
 						                @else
@@ -93,7 +93,7 @@
 					                   	@endif
 									
 					                    @if(isset($btran->id))
-										<a target="_blank" href="{{route('getBookingVoucher', [$tran->book_project, $tran->id])}}" title="View Restaurant Booking">
+										<a target="_blank" href="{{route('getBookingVoucher', [$tran->book_project, $tran->id])}}" title="View Booking">
 							               	<label class="fa fa-list-alt btn btn-xs" style="font-size:17px; color: #527686;"></label>
 							            </a>   
 							            @endif

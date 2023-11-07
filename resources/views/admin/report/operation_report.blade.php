@@ -429,6 +429,9 @@
 									<a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id])}}" title="Edit Transport">
                                 		<label class="icon-list ic_edit"></label>
                              		</a>&nbsp;
+									 <a target="_blank" href="{{route('editoperation', ['type'=>'Transport', 'id'=>$tran->id, 'project_no'=>$tran->book_project , 'tour_id'=>$tran->tour_id, 'sub_type'=>'additional transport'])}}" title="Additional Transport">
+                                			<label class="icon-list ic_book_add"></label>
+                             			</a>&nbsp;
 									 <a target="_blank" href="{{route('getBookingVoucher', [$tran->book_project, $tran->id])}}" title="View Transport Booking">
 							               	<label class="fa fa-list-alt btn btn-xs" style="font-size:17px; color: #527686;"></label>
 							            </a>  
@@ -452,7 +455,7 @@
 					<!-- End Transport -->
 					<!-- Guide Start-->
 						<?php 
-							$guideBook = \App\Booking::tourBook($project->project_number); 
+							$guideBook = \App\Booking::tourDetailsBook($project->project_number); 
 							$guidTotal = 0;
 							$guidkTotal = 0;
 						?>
@@ -637,7 +640,7 @@
 
 					<!-- MISC Start-->
 					<?php 
-					$MiscBook = \App\Booking::tourBook($project->project_number); 
+					$MiscBook = \App\Booking::tourDetailsBook($project->project_number); 
 						$miscTotal = 0;
 						$misckTotal = 0;
 						?>

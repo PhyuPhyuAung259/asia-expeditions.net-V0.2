@@ -24,7 +24,7 @@ class OperationController extends Controller
             $message = $projectNo;
             return view('errors.error', compact('message', 'opstype'));
         }
-    	if ($opstype == "transport" || $opstype == "guide" || $opstype == "misc"){
+    	if ($opstype == "transport"){
     		 $booking = Booking::tourBook($projectNo)->get();   
     	}elseif ($opstype == 'restaurant') {            
     		$booking = \App\BookRestaurant::where('project_number', $projectNo)->orderBy('start_date', 'ASC')->get();
@@ -33,7 +33,9 @@ class OperationController extends Controller
     		$booking = \App\BookEntrance::where('project_number', $projectNo)->orderBy('start_date', 'ASC')->get();
     	}elseif ($opstype == "golf") {
             $booking = Booking::golfBook($projectNo)->get();
-        }
+        }elseif ($opstype == "guide" || $opstype == "misc"){
+            $booking = Booking::tourDetailsBook($projectNo)->get();   
+       }
         //dd($booking);
     	return view('admin.operation.booking_'.$opstype, compact("booking","project", "opstype"));
     }

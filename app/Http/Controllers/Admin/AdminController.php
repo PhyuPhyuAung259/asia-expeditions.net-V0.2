@@ -45,7 +45,7 @@ class AdminController extends Controller
     }
     public function getHotels(Request $request, $country)
     {
-        $hotels = Supplier::where(['country_id'=>$country,'business_id'=>1] )->get();
+        $hotels = Supplier::where(['country_id'=>$country,'business_id'=>1] )->orderBy('supplier_name', 'asc')->get();
         
         return response()->json($hotels);
     }

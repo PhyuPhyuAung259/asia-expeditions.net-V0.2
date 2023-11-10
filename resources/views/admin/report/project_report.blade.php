@@ -73,7 +73,7 @@ $user = App\User::find($project->check_by);
 						<td style="vertical-align: top;">					
 						@if(!empty($book->book_checkin) && !empty($book->book_project))
 							<?php 
-								$getBook = \App\Booking::where(['book_checkin'=>$book->book_checkin, 'book_project'=>$book->book_project, 'book_status'=> 1])->orderBy('hotel_id','ASC')->orderBy("book_checkin", "DESC")->get();
+								$getBook = \App\Booking::where(['book_checkin'=>$book->book_checkin, 'book_project'=>$book->book_project, 'book_status'=> 1 ])->whereNotIn('book_pax', ["", "Null",0])->orderBy('hotel_id','ASC')->orderBy("book_checkin", "DESC")->get();
 							?>
 							@foreach($getBook as $prow)
 								<?php 

@@ -78,6 +78,7 @@ class ReportController extends Controller
             ->groupBy('book_checkin')
             ->orderBy('book_checkin', 'ASC')
             ->get();
+            
         $servicedata = [];
         if ($project->service) {
             foreach ($project->service as $key => $sv) {

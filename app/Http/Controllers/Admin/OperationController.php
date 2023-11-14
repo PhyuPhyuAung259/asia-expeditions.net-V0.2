@@ -452,6 +452,9 @@ class OperationController extends Controller
 
         }elseif ($title == "Guide Fees") {
             return view('admin.report.guide_fees',compact('project', 'guideb', 'transportb', 'hotelb', 'cruiseb','golfb', 'flightb', 'restaurantb','entranb', 'miscb','title', 'remark'));
+        }elseif ($title == "Account Report") {
+            return view('admin.report.account_report',compact('project', 'hotelb', 'cruiseb','golfb', 'flightb', 'title', 'remark', 'transportb', 'guideb', 'restaurantb','entranb', 'miscb'));
+
         }else{
             return view('admin.report.operation_booking_form',compact('project', 'hotelb', 'cruiseb','golfb', 'flightb', 'title', 'remark', 'transportb', 'guideb', 'restaurantb','entranb', 'miscb'));
         }

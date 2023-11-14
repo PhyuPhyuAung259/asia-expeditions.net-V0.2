@@ -202,7 +202,6 @@
 					@endif
 					<th class="text-center">Price</th>
 					<th class="text-center">Amount</th>
-					
 				</tr>
 				<?php 
 					$n = 0;
@@ -363,8 +362,8 @@
 						<td></td>
 						<td class="text-right">{{Content::money($price)}}</td>
 						<td class="text-right">{{Content::money($price)}}</td>
-						<td class="text-right">{{Content::money($kprice)}}</td>
-						<td class="text-right">{{Content::money($kprice)}}</td>
+						<!-- <td class="text-right">{{Content::money($kprice)}}</td>
+						<td class="text-right">{{Content::money($kprice)}}</td> -->
 					</tr>
 					@endforeach
 				@endif
@@ -380,8 +379,8 @@
 					    <td class="text-center">{{$rb->book_pax}}</td>
 						<td class="text-right">{{Content::money($rb->price)}}</td>
 		                <td class="text-right">{{Content::money($rb->amount)}}</td>
-		                <td class="text-right">{{Content::money($rb->kprice)}}</td>
-	                  	<td class="text-right">{{Content::money($rb->kamount)}}</td>
+		                <!-- <td class="text-right">{{Content::money($rb->kprice)}}</td>
+	                  	<td class="text-right">{{Content::money($rb->kamount)}}</td> -->
 					</tr>
 					@endforeach
 				@endif
@@ -397,8 +396,8 @@
 					    <td class="text-center">{{$rb->book_pax}}</td>
 		                <td class="text-right">{{Content::money($rb->price)}}</td>
 		                <td class="text-right">{{Content::money($rb->amount)}}</td>
-		                <td class="text-right">{{Content::money($rb->kprice)}}</td>
-	                  	<td class="text-right">{{Content::money($rb->kamount)}}</td>
+		                <!-- <td class="text-right">{{Content::money($rb->kprice)}}</td>
+	                  	<td class="text-right">{{Content::money($rb->kamount)}}</td> -->
 					</tr>
 					@endforeach
 				@endif
@@ -416,14 +415,14 @@
 					    <td class="text-center">{{$misc->book_pax}}</td>
 		                <td class="text-right">{{Content::money($misc->price)}}</td>
 		                <td class="text-right">{{Content::money($misc->amount)}}</td>
-		                <td class="text-right">{{Content::money($misc->kprice)}}</td>
-	                  	<td class="text-right">{{Content::money($misc->kamount)}}</td>
+		                <!-- <td class="text-right">{{Content::money($misc->kprice)}}</td>
+	                  	<td class="text-right">{{Content::money($misc->kamount)}}</td> -->
 					</tr>
 					@endforeach
 				@endif
 				<tr>
 					<td colspan="5" class="text-right" style="border-bottom: none; border-bottom: none;" ></td>
-					<td colspan="2" class="text-right" style="border-bottom: none; border-bottom: none;">
+					<td colspan="4" class="text-right" style="border-bottom: none; border-bottom: none;">
 						<?php 
 							$grandtotal = $hotelb->sum('net_amount') + $flightb->sum('book_namount') + $golfb->sum('book_namount') + 
 									$cruiseb->sum('net_amount') + $transportb->sum('price') + $guideb->sum('price') + 
@@ -432,7 +431,7 @@
 							?>
 										<h4><b>Total {{Content::currency()}}: {{Content::money($grandtotal)}}</b></h4>
 									</td>
-									<td colspan="2" class="text-right" style="border-bottom: none; border-bottom: none;">
+									<!-- <td colspan="2" class="text-right" style="border-bottom: none; border-bottom: none;">
 						<?php 
 						$ktotal = $flightb->sum('book_nkamount') + $transportb->sum('kprice') + 
 									$golfb->sum('book_nkamount') + $guideb->sum('kamount') + 
@@ -440,7 +439,7 @@
 									$miscb->sum('kamount'); 
 						?>
 						<h4><b>Total {{Content::currency(1)}}: {{Content::money($ktotal)}}</b></h4>
-					</td>
+					</td> -->
 				</tr>
 				<tr>
 					<td colspan="3" style="border:none;">Request By:............................</td>

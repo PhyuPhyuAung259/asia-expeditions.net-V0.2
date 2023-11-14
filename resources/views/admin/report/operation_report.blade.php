@@ -38,6 +38,7 @@
 						<input type="submit" name="btnstatus" title="Booking Records" value="Booking Records" class="btn btn-primary btn-xs">&nbsp;
 						<input type="submit" name="btnstatus" title="Cash Advance" value="Cash Advance" class="btn btn-primary btn-xs">&nbsp;
 						<input type="submit" name="btnstatus" title="Booking Form" value="Booking Form" class="btn btn-primary btn-xs">&nbsp;
+						<input type="submit" name="btnstatus" title="Account Report" value="Account Report" class="btn btn-primary btn-xs">&nbsp;
 						<input type="submit" name="btnstatus" title="Booking Form Without Price" value="B Form WO/P" class="btn btn-primary btn-xs">&nbsp;
 						<input type="submit" name="btnstatus" title="Booking Status" value="Booking Status" class="btn btn-primary btn-xs">&nbsp;
 						<input type="submit" name="btnstatus" title="Guide Fees" value="Guide Fees" class="btn btn-primary btn-xs">&nbsp;

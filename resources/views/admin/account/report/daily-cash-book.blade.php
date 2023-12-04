@@ -152,7 +152,10 @@
               <td class="text-right" style="color:{{$getBalanceKyat <= 0 ? 'red' : '#72afd2'}}">{{ number_format($getBalanceKyat, 2) }}</td>
               <td><span {{ $supplier['id'] == $tsup['id'] ? $highlight : ''}}>{{ $tsup['supplier_name'] }}</span></td>
               @if($cashBookedproject->count() > 0)
-              <td class="text-right"> {{ $project['project_prefix'] ."-".$project['project_fileno'] }} </td>
+              <td class="text-right">
+              <!-- {{ $project['project_prefix' ] ."-".$project['project_fileno'] }}  -->
+              {{ ($project['project_prefix'] ?? '') . '-' . ($project['project_fileno'] ?? '') }}
+              </td>
               @endif
               <td class="text-left">
                 @if(isset($project->project_client))

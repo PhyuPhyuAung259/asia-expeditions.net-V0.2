@@ -46,7 +46,6 @@
                   $sup = \App\Supplier::find($rate->supplier_id);
                   $room= \App\Room::find($rate->room_id);
                   $user = \App\User::find($rate->user_id);
-                  //dd($user);
 
                 ?>
                 <tr class="text-right">                     

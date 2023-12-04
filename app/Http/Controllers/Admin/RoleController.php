@@ -27,7 +27,7 @@ class RoleController extends Controller
                 $depart_id[] = $dep->pivot->department_id;
             }
         }
-    	return view("admin.user.role_apply", compact('roleApply', "role", "departmenu_id", "depart_id"));
+    	return view("admin.user.role_apply", compact( "role", "departmenu_id", "depart_id"));
     }
 
     public function menuApplied(Request $req){    	    

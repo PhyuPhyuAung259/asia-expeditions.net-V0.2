@@ -111,11 +111,28 @@ class Project extends Model
                 ->select("project.*", "project_user.id as id", "project_user.*", "project.user_id as UserID", "project.id as project_id")
                 ->where(['project.project_number'=>$projectNum, 'project.project_status'=>1])
                 ->orWhere('project.project_fileno', $projectNum)
+                ->whereNotIn('project.project_status',[0])
                 ->orwhere('project.project_client', 'like', $projectNum. '%')
                 ->groupBy("project.id")
                 ->orderBy('project.project_number', 'DESC');
       
         // }
+        return $projects;
+    }
+    //for disable project
+    
+    public static function getProjectSearchforDisable ($currentDate, $nextMonth, $active = 1, $option = 0 ){
+     
+          
+            $projects = \DB::table('project')
+            ->join('project_user', 'project_user.project_id','=','project.id')
+            ->join('users', 'users.id','=','project.user_id')
+            ->select("project.*", "project_user.id as id", "project_user.*", "project.user_id as UserID", "project.id as project_id")
+            ->orWhereBetween('project.project_end', [$currentDate, $nextMonth])
+            ->where(["project.project_status"=>0])
+            ->groupBy("project.id")
+            ->orderBy('project.project_start', 'ASC');
+     
         return $projects;
     }
 

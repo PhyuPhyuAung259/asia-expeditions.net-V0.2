@@ -18,6 +18,7 @@
               <div class="pull-right">
                 <select class="form-control input-sm" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
                   <option value="">--select--</option>
+                  <option {{isset($_GET['status']) && $_GET['status'] == 'Disable' ? 'selected' : ''}} value="{{route('projectList', ['project'=> 'project', 'status'=>'Disable'])}}&checkin={{{$startDate or ''}}}&checkout={{{$endDate or ''}}}">Disable</option>
                   <option {{isset($_GET['status']) && $_GET['status'] == 'Active' ? 'selected' : ''}} value="{{route('projectList', ['project'=> 'project', 'status'=>'Active'])}}&checkin={{{$startDate or ''}}}&checkout={{{$endDate or ''}}}">Active</option>
                   <option {{isset($_GET['status']) && $_GET['status'] == 'Inactive' ? 'selected' : ''}} value="{{route('projectList', ['project'=> 'project', 'status'=>'Inactive'])}}&checkin={{{$startDate or ''}}}&checkout={{{$endDate or ''}}}">Inactive</option>
                 </select>

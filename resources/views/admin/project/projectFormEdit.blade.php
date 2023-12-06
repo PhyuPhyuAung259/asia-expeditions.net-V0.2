@@ -250,7 +250,15 @@ $subactive ='booking/project';
                         <label style="font-weight: 400;">
                             <input type="radio" name="project_check" value="0" {{$project->project_check==0?'checked':'' }}>
                             <span style="position: relative;top:-2px;">Not yet check</span>
-                        </label>  
+                        </label>  <br>
+                        <label style="font-weight:400;margin-right:10px"> 
+                            <input type="radio" name="project_status" value="1" {{$project->project_status == '1' ?'checked':'' }}>
+                            <span style="position: relative;top:-2px;">Enable</span>
+                        </label>&nbsp;&nbsp;
+                        <label style="font-weight: 400;">
+                            <input type="radio" name="project_status" value="0" {{$project->project_status == '0'?'checked':'' }}>
+                            <span style="position: relative;top:-2px;">Disable</span>
+                        </label> 
                       </div>                      
                     </div>
                   </div>
@@ -286,6 +294,9 @@ $subactive ='booking/project';
                       </div>
                     </div>
                   </div>
+                    <!-- Change status -->
+                   
+                  <!-- change status -->
                   <div class="panel panel-default">
                     <div class="panel-body">
                       <div class="btn-group" style="display: block;">

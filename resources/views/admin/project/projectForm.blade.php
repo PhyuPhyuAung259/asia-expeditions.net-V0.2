@@ -237,6 +237,27 @@ $subactive ='booking/project';
                       </div>
                     </div>
                   </div>
+                  <!-- Change status -->
+                  <!-- <div class="panel panel-default">
+                    <div class="panel-body">
+                      <div class="row">
+                        <div class="col-md-6 col-xs-6">
+                          <div class="form-group">
+                            <div><label>Project Status</label>&nbsp;</div>
+                            <label style="font-weight:400;"> 
+                              <input type="radio" name="status" value="1" checked>
+                              <span style="position: relative;top:-2px;">Enable</span>
+                            </label>&nbsp;&nbsp;
+                            <label style="font-weight: 400;">
+                                <input type="radio" name="status" value="0">
+                                <span style="position: relative;top:-2px;">Disable</span>
+                            </label> 
+                          </div>
+                        </div>                     
+                      </div>
+                    </div>
+                  </div> -->
+                  <!-- change status -->
                   <div class="panel panel-default">
                     <div class="panel-body">
                       <div class="btn-group" style="display: block;">

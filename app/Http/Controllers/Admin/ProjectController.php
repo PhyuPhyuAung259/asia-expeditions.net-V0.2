@@ -37,7 +37,10 @@ class ProjectController extends Controller
             }elseif ($req->type == "quotation") {
                 $projects = Project::getProjectQuotation($startDate, $endDate)->get();  
                 return view('admin.project.projectQuotation', compact('projects', 'startDate', 'endDate'));
-            }else{
+            } if ($req->status == "Disable") { 
+                $projects = Project::getProjectSearchforDisable($startDate, $endDate)->get();
+            }
+            else{
                 $projects = Project::getProjectTags($startDate, $endDate)->get(); 
             }            
             return view('admin.project.bookedProject', compact('projects', 'startDate', 'endDate'));
@@ -160,6 +163,7 @@ class ProjectController extends Controller
                 $aPro->user_id          = \Auth::user()->id;        
                 $aPro->supplier_id      = $req->agent;
                 $aPro->active           = 1;
+                //$aPro->project_status   = $req->status;
                 $aPro->project_amount   = $req->project_amount;
                 $aPro->save();
             }
@@ -436,6 +440,7 @@ class ProjectController extends Controller
             $aPro->project_main_status   = $req->prefix;
             $aPro->project_option   = $req->option;
             $aPro->active           = isset($req->active) ? $req->active : $project->active;
+            $aPro->project_status   =  isset($req->project_status) ? $req->project_status : $project->project_status;
             $aPro->project_check    = $req->project_check;
             $aPro->project_check_date = isset($req->project_check) == 1? date('Y-m-d'): '';
             $aPro->project_pax      = $req->pax_num;

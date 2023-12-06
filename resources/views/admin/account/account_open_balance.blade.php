@@ -38,6 +38,7 @@
             <form method="POST" action="{{route('addBankTransfer')}}" id="bank_transfer_form">
               <!-- bank_transfer_form -->
               {{csrf_field()}}
+             
               <input type="hidden" name="eid" value="{{{$_GET['eid'] or ''}}}">
               <input type="hidden" name="action" value="{{{$_GET['action'] or ''}}}">
               <div class="row">

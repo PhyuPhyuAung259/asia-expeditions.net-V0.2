@@ -229,6 +229,40 @@
         searchPlaceholder: "Type here..."
       }
     });
+    $(document).ready(function(){
+    // Other scripts...
+
+    // Updated AJAX request with CSRF token
+    $("#btnComfirmTransfer").click(function(event){
+        event.preventDefault();
+
+        // Get CSRF token from meta tag
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        // Updated AJAX request
+        $.ajax({
+            url: '{{ route("addBankTransfer") }}',
+            type: 'POST',
+            data: $('#bank_transfer_form').serialize(),
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            success: function(response) {
+                // Handle success
+                console.log(response);
+            alert("Successfully Transfered")         
+              
+              },
+            error: function(xhr, status, error) {
+                // Handle error
+                console.error(error);
+            }
+        });
+    });
+
+   
+});
+
   });
 </script>
 

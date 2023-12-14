@@ -53,7 +53,7 @@ class ProjectController extends Controller
             return view('admin.project.bookedHotel', compact('projects', 'startDate', 'endDate'));
         } elseif ($project == "flight") 
         {
-            $projecbooked = Booking::getBookedProjectByDate($startDate, $endDate)->whereNotIn('flight_id', ['NULL','0'])->get();
+            $projects = Booking::getBookedProjectByDate($startDate, $endDate)->whereNotIn('flight_id', ['NULL','0'])->get();
             return view('admin.project.bookedFlight', compact('projects', 'startDate', 'endDate'));
         } elseif ($project == "cruise") 
         {

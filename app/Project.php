@@ -74,7 +74,7 @@ class Project extends Model
             ->Join('project_user', 'project_user.project_id','=','project.id')
             ->Join('users', 'users.id','=','project.user_id')
             ->select("project.*", "project_user.id as id", "project_user.*", "project.user_id as UserID", "project.id as project_id")
-            ->whereBetween('project.project_end', [$currentDate, $nextMonth])
+            ->whereBetween('project.project_start', [$currentDate, $nextMonth])
             ->where(["project.project_status"=>1, "booking.book_status"=>1,"booking.book_option"=>1])
             ->groupBy("project.id")
             ->orderBy('project.project_number', 'ASC');
@@ -86,7 +86,7 @@ class Project extends Model
                 ->join('project_user', 'project_user.project_id','=','project.id')
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*", "project_user.id as id", "project_user.*", "project.user_id as UserID", "project.id as project_id")
-                ->orWhereBetween('project.project_end', [$currentDate, $nextMonth])
+                ->orWhereBetween('project.project_start', [$currentDate, $nextMonth])
                 ->where(["project.project_status"=>1, "project.active"=>$active])
                 ->groupBy("project.id")
                 ->orderBy('project.project_start', 'ASC');
@@ -95,7 +95,7 @@ class Project extends Model
                 ->Join('project_user', 'project_user.project_id','=','project.id')
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*", "project_user.id as id", "project_user.*", "project.user_id as UserID", "project.id as project_id")
-                ->whereBetween('project.project_end', [$currentDate, $nextMonth])
+                ->whereBetween('project.project_start', [$currentDate, $nextMonth])
                 ->where(["project.project_status"=>1, "project_user.user_id"=>\Auth::user()->id, "project.active"=>$active])
                 ->groupBy("project.id")
                 ->orderBy('project.project_number', 'ASC');

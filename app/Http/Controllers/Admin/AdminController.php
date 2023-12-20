@@ -253,7 +253,7 @@ class AdminController extends Controller
         $supplier->supplier_status = 0;
         $supplier->save();
         $message = "Delete Successfully";
-      }elseif ($req->type == 'book_tour' || $req->type == 'book_hotel' || $req->type == 'book_flight' || $req->type == 'book_cruise' || $req->type == 'book_golf') {
+      }elseif ($req->type == 'book_tour' || $req->type == 'book_hotel' || $req->type == 'book_flight' || $req->type == 'book_cruise' || $req->type == 'book_golf' ) {
         Booking::find($id)->delete();
         $message = "Delete $req->type Successfully";
       }elseif ($req->type == 'book_hotelrate') {

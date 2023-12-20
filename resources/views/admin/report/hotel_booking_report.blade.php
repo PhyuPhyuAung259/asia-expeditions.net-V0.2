@@ -61,8 +61,9 @@ $total_no_of_booked_night=0;
       <tbody>
         @if(!empty($hotel))
         @foreach($hotel as $hotels)
-        <?php $hotelb= DB::table("hotelb")->where(['book_id'=>$hotels->id,'hotel_id'=>$hotels->hotel_id])->first();?>
-         @if(!empty($hotelb->project_number))
+        <?php $hotelbooked= DB::table("hotelb")->where(['book_id'=>$hotels->id,'hotel_id'=>$hotels->hotel_id])->get();?>
+        @foreach($hotelbooked as $hotelb)
+        @if(!empty($hotelb->project_number))
         <?php $client_info= DB::table("project")->where('project_number', $hotelb->project_number)->first(); ?>
             <tr>
               <td>
@@ -87,6 +88,8 @@ $total_no_of_booked_night=0;
               <?php $total_no_of_booked_night=$total_no_of_booked_night+ $hotelb->book_day ?>
             </tr>
             @endif
+        @endforeach
+          
           @endforeach
         @endif
       </tbody>

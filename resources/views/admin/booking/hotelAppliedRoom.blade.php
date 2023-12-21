@@ -168,12 +168,14 @@ $subactive ='booked/hotel';
                       <td class="text-center">{!! $bhotel->schextra != 0 ? "$status":"" !!}</td>
                       <td class="text-right">
                         <a href="#" data-id="{{$bhotel->id}}" data-remark="{{$bhotel->remark}}" class="btn btn-primary btn-xs BtnEdit" data-toggle="modal" data-target="#myModal">Add Remark</a>
-                        <a target="_blank" href="{{route('hVoucher', ['project'=>$bhotel->project_number, 'bhotelid'=> $bhotel->id, 'bookid'=> $project->id, 'type'=>'hotel-voucher'])}}" title="Hotel Voucher">
-                          <label class="icon-list ic_inclusion" style="margin: -4px 0px;"></label>
+                        <!-- <a target="_blank" href="{{route('hVoucher', ['project'=>$bhotel->project_number, 'bhotelid'=> $bhotel->id, 'bookid'=> $project->id, 'type'=>'hotel-voucher'])}}" title="Hotel Voucher"> -->
+                        <a target="_blank" href="{{route('hVoucher', ['project'=>$bhotel->project_number, 'bhotelid'=> $bhotel->id, 'bookid'=> $project->id, 'type'=>'hotel-voucher' ,'checkin'=> $bhotel->checkin, 'checkout'=> $bhotel->checkout])}}" title="Hotel Voucher">
+                        <label class="icon-list ic_inclusion" style="margin: -4px 0px;"></label>
                         </a>
                         &nbsp;
-                         <a target="_blank" href="{{route('hVoucher', ['project'=>$bhotel->project_number, 'bhotelid'=> $bhotel->id, 'bookid'=> $project->id, 'type'=> 'hotel-booking-form'])}}" title="Hotel Booking Form">
-                          <label  class="icon-list ic_invoice_drop" style="margin: -4px 0px;"></label>
+                         <!-- <a target="_blank" href="{{route('hVoucher', ['project'=>$bhotel->project_number, 'bhotelid'=> $bhotel->id, 'bookid'=> $project->id, 'type'=> 'hotel-booking-form'])}}" title="Hotel Booking Form"> -->
+                        <a target="_blank" href="{{route('hVoucher', ['project'=>$bhotel->project_number, 'bhotelid'=> $bhotel->id, 'bookid'=> $project->id, 'type'=> 'hotel-booking-form','checkin'=> $bhotel->checkin, 'checkout'=> $bhotel->checkout])}}" title="Hotel Booking Form">
+                         <label  class="icon-list ic_invoice_drop" style="margin: -4px 0px;"></label>
                         </a>    &nbsp;
                         <a href="javascript:void(0)" class="RemoveHotelRate" data-type="book_hotelrate" data-id="{{$bhotel->id}}" title="Delete this Hotel Rate">
                             <label class="icon-list ic_remove" style="margin: -4px 0px;"></label>

@@ -241,14 +241,15 @@
 				@if($flightb->get()->count() > 0)
 					@foreach($flightb->get() as $fb)
 					<?php 
+					//dd($fb);
 						$n++;
 					?>
 					<tr>
 						<td class="text-center">{{$n}}</td>
 						<td>{{Content::dateformat($fb->book_checkin)}}</td>
 						<td>{{{$fb->supplier->supplier_name or ''}}}</td>
-						<td></td>
-						<td>{{{$fb->fagent->supplier_name or ''}}}</td>	
+						<td>{{{$fb->fagent->supplier_name or ''}}}</td>
+						<td></td>	
 						<td></td>			
 						<td class="text-center">{{$fb->book_pax}}</td>
 						<td class="text-right">

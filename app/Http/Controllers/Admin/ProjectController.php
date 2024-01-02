@@ -33,15 +33,15 @@ class ProjectController extends Controller
         if ($project == "project")
         {
             if ($req->status == "Inactive") { 
-                $projects = Project::getProjectTags($startDate, $endDate, 0)->get();
+                $projects = Project::getProjectTags($startDate, $endDate, 0)->orderBy('project_start', 'DESC')->get();
             }elseif ($req->type == "quotation") {
-                $projects = Project::getProjectQuotation($startDate, $endDate)->get();  
+                $projects = Project::getProjectQuotation($startDate, $endDate)->orderBy('project_start', 'DESC')->get();  
                 return view('admin.project.projectQuotation', compact('projects', 'startDate', 'endDate'));
             } if ($req->status == "Disable") { 
-                $projects = Project::getProjectSearchforDisable($startDate, $endDate)->get();
+                $projects = Project::getProjectSearchforDisable($startDate, $endDate)->orderBy('project_start', 'DESC')->get();
             }
             else{
-                $projects = Project::getProjectTags($startDate, $endDate)->get(); 
+                $projects = Project::getProjectTags($startDate, $endDate)->orderBy('project_start', 'DESC')->get(); 
             }            
             return view('admin.project.bookedProject', compact('projects', 'startDate', 'endDate'));
         } elseif ($project == "tour") {

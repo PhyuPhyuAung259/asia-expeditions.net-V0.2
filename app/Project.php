@@ -81,7 +81,8 @@ class Project extends Model
     } 
 
     public static function getProjectTags ($currentDate, $nextMonth, $active = 1, $option = 0 ){
-        if (\Auth::user()->role_id == 2 || \Auth::user()->role_id == 4) {
+     
+        if (\Auth::user()->role_id == 2 || \Auth::user()->role_id == 4 ) {
             $projects = \DB::table('project')
                 ->join('project_user', 'project_user.project_id','=','project.id')
                 ->join('users', 'users.id','=','project.user_id')
@@ -90,16 +91,27 @@ class Project extends Model
                 ->where(["project.project_status"=>1, "project.active"=>$active])
                 ->groupBy("project.id")
                 ->orderBy('project.project_start', 'ASC');
+          
+    
         }else{
             $projects = \DB::table('project')
-                ->Join('project_user', 'project_user.project_id','=','project.id')
+                ->join('project_user', 'project_user.project_id','=','project.id')
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*", "project_user.id as id", "project_user.*", "project.user_id as UserID", "project.id as project_id")
-                ->whereBetween('project.project_start', [$currentDate, $nextMonth])
-                ->where(["project.project_status"=>1, "project_user.user_id"=>\Auth::user()->id, "project.active"=>$active])
+                ->orWhereBetween('project.project_start', [$currentDate, $nextMonth])
+                ->where(["project.project_status"=>1, "project.active"=>$active])
                 ->groupBy("project.id")
-                ->orderBy('project.project_number', 'ASC');
+                ->orderBy('project.project_start', 'ASC');
+                   // $projects = \DB::table('project')
+            // ->Join('project_user', 'project_user.project_id','=','project.id')
+            // ->join('users', 'users.id','=','project.user_id')
+            // ->select("project.*", "project_user.id as id", "project_user.*", "project.user_id as UserID", "project.id as project_id")
+            // ->whereBetween('project.project_start', [$currentDate, $nextMonth])
+            // ->where(["project.project_status"=>1, "project_user.user_id"=>\Auth::user()->id, "project.active"=>$active])
+            // ->groupBy("project.id")
+            // ->orderBy('project.project_start', 'ASC');
         }
+
         return $projects;             
     }
 
@@ -114,7 +126,7 @@ class Project extends Model
                 ->whereNotIn('project.project_status',[0])
                 ->orwhere('project.project_client', 'like', $projectNum. '%')
                 ->groupBy("project.id")
-                ->orderBy('project.project_number', 'DESC');
+                ->orderBy('project.project_start', 'ASC');
       
         // }
         return $projects;

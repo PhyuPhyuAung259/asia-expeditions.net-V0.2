@@ -37,7 +37,7 @@
                     </select>
                   </div>                      
                   <div class="col-md-3 col-xs-6">                  
-                    <select class="form-control" name="rest_name" id="dropdown-booking_restaurant" required>                     
+                    <select class="form-control" name="rest_name" id="restaurant" required>                     
                     </select>
                   </div><div class="clearfix"></div>
                 </div>
@@ -89,6 +89,38 @@
     $(document).on('click','.RemoveRest', function(){
       $(this).closest("tr").remove();
     });
+
+    
+    $(document).ready(function(){
+      $(".datatable").DataTable({
+        language: {
+          searchPlaceholder: "Number No., File No.",
+        },
+        order: [[4, 'desc']]
+      });
+      $('#dropdown-country').change(function() {
+       
+        var cityId = $(this).val();
+           $.ajax({
+            url: '/restaurants/' + cityId,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var restaurantSelect = $('#restaurant');
+                restaurantSelect.empty();
+                if (response.length === 0) {
+                  restaurantSelect.append('<option value="0">No restaurants available</option>');
+                } else {
+                  restaurantSelect.append('<option value="0">Choose restaurant</option>');
+                    $.each(response, function(key, value) {
+                      restaurantSelect.append('<option value="' + value.id + '">' +
+                            value.supplier_name + '</option>');
+                    });
+                } 
+            }
+          }); 
+      });
+
   </script>
 
 @endsection

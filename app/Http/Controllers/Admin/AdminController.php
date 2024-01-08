@@ -49,6 +49,18 @@ class AdminController extends Controller
         
         return response()->json($hotels);
     }
+    public function getGolfs(Request $request, $country)
+    {
+        $golfs = Supplier::where(['country_id'=>$country,'business_id'=>29] )->orderBy('supplier_name', 'asc')->get();
+        
+        return response()->json($golfs);
+    }
+    public function getRestaurants(Request $request, $city)
+    {
+        $restaurants = Supplier::where(['province_id'=>$city,'business_id'=>2] )->orderBy('supplier_name', 'asc')->get();
+        
+        return response()->json($restaurants);
+    }
     public function delPriceRate ($hotelid, $bookid, $type) {
       if ($type == "hotel") {
         if (\App\HotelBooked::where(['hotel_id'=>$hotelid, 'book_id'=> $bookid])->delete()) {

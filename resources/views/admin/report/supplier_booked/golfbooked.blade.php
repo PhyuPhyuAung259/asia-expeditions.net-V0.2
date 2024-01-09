@@ -1,4 +1,7 @@
-<?php use App\component\Content; ?>
+<?php 
+use App\component\Content;
+$total_round=0;
+?>
 <table class="table table-hover table-bordered excel-sheed">
     @if(isset($bookeds) && $bookeds != Null)
         <thead>
@@ -29,15 +32,22 @@
                     <td class="text-right">{{Content::money($sub->book_amount)}}</td>
                     <td class="text-right">{{Content::money($sub->book_kprice)}}</td>
                     <td class="text-right">{{Content::money($sub->book_kamount)}}</td>
+                    <?php $total_round=$total_round+ $sub->book_pax; ?>
                 </tr>
             @endforeach      
         </tbody>
         <tfoot>
             <tr style="border: solid 1px #ddd;">
-                <td colspan="7" align="right">
+                <td colspan="5" align="right">
+                    <font color="#1991d6">
+                    Total Round :  {{$total_round}}
+                    </font>
+                 
+                </td>
+                <td colspan="2" align="right">
                     <font color="#1991d6">
                         @if($bookeds->sum('book_amount'))
-                            Grand Total : {{Content::money($bookeds->sum('book_amount'))}}  {{Content::currency()}}
+                            Grand Total : {{Content::money($bookeds->sum('book_amount'))}}  {{Content::currency()}} 
                         @endif
                     </font>
                 </td>

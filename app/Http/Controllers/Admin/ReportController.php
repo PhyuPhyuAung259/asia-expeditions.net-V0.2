@@ -292,7 +292,7 @@ class ReportController extends Controller
         $supplier_name = $req->supplier;
         $bus_id = $req->business;
         $bookeds =[];
-        $supp = Supplier::where([['business_id','=',$bus_id],['supplier_status', '=',1], ["supplier_name", "LIKE", "%".$supplier_name."%"]])->first();
+        $supp = Supplier::where([['business_id','=',$bus_id],['supplier_status', '=',1], ["id", '=',$req->supinfo]])->first();
         if ($bus_id == 1 && $supp != null) {
             $bookeds = HotelBooked::where(['status'=>1, 'hotel_id'=>$supp->id])->whereHas('book', 
                 function($query) {
@@ -344,9 +344,10 @@ class ReportController extends Controller
         $endDate    = $req->end_date;
         $location   =$req->location;
         $hotel      =$req->hotel;
+        $golf       =$req->golf;
         $type       =$req->type;
         if($type==1){
-            if(!empty($startDate) && !empty($endDate) && $location==0 && $hotel==0){
+            if(!empty($startDate) && !empty($endDate) && $location==0 && $hotel==0 && $golf==0){
                 $tours = DB::table('tours')
                         ->join('booking', 'tours.id', '=', 'booking.tour_id')
                         ->whereBetween('booking.book_checkin', [$startDate, $endDate])
@@ -360,7 +361,7 @@ class ReportController extends Controller
                         ->limit(10)
                         ->get();          
             }
-            if(!empty($startDate) && !empty($endDate) && $location!=0 && $hotel==0){
+            if(!empty($startDate) && !empty($endDate) && $location!=0 && $hotel==0 && $golf==0){
                 $tours = DB::table('tours')
                         ->join('booking', 'tours.id', '=', 'booking.tour_id')
                         ->whereBetween('booking.book_checkin', [$startDate, $endDate])
@@ -380,7 +381,7 @@ class ReportController extends Controller
             return view('admin.report.tour_report',compact('tours'));
         }
         if($type==2){
-            if(!empty($startDate) && !empty($endDate) && $location==0  && $hotel==0){
+            if(!empty($startDate) && !empty($endDate) && $location==0  && $hotel==0 && $golf==0){
                 $golf = DB::table('golfmenu')
                         ->join('booking', 'golfmenu.id', '=', 'booking.program_id')
                         ->whereBetween('booking.book_checkin', [$startDate, $endDate])
@@ -395,7 +396,7 @@ class ReportController extends Controller
                       
                           
             }
-            if(!empty($startDate) && !empty($endDate) && $location!=0  && $hotel==0 ){
+            if(!empty($startDate) && !empty($endDate) && $location!=0  && $hotel==0 && $golf==0 ){
                 $golf = DB::table('golfmenu')
                         ->join('booking', 'golfmenu.id', '=', 'booking.program_id')
                         ->whereBetween('booking.book_checkin', [$startDate, $endDate])
@@ -407,9 +408,23 @@ class ReportController extends Controller
                         ->groupBy('booking.program_id') // Group by tour.id to ensure uniqueness
                         ->orderByDesc(DB::raw('MAX(golfmenu.golf_count)'))
                         ->limit(10)
-                        ->get();
-                        
-                        
+                        ->get();      
+            }
+            if(!empty($startDate) && !empty($endDate) && $golf !=0){
+                $golf = DB::table('booking')
+                        ->whereBetween('booking.book_checkin', [$startDate, $endDate])
+                        ->where('booking.golf_id','=',$req->golf)
+                        ->whereNotNull('booking.book_fileno')
+                        ->whereNotIn('booking.book_fileno', [0,''])
+                        ->get();   
+            }
+            if(empty($startDate) && empty($endDate) && $golf !=0){
+                $golf = DB::table('booking') 
+                        ->where('booking.golf_id','=',$req->golf)
+                        ->whereNotNull('booking.book_fileno')
+                        ->whereNotIn('booking.book_fileno', [0,''])
+                        ->get();   
+                       
             }
             return view('admin.report.golf1_report',compact('golf'));
         }
@@ -436,5 +451,11 @@ class ReportController extends Controller
             return view('admin.report.hotel_booking_report',compact('hotel','hotelid','startDate','endDate'));
         }
       
+    }
+
+    public function getSupName($bus_id){
+        $sup_name = Supplier::where(['business_id'=>$bus_id] )->orderBy('supplier_name', 'asc')->get();
+        
+        return response()->json($sup_name);
     }
 }

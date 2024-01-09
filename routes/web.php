@@ -198,6 +198,8 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::get('hotels/{country}', 'Admin\AdminController@getHotels');
 		Route::get('golfs/{country}', 'Admin\AdminController@getGolfs');
 		Route::get('restaurants/{city}', 'Admin\AdminController@getRestaurants');
+		Route::get('get_sup_name/{bus_id}','Admin\ReportController@getSupName');
+
 		Route::get('tour/create/new', 'Admin\TourController@tourForm')->name('tourForm');
 		Route::post('tour/create', 'Admin\TourController@tourCreate')->name('tourCreate');
 		Route::get('tour/update/{tourid}/tour', 'Admin\TourController@getTourUpdate')->name('getTourUpdate');

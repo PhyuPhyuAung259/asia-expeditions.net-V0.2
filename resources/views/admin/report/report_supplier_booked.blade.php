@@ -23,7 +23,7 @@
 		            			$query->where('supplier_status',1);
 		            		})->orderBy('name')->get(); ?>
 	                        <div class="col-md-3"> 
-		                        <select class="form-control" name="business">   
+		                        <select class="form-control" name="business" id="business">   
 		                        	@foreach($getBusType as $key => $bus)
 		                        		<?php $busid = isset($bus_id) ? $bus_id : 0; ?>
 		                        		<option value="{{$bus->id}}" {{$busid == $bus->id ? 'selected' : ''}}>{{$bus->name}}</option>
@@ -31,9 +31,9 @@
 		                        </select>
 	                        </div>
 	                        <div class="col-md-3">
-		                        <div class="form-group">
-		                            <input type="text" name="supplier" class="form-control" value="{{$supp['supplier_name']}}" placeholder="Supplier Name Search..." >		           	
-		                        </div>
+								<select class="col-md-2 form-control input-sm  " name="supinfo" id="supinfo"  >
+									<option value="0">Choose Supplier Name</option>
+								</select>
 	                        </div>
 	                        <div class="col-md-2">
 		                        <div class="form-group">
@@ -107,8 +107,35 @@
 			return false;
 		}
 	});
+
+	$(document).ready(function(){
+    
+      $('#business').change(function() {
+        var bus_id = $(this).val();
+          $.ajax({
+            url: '/get_sup_name/' + bus_id,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var sup_info = $('#supinfo');
+                sup_info.empty();
+                if (response.length === 0) {
+                    sup_info.append('<option value="0">No available</option>');
+                } else {
+					sup_info.append('<option value="0">Choose Supplier Name</option>');
+                    $.each(response, function(key, value) {
+                        sup_info.append('<option value="' + value.id + '">' +
+                            value.supplier_name + '</option>');
+                    });
+                } 
+            }
+          }); 
+                    
+      });
+    });
 </script>
 
 
 @include('admin.include.datepicker')
 @endsection
+

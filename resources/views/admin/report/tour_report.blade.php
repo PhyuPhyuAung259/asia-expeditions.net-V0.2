@@ -33,27 +33,28 @@
                   @endforeach
                 </select>
               </div>
-           
-              <div class="col-md-2" id="hotels" style="padding-right: 0px; display:none;">
-              <select class="col-md-2 form-control input-sm  " name="hotel" id="hotel"  >
-                  <option value="0">Hotel</option>
-                </select>
-              </div>
-                 
-             
               <div class="col-md-2" style="padding-right: 0px;" >
-                <select class="form-control input-sm" name="type" id="type"  onchange="enableHotel(this)">
+                <select class="form-control input-sm" name="type" id="type"  onchange="enable(this)">
                     <option value="0">Type</option>
                     <option value="1">Tour</option>
                     <option value="2">Golf</option>
                     <option value="3">Hotel</option>
                 </select>
               </div>
+              <div class="col-md-2" id="hotels" style="padding-right: 0px; display:none;">
+              <select class="col-md-2 form-control input-sm  " name="hotel" id="hotel"  >
+                  <option value="0">Hotel</option>
+                </select>
+              </div>
+              <div class="col-md-2" id="golfs" style="padding-right: 0px; display:none;">
+              <select class="col-md-2 form-control input-sm  " name="golf" id="golf"  >
+                  <option value="0">Golf</option>
+                </select>
+              </div>
               <div class="col-md-1 ml-5" style="padding: 0px;margin-left:10px;">
                 <button class="btn btn-primary btn-sm" type="submit">Search</button>
               </div>          
-            </div>
-        
+            </div>        
             <table class="datatable table table-hover table-striped">
               <thead>
                 <tr>
@@ -87,48 +88,69 @@
   </div>
 </div>
 <script type="text/javascript">
-   function enableHotel(selectElement){
-   console.log(selectElement.value);
-   var hotelElement=document.getElementById('hotels');
-   if(selectElement.value === '3'){
-    hotelElement.style.display='block';
-   }else{
-    hotelElement.style.display='none';
-   }
-  };
-
-  $(document).ready(function(){
-    $(".datatable").DataTable({
-      language: {
-        searchPlaceholder: "Number No., File No.",
-      },
-       order: [[4, 'desc']]
-    });
-    $('#country').change(function() {
-      var countryId = $(this).val();
-        $.ajax({
-          url: '/hotels/' + countryId,
-          type: 'GET',
-          dataType: 'json',
-          success: function(response) {
-              var hotelSelect = $('#hotel');
-              hotelSelect.empty();
-              if (response.length === 0) {
-                  hotelSelect.append('<option value="0">No hotels available</option>');
-              } else {
-                hotelSelect.append('<option value="0">Choose Hotel</option>');
-                   $.each(response, function(key, value) {
-                      hotelSelect.append('<option value="' + value.id + '">' +
-                          value.supplier_name + '</option>');
-                  });
-              }
+   function enable(selectElement){
+        console.log(selectElement.value);
+          var hotelElement=document.getElementById('hotels');
+          var golfElement=document.getElementById('golfs');
+          if(selectElement.value === '2'){
+            golfElement.style.display='block';
+          }else{
+            golfElement.style.display='none';
           }
-       });               
-    });
-  });
-  
-</script>
+          if(selectElement.value === '3'){
+            hotelElement.style.display='block';
+          }else{
+            hotelElement.style.display='none';
+          }
+    };
 
- 
+    $(document).ready(function(){
+      $(".datatable").DataTable({
+        language: {
+          searchPlaceholder: "Number No., File No.",
+        },
+        order: [[4, 'desc']]
+      });
+      $('#country').change(function() {
+        var countryId = $(this).val();
+          $.ajax({
+            url: '/hotels/' + countryId,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var hotelSelect = $('#hotel');
+                hotelSelect.empty();
+                if (response.length === 0) {
+                    hotelSelect.append('<option value="0">No hotels available</option>');
+                } else {
+                  hotelSelect.append('<option value="0">Choose Hotel</option>');
+                    $.each(response, function(key, value) {
+                        hotelSelect.append('<option value="' + value.id + '">' +
+                            value.supplier_name + '</option>');
+                    });
+                } 
+            }
+          }); 
+          $.ajax({
+            url: '/golfs/' + countryId,
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                var hotelSelect = $('#golf');
+                hotelSelect.empty();
+                if (response.length === 0) {
+                    hotelSelect.append('<option value="0">No golfs available</option>');
+                } else {
+                  hotelSelect.append('<option value="0">Choose golf course</option>');
+                    $.each(response, function(key, value) {
+                        hotelSelect.append('<option value="' + value.id + '">' +
+                            value.supplier_name + '</option>');
+                    });
+                } 
+            }
+          });                
+      });
+    });
+</script> 
 @include('admin.include.datepicker')
 @endsection

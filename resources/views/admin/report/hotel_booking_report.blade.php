@@ -83,9 +83,9 @@ $total_no_of_booked_night=0;
               <td>{{{$hotelb->ndouble or ''}}}</td>
               <td>{{{$hotelb->ntwin or ''}}}</td>
               <td>{{{$hotelb->nextra or ''}}}</td>
-              <td>{{{$hotelb->nchextra or ''}}}</td>
+              <td>{{{$hotelb->nchextra or ''}}}</td> 
               <td>{{{$hotelb->net_amount or ''}}}</td>
-              <?php $total_no_of_booked_night=$total_no_of_booked_night+ $hotelb->book_day ?>
+              <?php $total_no_of_booked_night=$total_no_of_booked_night+ ($hotelb->book_day * $hotelb->no_of_room)  ?>
             </tr>
             @endif
         @endforeach

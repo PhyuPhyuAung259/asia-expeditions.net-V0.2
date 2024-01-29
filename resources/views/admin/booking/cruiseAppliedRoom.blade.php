@@ -55,29 +55,39 @@ $subactive ='booked/cruise';
                       <table class="table" style="margin-bottom: 0px;">
                         @foreach(App\RoomCategory::whereIn('id',['1','2','3','4','5'])->get() as $key => $cat)
                           <?php
-                            if ($cat->id == 1) {
-                              $selling_price = $rcprice['ssingle_price'];
-                            }elseif ($cat->id == 2) {
-                              $selling_price = $rcprice['stwn_price'];
-                            }elseif($cat->id == 3){
-                              $selling_price = $rcprice['sdbl_price'];
-                            }elseif($cat->id == 4){
-                              $selling_price = $rcprice['sextra_price'];
-                            }else {
-                              $selling_price = $rcprice['schextra_price'];
-                            }
+                          if (!isset($rcprice)) {
+                            $selling_price=0;
+                            $net_price=0;
+                          }
+                          elseif ($cat->id == 1) {
+                            $selling_price = $rcprice['ssingle_price'];
+                            $net_price = $rcprice['nsingle_price'];
+                          }elseif ($cat->id == 2) {
+                            $selling_price = $rcprice['stwn_price'];
+                            $net_price = $rcprice['ntwn_price'];
+                          }elseif($cat->id == 3){
+                            $selling_price = $rcprice['sdbl_price'];
+                            $net_price = $rcprice['ndbl_price'];
+                          }elseif($cat->id == 4){
+                            $selling_price = $rcprice['sextra_price'];
+                            $net_price = $rcprice['nextra_price'];
+                          }else {
+                            $selling_price = $rcprice['schextra_price'];
+                            $net_price = $rcprice['nchextra_price'];
+                          }
 
-                            if ($cat->id == 1) {
-                              $net_price = $rcprice['nsingle_price'];
-                            }elseif ($cat->id == 2) {
-                              $net_price = $rcprice['ntwn_price'];
-                            }elseif($cat->id == 3){
-                              $net_price = $rcprice['ndbl_price'];
-                            }elseif($cat->id == 4){
-                              $net_price = $rcprice['nextra_price'];
-                            }else {
-                              $net_price = $rcprice['nchextra_price'];
-                            }                 
+
+                            // if ($cat->id == 1) {
+                            //   $net_price = $rcprice['nsingle_price'];
+                            // }elseif ($cat->id == 2) {
+                            //   $net_price = $rcprice['ntwn_price'];
+                            // }elseif($cat->id == 3){
+                            //   $net_price = $rcprice['ndbl_price'];
+                            // }elseif($cat->id == 4){
+                            //   $net_price = $rcprice['nextra_price'];
+                            // }else {
+                            //   $net_price = $rcprice['nchextra_price'];
+                            // }                 
                           ?>
                           <tr>
                             <td class="container_category" style="width: 15%;">                              

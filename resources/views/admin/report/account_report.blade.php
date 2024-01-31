@@ -211,7 +211,10 @@
 					<?php 
 						$hbook = \App\Booking::find($hb->book_id);
 						$n++;
-						if (!empty($hb->nsingle) && $hb->nsingle != 0) {
+						if($hb->discount != 0){
+							$hprice=$hb->discount;
+						}
+						elseif (!empty($hb->nsingle) && $hb->nsingle != 0) {
 							$hprice = $hb->nsingle;
 						}elseif (!empty($hb->ntwin) && $hb->ntwin != 0) {
 							$hprice = $hb->ntwin;

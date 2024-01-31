@@ -5,6 +5,7 @@
 	$comadd = \App\Company::find(1); 
 	$user = App\User::find($project->check_by);
 	$Probooked = App\Booking::where(['book_project'=>$project->project_number, 'book_status'=>1, "book_option"=>0])->get();
+	
 	?>
 @section('content')
 	<div class="container">
@@ -111,16 +112,17 @@
 							<th class="text-center" width="85">Single</th>
 							<th class="text-center">Twin</th>
 							<th class="text-center">Double</th>
+							<th class="text-center">Discount</th>
 							<th class="text-center">Extra</th>
 							<th class="text-center" width="188">Ch-Extra</th>
+						
 							<th class="text-left" width="188">Amount</th>
 							<th>Operation</th>
 						</tr>
 						@foreach($hotelBook->get() as $hotel)
 						<?php 
 							$hjnal = App\AccountJournal::where(['supplier_id'=>$hotel->hotel->id, 'business_id'=>1,'project_number'=>$project->project_number, 'book_id'=>$hotel->id,'status'=>1])->first();
-							?>
-				
+						?>	
 						<tr >
 							<td>
 								<span class="hidden-print" style="position: relative;top:2px;">
@@ -134,13 +136,18 @@
 								<!-- <small style="color: #9E9E9E;">{{isset($hotel->remark)? '('.$hotel->remark.')' :''}}</small> -->
 							</td>
 							<td>{{{ $hotel->room->name or ''}}}</td>
+							<td><div class="numberOfRoom" >{{$hotel->no_of_room}}</div></td>
+							<td class="text-center">{{ $hotel->book_day}}</td>
+							<td class="text-right" width="85px">{{Content::money($hotel->nsingle)}}</td>
+							<td class="text-right">{{Content::money($hotel->ntwin)}}</td>
+							<td class="text-right">{{Content::money($hotel->ndouble)}}</td>
 							<td class="text-center addOption">
-								<div class="numberOfRoom" ><span {{$hjnal === null ? '' : "style=background-color:#f6f6f6;cursor:no-drop"}} title="{{$hjnal === null ? 'onClick to Add Discount Percentage' : ''}}">{{$hotel->no_of_room}}</span> {!! $hotel->discount > 0 ? "+ <span style='color: #3c8dbc'>$hotel->discount(%)</span> " : '' !!}</div>
+								<div class="numberOfRoom" ><span {{$hjnal === null ? '' : "style=background-color:#f6f6f6;cursor:no-drop"}} title="{{$hjnal === null ? 'onClick to Add Discount Rate' : ''}}">{{{$hotel->discount  or '0'}}} </span> </div>
 
-								@if($hjnal === null)
+								<!-- @if($hjnal === null) -->
 									<div class="wrapping-discount"> 
 										<div>
-											<div><strong>Add Percentage</strong> 
+											<div><strong>Add Promotion Rate</strong> 
 												<i class="fa fa-times-circle pull-right btnClose" style="cursor: pointer;"></i></div>
 											<div class="value" style="padding: 12px;">
 												<input type="text" class="form-control input-sm text-center" name="discount" value="{{ $hotel->discount }}" placeholder="00.00">
@@ -153,15 +160,12 @@
 											<div><button class="submitDiscount btn-acc btn btn-default" type="button btn-xs">Save</button></div>
 										</div>
 									</div>
-								@endif
+								<!-- @endif -->
 							</td>
-							<td class="text-center">{{ $hotel->book_day}}</td>
-							<td class="text-right" width="85px">{{Content::money($hotel->nsingle)}}</td>
-							<td class="text-right">{{Content::money($hotel->ntwin)}}</td>
-							<td class="text-right">{{Content::money($hotel->ndouble)}}</td>
 							<td class="text-right">{{Content::money($hotel->nextra)}}</td>
 							<td class="text-right" width="150px">{{Content::money($hotel->nchextra)}}</td>
-							<td class="text-left" width="300px">{{Content::money($hotel->net_amount)}}
+							
+							<td class="text-left" width="300px">{{Content::money($hotel->net_amount)}} 
 								<span class="pull-right hidden-print">
 									<a href="#" data-id="{{$hotel->id}}" data-remark="{{$hotel->remark}}" class="btn btn-primary btn-xs BtnEdit" data-toggle="modal" data-target="#myModal">Add Remark</a>
 									<a title="Hotel Voucher" target="_blank" href="{{route('hVoucher', ['project'=>$hotel->project_number, 'bhotelid'=> $hotel->id, 'bookid'=> $hotel->book_id, 'type'=>'hotel-voucher', 'checkin'=> $hotel->checkin, 'checkout'=> $hotel->checkout])}}"><i style="font-size:16px;position: relative;" class="fa fa-newspaper-o"></i></a>&nbsp;
@@ -183,10 +187,15 @@
                               <i class="fa fa-hotel (alias)" style="font-size: 19px;color: #c38015;"></i>
                             </a>&nbsp; -->
 							</td>
+						 
 						</tr>
+						 
+							 
 						@endforeach
 						<tr>
+							 
 							<td colspan="11" class="text-right"><h5><strong>Total: {{Content::money($hotelBook->sum('net_amount'))}} {{Content::currency()}} </strong></h5></td>
+							<td colspan="11" class="text-right"><h5><strong>   </strong></h5></td> 
 						</tr>				
 					@endif
 					<?php 
@@ -391,7 +400,7 @@
 							<th colspan="3">Title</th>
 							<th colspan="2">Service</th>
 							<th>Vehicle</th>
-							<th>DriverName</th>
+							<th>Car Company</th>
 							<th width="100px;">Phone</th>
 							<th class="text-right" width="160px" >Price {{Content::currency()}}</th>
 							<th class="text-right" width="160px" >Price {{Content::currency(1)}}</th>
@@ -405,6 +414,10 @@
 								$kprice = isset($btran->kprice)? $btran->kprice:0;
 								$transportTotal = $transportTotal + $price;
 								$transportkTotal = $transportkTotal + $kprice;
+								if ($btran !== null && is_object($btran)) {
+                                    $transportId = $btran->transport_id;
+                                    $supplier= App\Supplier::where(['id'=> $transportId])->first();
+                                } 
 							?>
 							<tr>
 								<td>
@@ -416,14 +429,8 @@
 								<td colspan="3">{{ $tran->tour_name }} </td>
 								<td colspan="2">{{{ $btran->service->title or ''}}}</td>
 				                <td>{{{ $btran->vehicle->name or ''}}}</td>
-				                <td>{{{ $btran->driver->driver_name or ''}}}</td>
-				                <td>
-				                  	@if(isset( $btran->driver->phone) || isset($btran->driver->phone2))
-			                  			{{ $btran->driver->phone}} {{ $btran->driver->phone2 }}
-				                  	@else
-				                  		{{{ $btran->phone or ''}}}
-				                  	@endif
-				                </td> 
+				                <td>{{{ $supplier->supplier_name or ''}}}</td>
+				                <td>{{{ $supplier->supplier_phone or ''}}}</td> 
 				                <td class="text-right">{{ Content::money($price) }}</td>
 			                  	<td class="text-right">{{ Content::money($kprice) }}</td>
 								<td>

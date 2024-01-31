@@ -329,8 +329,8 @@ class HotelController extends Controller
         if (isset($req->discount) && !empty($req->discount)) {
             // $Netamount = strval(strval(strval($totalAmount / 100 ) * $req->discount) + $currentAmount );
             
-            $Netamount = strval(strval(strval($ahotel->net_amount / 100 ) * $req->discount) + $currentNet );
-            $Selling_amount = strval(strval(strval($ahotel->sell_amount / 100 ) * $req->discount) + $currentSell );
+            $Netamount =$req->discount* $req->no_of_room * $req->book_day;
+            $Selling_amount = $ahotel->sell_amount ;
         }else{
             $Netamount = $currentNet;
             $Selling_amount = $currentSell;

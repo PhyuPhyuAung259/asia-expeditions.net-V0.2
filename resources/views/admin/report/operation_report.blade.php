@@ -714,10 +714,11 @@
 							            	<?php 
 								            	$miscTotal = $miscTotal + $misc->amount;
 								            	$misckTotal = $misckTotal + $misc->kamount;
+												//dd($misc);
 							            	?>
-						                  	<div class="row">
+						                  	<div class="row">  
 							                  	<label class="col-md-6" style="font-weight: 400;">
-							                  		<p>{{{ $misc->servicetype->name or '' }}}</p>
+												  <input type="checkbox" class="checkall" name="checkedmisc[]" value="{{$misc->id}}" > <span>{{{ $misc->servicetype->name or '' }}}</spanp>
 							                  	</label>
 							                  	<label class="col-md-1" style="font-weight: 400;">
 							                  		<p>{{$misc->book_pax}}</p>

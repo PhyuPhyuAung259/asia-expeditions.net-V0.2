@@ -169,6 +169,13 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::post('entrance/service/added', "Admin\ServiceController@addEntrance")->name('addEntrance');
 		Route::post("guide/language/added", "Admin\ServiceController@addLanguage")->name('addLanguage');
 		
+		//promotion route
+
+		Route::get('hotels/addpromotion','Admin\PromotionController@addPromotion')->name('addPromotion');
+		Route::get('hotels/getpromotion','Admin\PromotionController@getPromotion')->name('getPromotion');
+		Route::post('hotels/storepromotion','Admin\PromotionController@storePromotion')->name('storePromotion');
+		Route::get('promotion/edit/{promoId}', 'Admin\PromotionController@getEditPromotion')->name('getEditPromotion');
+
 		Route::get('hotel/room', 'Admin\HotelController@getRoom')->name('getRoom');
 		Route::get('hotel/info', 'Admin\HotelController@getHotelinfo')->name('getHotelinfo');
 		Route::post('hotel/info', 'Admin\HotelController@addHotelinfo')->name('addHotelinfo');
@@ -264,6 +271,8 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::get('quotation',"Admin\ReportController@getQuotation")->name('getQuotation');
 
 		Route::post("arrival_report", "Admin\ReportController@searchArrival")->name("searchArrival");
+		Route::get("statement", "Admin\ReportController@statement")->name("statement");
+		Route::post("statement", "Admin\ReportController@searchStatement")->name("searchStatement");
 		Route::post("gross_p&l", "Admin\ReportController@searchGross")->name("searchGross");
 
 		Route::get('operation/{type}/voucher/{projectNo}/{ospBid}', 'Admin\OperationController@opsVoucher')->name('opsVoucher');

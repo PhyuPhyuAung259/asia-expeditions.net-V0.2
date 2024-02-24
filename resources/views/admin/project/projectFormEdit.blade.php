@@ -91,6 +91,12 @@ $subactive ='booking/project';
                     </div>
                     <div class="col-md-3 col-xs-6">
                       <div class="form-group">
+                        <label>Cost of Sale</label> 
+                        <input type="text" class="form-control" name="cost_of_sale" placeholder="Cost of Sale" value="{{{ $project->cost_of_sale or old('cost_of_sale')}}}" />
+                      </div> 
+                    </div>
+                    <div class="col-md-3 col-xs-6">
+                      <div class="form-group">
                         <label>Additional Invoice</label> 
                         <input type="text" class="form-control" name="add_invoice" placeholder="Additional Invoice" value="{{{$project->project_add_invoice or old('add_invoice')}}}" />
                       </div> 
@@ -185,8 +191,8 @@ $subactive ='booking/project';
                     <div class="col-md-6 col-xs-12">
                       <div class="form-group">
                         <label>Additional Descriptions</label>
-                        <textarea class="form-control " name="pro_add_desc" rows="6" placeholder="Enter Here...">{{{$project->project_add_desc or old('pro_add_desc')}}}</textarea>            
-                      </div>
+                        <textarea class="form-control my-editor" name="pro_add_desc" rows="6" placeholder="Enter Here...">{{{$project->project_add_desc or old('pro_add_desc')}}}</textarea>            
+                       </div>
                     </div>
                     <div class="col-md-6 col-xs-12">
                       <div class="form-group">

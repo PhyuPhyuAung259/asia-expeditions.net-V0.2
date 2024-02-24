@@ -433,6 +433,7 @@ class ProjectController extends Controller
             $aPro->project_revise   = $req->revise_date;           
             $aPro->project_ex_rate  = $req->ex_rate;
             $aPro->project_selling_rate  = $req->sell_rate;
+            $aPro->cost_of_sale  = $req->cost_of_sale;
             $aPro->project_add_invoice = $req->add_invoice;
             $aPro->project_cnote_invoice  = $req->cnote_invoice;
             $aPro->project_invoice_number  = $req->invoice_num;

@@ -6,6 +6,7 @@
 	}else{
 		$title = $title;
 	}
+	$payto="Supplier_name";
 ?>
 @extends('layout.backend')
 @section('title', $project['project_prefix']."-".$fileno ."-". $title)
@@ -18,7 +19,7 @@
 			</div>		
 			<h3 class="text-center"><span style="text-transform:uppercase; text-decoration:underline; font-weight: 700;">{{$title}}</span></h3><br><br>
 			<span class="pull-left text-right">
-				<p><b style="font-size: 13px;"> Pay To: &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;...............................</b></p>
+				<p><b style="font-size: 13px;"> Pay To: <input type="text" name="payto"/></b></p>
 				</span>
 
 			<span class="pull-right text-right">
@@ -90,6 +91,7 @@
 						<td class="text-right"></td>
 						<td class="text-right"></td>
 					</tr>
+					<?php $payto=$hb->hotel->supplier_name; ?>
 					@endforeach
 				@endif
 

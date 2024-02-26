@@ -56,7 +56,7 @@
 					                    <!-- <span class="btnEditTran" data-bus_type="2" data-type="booking_restaurant" data-country="{{$rest->country_id}}" data-province="{{$rest->province_id}}" data-restname="{{{$rest->supplier->id or ''}}}" data-restmenu="{{{$rest->rest_menu->id or ''}}}" data-bookpax="{{ $rest->book_pax}}" data-price="{{$rest->price}}" data-kprice="{{$rest->kprice}}" data-bookdate="{{$rest->start_date}}" data-bookingdate="{{$rest->book_date}}" data-remark="{{$rest->remark}}" data-id="{{$rest->id}}" data-toggle="modal" data-target="#myModal">
 					                      <i style="padding:1px 2px; position: relative;top: -5px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
 					                    </span> -->
-										<a target="_blank" href="{{route('editoperation', ['type'=>'restaurant', 'id'=>$rest->id])}}" title="Edit Restaurant">
+										<a target="_blank" href="{{route('editoperation', ['type'=>'restaurant', 'id'=>$rest->id, 'project_no'=>$rest->project_number])}}" title="Edit Restaurant">
                                 			<label class="icon-list ic_edit"></label>
                              			</a>&nbsp;
 					                @else 

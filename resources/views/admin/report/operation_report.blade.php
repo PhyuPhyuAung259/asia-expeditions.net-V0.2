@@ -582,7 +582,7 @@
 				                <td class="text-right">{{Content::money($rest->amount)}}</td>
 				                <td class="text-right">{{Content::money($rest->kprice)}}</td>
 			                  	<td class="text-right">{{Content::money($rest->kamount)}}</td>
-								<td><a target="_blank" href="{{route('editoperation', ['type'=>'restaurant', 'id'=>$rest->id])}}" title="Edit Restaurant">
+								<td><a target="_blank" href="{{route('editoperation', ['type'=>'restaurant', 'id'=>$rest->id, 'project_no'=> $rest->project_number])}}" title="Edit Restaurant">
                                 			<label class="icon-list ic_edit"></label>
                              			</a>&nbsp;</td>
 							</tr>				
@@ -634,7 +634,7 @@
 				                <td class="text-right">{{Content::money($rest->kprice)}}</td>
 			                  	<td class="text-right">{{Content::money($rest->kamount)}}</td>
 								<td>
-									<a target="_blank" href="{{route('editoperation', ['type'=>'entrance', 'id'=>$rest->id])}}" title="Edit Entrance Fee">
+									<a target="_blank" href="{{route('editoperation', ['type'=>'entrance', 'id'=>$rest->id, 'project_no'=> $rest->project_number])}}" title="Edit Entrance Fee">
                                 			<label class="icon-list ic_edit"></label>
                              		</a>&nbsp;
 								</td>

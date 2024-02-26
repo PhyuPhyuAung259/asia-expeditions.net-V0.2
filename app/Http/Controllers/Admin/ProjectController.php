@@ -409,7 +409,14 @@ class ProjectController extends Controller
 
     public function projectFormEdit($projectNum){
         $project = Project::where('project_number', $projectNum)->first();
-        if (isset($project) && !empty($project)) {
+        if($project->project_status==2){
+            if(\Auth::user()->role_id == 2){
+                return view('admin.project.projectFormEdit', compact('project'));
+            }else{
+                return redirect()->intended('/');
+            }
+        }
+        elseif (isset($project) && !empty($project)) {
             return view('admin.project.projectFormEdit', compact('project'));
         }else{
             return redirect()->intended('/');

@@ -1273,7 +1273,18 @@ class AdminController extends Controller
       return response()->json($rate);
     }
 
-
+    public function changestatus($projectNum){
+      $project = Project::where('project_number', $projectNum)->first();
+      if($project->project_status == 1){
+        $project->project_status=2;
+      }else{
+        $project->project_status=1;
+       }
+      
+      $project->save();
+      $message = "Already changed project status";
+	    return back()->with(['message'=> $message,  'status'=> 'success', 'status_icon'=> 'fa-check-circle']); 
+    }
 
     /**
      * Show the form for creating a new resource.

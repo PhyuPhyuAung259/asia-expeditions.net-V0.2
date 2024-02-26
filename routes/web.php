@@ -273,6 +273,7 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::post("arrival_report", "Admin\ReportController@searchArrival")->name("searchArrival");
 		Route::get("statement", "Admin\ReportController@statement")->name("statement");
 		Route::post("statement", "Admin\ReportController@searchStatement")->name("searchStatement");
+		Route::get("changestatus/{projectNum}","Admin\AdminController@changestatus")->name("changestatus");
 		Route::post("gross_p&l", "Admin\ReportController@searchGross")->name("searchGross");
 
 		Route::get('operation/{type}/voucher/{projectNo}/{ospBid}', 'Admin\OperationController@opsVoucher')->name('opsVoucher');

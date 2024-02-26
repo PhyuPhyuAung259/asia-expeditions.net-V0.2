@@ -88,7 +88,8 @@ class Project extends Model
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*", "project_user.id as id", "project_user.*", "project.user_id as UserID", "project.id as project_id")
                 ->orWhereBetween('project.project_start', [$currentDate, $nextMonth])
-                ->where(["project.project_status"=>1, "project.active"=>$active])
+                ->where("project.active",$active)
+                ->whereNotIn("project.project_status",[0])
                 ->groupBy("project.id")
                 ->orderBy('project.project_start', 'ASC');
           
@@ -99,7 +100,8 @@ class Project extends Model
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*", "project_user.id as id", "project_user.*", "project.user_id as UserID", "project.id as project_id")
                 ->orWhereBetween('project.project_start', [$currentDate, $nextMonth])
-                ->where(["project.project_status"=>1, "project.active"=>$active])
+                ->where("project.active",$active)
+                ->whereNotIn("project.project_status",[0])
                 ->groupBy("project.id")
                 ->orderBy('project.project_start', 'ASC');
                    // $projects = \DB::table('project')

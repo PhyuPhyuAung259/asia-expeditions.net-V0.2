@@ -29,13 +29,13 @@
                 </a>
 				@if(\Auth::user()->role_id == 2)
 					@if($project->project_status==2) 
-					<a class="btn btn-success" target="_blank" href="{{route('changestatus', ['projectNum'=> $project->project_number])}}" title="Confirm">Confirm</a>
+					<a class="btn btn-success" target="_blank" href="{{route('changestatus', ['projectNum'=> $project->project_number])}}" title="Confirm">Confirmed</a>
 					@else
 					<a class="btn btn-info" target="_blank" href="{{route('changestatus', ['projectNum'=> $project->project_number])}}" title="Confirm"> Confirm</a>
 					@endif
 				@endif
 				</div>
-				@include('admin.include.message')
+				<!-- @include('admin.include.message') -->
 				<?php $clientByProject = App\Admin\ProjectClientName::where('project_number', $project->project_number)->get();?>
 				@if($Probooked->Count() > 0 )
 				<div class="pull-right hidden-print checkingAction" style="display: none;">

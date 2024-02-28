@@ -21,7 +21,7 @@ class EditOperationController extends Controller
     //
     public function editOperation(Request $request, $type, $id){
      $project=Project::where('project_number',$request->project_no )->first();
-     if(isset($project->project_status)){
+     
         if($project->project_status == 2){
             if(\Auth::user()->role_id == 2){
                 if($type =="entrance"){
@@ -54,11 +54,13 @@ class EditOperationController extends Controller
                 return redirect()->intended('/');
             }
         }
-    }
+    
     else{
         if($type =="entrance"){
+             
             $editentrance=BookEntrance::find($id);
              return view("admin/operation/editentrance",compact ('editentrance'));
+            
         }
         if($type =="restaurant"){
             $editrestaurant=BookRestaurant::find($id);
@@ -74,6 +76,7 @@ class EditOperationController extends Controller
                 return view("admin/operation/additional_transport_booking",compact ('editTran','btransport'));
               
             }else {
+              
             return view("admin/operation/editTransport",compact ('editTran','btransport'));}
         }
         if($type=="misc"){

@@ -175,7 +175,7 @@ class Booking extends Model
                 ->join('project_user', 'project_user.project_id','=','project.id' )
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*", "users.*", "booking.*", "booking.user_id as book_userId", "booking.id as book_id", "project_user.*", "project.user_id as UserID")
-                ->where(['booking.book_project'=>$projectNum, 'project.project_status'=> 1, 'booking.book_status'=>1, "project.active"=>1])
+                ->where(['booking.book_project'=>$projectNum, 'booking.book_status'=>1, "project.active"=>1])
                 ->groupBy("booking.id")
                 ->orderBy('booking.book_checkin', 'ASC');
         }else{
@@ -184,7 +184,7 @@ class Booking extends Model
                 ->join('project_user', 'project_user.project_id','=','project.id' )
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*","users.*", "booking.*", "booking.user_id as book_userId", "booking.id as book_id", "project_user.*", "project.user_id as UserID")
-                ->where(["project.active"=>1, 'booking.book_project'=>$projectNum, 'project.project_status'=> 1, 'booking.book_status'=> 1, 'project_user.user_id' =>\Auth::user()->id])
+                ->where(["project.active"=>1, 'booking.book_project'=>$projectNum, 'booking.book_status'=> 1, 'project_user.user_id' =>\Auth::user()->id])
                 ->groupBy("booking.id")
                 ->orderBy('booking.book_checkin', 'ASC');
         }
@@ -198,7 +198,7 @@ class Booking extends Model
                 ->join('project_user', 'project_user.project_id','=','project.id' )
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*",  "users.*", "booking.*", "booking.id as book_id", "booking.user_id as book_userId", "project_user.*", "project.user_id as UserID")
-                ->where(['project.project_status'=> 1, 'booking.book_status'=>1, "project.active"=>1, 'booking.book_option'=> $option])
+                ->where(['booking.book_status'=>1, "project.active"=>1, 'booking.book_option'=> $option])
                 ->whereBetween('booking.book_checkin', [$checkIn, $checkOut])
                 ->groupBy("booking.id")
                 ->orderBy('booking.book_checkin', 'ASC');
@@ -208,7 +208,7 @@ class Booking extends Model
                 ->join('project_user', 'project_user.project_id','=','project.id' )
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*","users.*", "booking.*", "booking.id as book_id", "booking.user_id as book_userId", "project_user.*", "project.user_id as UserID")
-                ->where(["project.active"=>1, 'project.project_status'=> 1, 'booking.book_status'=> 1, 'project_user.user_id' => \Auth::user()->id, 'booking.book_option'=> $option])
+                ->where(["project.active"=>1,'booking.book_status'=> 1, 'project_user.user_id' => \Auth::user()->id, 'booking.book_option'=> $option])
                 ->whereBetween('booking.book_checkin', [$checkIn, $checkOut])
                 ->groupBy("booking.id")
                 ->orderBy('booking.book_checkin', 'ASC');
@@ -222,7 +222,7 @@ class Booking extends Model
                 ->join('project_user', 'project_user.project_id','=','project.id' )
                 ->join('booking', 'booking.book_project','=','project.project_number')
                 ->select("project.*", "booking.*", "booking.id as book_id", "booking.user_id as book_userId", "project_user.*", "project.user_id as UserID")
-                ->where(["project.active"=>1, 'project.project_status'=> 1, 'booking.book_status'=> 1, 'project.project_number'=> $projectNum, 'booking.book_option'=>$option])
+                ->where(["project.active"=>1, 'booking.book_status'=> 1, 'project.project_number'=> $projectNum, 'booking.book_option'=>$option])
                 ->whereBetween('booking.book_checkin', [$checkIn, $checkOut])
                 ->groupBy("booking.id")
                 ->orderBy('booking.book_checkin', 'ASC');
@@ -231,7 +231,7 @@ class Booking extends Model
                 ->join('project_user', 'project_user.project_id','=','project.id' )
                 ->join('booking', 'booking.book_project','=','project.project_number')
                 ->select("project.*", "booking.*", "booking.id as book_id", "booking.user_id as book_userId", "project_user.*", "project.user_id as UserID")
-                ->where([ "project.active"=>1, 'project.project_status'=> 1, 'booking.book_status'=> 1, 'project_user.user_id' => \Auth::user()->id, 'project.project_number'=> $projectNum, 'booking.book_option'=> $option])
+                ->where([ "project.active"=>1, 'booking.book_status'=> 1, 'project_user.user_id' => \Auth::user()->id, 'project.project_number'=> $projectNum, 'booking.book_option'=> $option])
                 ->whereBetween('booking.book_checkin', [$checkIn, $checkOut])
                 ->groupBy("booking.id")
                 ->orderBy('booking.book_checkin', 'ASC');

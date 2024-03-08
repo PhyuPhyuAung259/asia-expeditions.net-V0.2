@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Intervention\Image\Facades\Image;
 use App\Business;
 use App\Supplier;
 use App\Company;
@@ -85,6 +85,16 @@ class SupplierController extends Controller
 
     public function createSupplier(Request $req){
         $gallery = '';
+          
+        if ($req->hasFile("scan_img")) {
+            $image = $req->file('scan_img');
+            $filename = time().'-'.$image->getClientOriginalName();
+            $img = Image::make($image->getRealPath())->fit(200, 210);
+            $img->save(public_path('storage/avata/thumbnail/'.$filename));
+            $image->move(public_path('storage/avata/'), $filename);   
+        }else{
+            $filename = $req->oldFile;
+        }
         if (isset($req->gallery)) {
             foreach ($req->gallery as $key => $g) {
                 $gallery .= $g."|";
@@ -116,6 +126,9 @@ class SupplierController extends Controller
             $addsup->supplier_email     = $req->email_one;
             $addsup->supplier_email2    = $req->email_two;
             $addsup->supplier_website   = $req->website;
+            $addsup->bank_name          = $req->bankname;
+            $addsup->bank_account       = $req->bankacc;
+            $addsup->scan_img           = $filename;
             $addsup->supplier_photo     = $req->image;
             $addsup->supplier_picture   = $gallery;
             $addsup->supplier_remark    = $req->remark;
@@ -142,7 +155,18 @@ class SupplierController extends Controller
     public function udpateSupplier(Request $req){
         $gallery = '';
         $photo = '';
-        
+       
+        if ($req->hasFile("scan_img")) {
+          
+            $image = $req->file('scan_img');
+            $filename = time().'-'.$image->getClientOriginalName();
+            $img = Image::make($image->getRealPath())->fit(200, 210);
+            $img->save(public_path('storage/avata/thumbnail/'.$filename));
+            $image->move(public_path('storage/avata/'), $filename);   
+        }else{
+            $filename = $req->oldFile;
+        }
+		
         if (isset($req->gallery)  && ($req->gallery !== null)) {
             if (count($req->gallery) > 0) {
                 foreach ($req->gallery as $key => $g) {
@@ -172,6 +196,9 @@ class SupplierController extends Controller
         $addsup->supplier_email     = $req->email_one;
         $addsup->supplier_email2    = $req->email_two;
         $addsup->supplier_website   = $req->website;
+        $addsup->bank_name          = $req->bankname;
+        $addsup->bank_account       = $req->bankacc;
+        $addsup->scan_img           = $filename;
         $addsup->supplier_photo     = $photo;
         $addsup->supplier_picture   = $gallery;
         $addsup->supplier_remark    = $req->remark;

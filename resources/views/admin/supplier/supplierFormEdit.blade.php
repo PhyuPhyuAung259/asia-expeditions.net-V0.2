@@ -15,7 +15,7 @@
         <div class="row">
           @include('admin.include.message')
           <div class="col-lg-12"><h3 class="border">{{{ $supplier->business->name }}} Management</h3></div>
-          <form method="POST" action="{{route('udpateSupplier')}}">
+          <form method="POST" action="{{route('udpateSupplier')}}"  enctype="multipart/form-data">
             {{csrf_field()}}
             <input type="hidden" name="eid" value="{{$supplier->id}}">
             <section class="col-lg-9 connectedSortable">
@@ -74,6 +74,24 @@
                     <div class="form-group">
                       <label>Phone 2</label>
                       <input type="text" value="{{$supplier->supplier_phone2}}" name="phone_two" class="form-control" placeholder="Ex:+855 123 456 789">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-xs-6">
+                    <div class="form-group">
+                      <label>Bank Name</label>
+                      <input type="text" name="bankname" class="form-control" placeholder="ABA or Wing">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-xs-6">
+                    <div class="form-group">
+                      <label>Bank Account</label>
+                      <input type="text" name="bankacc" class="form-control" placeholder="0123654789">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-xs-6">
+                    <div class="form-group">
+                      <label>Bank QR Scan</label>
+                      <input type="file" name="scan_img" class="form-control"/>
                     </div>
                   </div>
                   <div class="col-md-3 col-xs-6">

@@ -18,9 +18,7 @@
 				<a href="javascript:void(0)" onclick="window.print();"><span class="fa fa-print btn btn-primary"></span></a>
 			</div>		
 			<h3 class="text-center"><span style="text-transform:uppercase; text-decoration:underline; font-weight: 700;">{{$title}}</span></h3><br><br>
-			<span class="pull-left text-right">
-				<p><b style="font-size: 13px;"> Pay To: <input type="text" name="payto"/></b></p>
-				</span>
+			 
 
 			<span class="pull-right text-right">
 				<p><b style="font-size: 13px;"> No.: .........................</b></p>
@@ -78,7 +76,10 @@
 							$hprice = $hb->nextra;
 						}else{
 							$hprice = $hb->nchextra;
-						}					
+						}		
+						
+						$supb = \App\Supplier::find($hb->hotel_id);
+						
 					?>
 					<tr>
 						<td class="text-center">{{$n}}</td>
@@ -93,12 +94,37 @@
 					</tr>
 					<?php $payto=$hb->hotel->supplier_name; ?>
 					@endforeach
+					<tr>
+						<td colspan="5" >
+							<table class="table operation-sheed table-bordered">
+								<tr class="header-row">
+								
+									
+										<th>Pay to - Supplier Name</th>
+										<th>Bank Name</th>
+										<th>Bank Account</th>
+										<th>Bank QR</th>
+									
+								</tr>
+								<tbody>
+									<tr>
+										<td>{{$supb->supplier_name}}</td>
+										<td>{{$supb->bank_name }}</td>
+										<td>{{$supb->bank_account}}</td>
+										<td><img src="{{Storage::url('avata/' . $supb->scan_img) }}" style="width: 50%;"></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					
+					</tr>
 				@endif
 
 				@if($flightb->get()->count() > 0)
 					@foreach($flightb->get() as $fb)
 					<?php 
 						$n++;
+						$supb = \App\Supplier::find($hb->flight_id);
 					?>
 					<tr>
 						<td class="text-center">{{$n}}</td>
@@ -112,6 +138,29 @@
 						<td class="text-right">{{Content::money($fb->book_kamount)}}</td>
 					</tr>
 					@endforeach
+					<tr>
+						<td colspan="5" >
+							<table class="table operation-sheed table-bordered">
+								<tr class="header-row">
+								
+									
+										<th>Pay to - Supplier Name</th>
+										<th>Bank Name</th>
+										<th>Bank Account</th>
+										<th>Bank QR</th>
+									
+								</tr>
+								<tbody>
+									<tr>
+										<td>{{$supb->supplier_name}}</td>
+										<td>{{$supb->bank_name }}</td>
+										<td>{{$supb->bank_account}}</td>
+										<td><img src="{{Storage::url('avata/' . $supb->scan_img) }}" style="width: 50%;"></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
 				@endif
 
 				@if($golfb->get()->count() > 0)
@@ -132,6 +181,29 @@
 						
 					</tr>
 					@endforeach
+					<tr>
+						<td colspan="5" >
+							<table class="table operation-sheed table-bordered">
+								<tr class="header-row">
+								
+									
+										<th>Pay to - Supplier Name</th>
+										<th>Bank Name</th>
+										<th>Bank Account</th>
+										<th>Bank QR</th>
+									
+								</tr>
+								<tbody>
+									<tr>
+										<td>{{$supb->supplier_name}}</td>
+										<td>{{$supb->bank_name }}</td>
+										<td>{{$supb->bank_account}}</td>
+										<td><img src="{{Storage::url('avata/' . $supb->scan_img) }}" style="width: 50%;"></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
 				@endif
 
 				@if($cruiseb->get()->count() > 0)
@@ -162,6 +234,29 @@
 						<td></td>
 					</tr>
 					@endforeach
+					<tr>
+						<td colspan="5" >
+							<table class="table operation-sheed table-bordered">
+								<tr class="header-row">
+								
+									
+										<th>Pay to - Supplier Name</th>
+										<th>Bank Name</th>
+										<th>Bank Account</th>
+										<th>Bank QR</th>
+									
+								</tr>
+								<tbody>
+									<tr>
+										<td>{{$supb->supplier_name}}</td>
+										<td>{{$supb->bank_name }}</td>
+										<td>{{$supb->bank_account}}</td>
+										<td><img src="{{Storage::url('avata/' . $supb->scan_img) }}" style="width: 50%;"></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
 				@endif
  
 				@if($transportb->get()->count() >0)
@@ -173,6 +268,7 @@
 						$kprice = isset($bk->kprice)? $bk->kprice:0;
 						$service = \App\TransportService::find($bk->service_id);
 						$vehicle = \App\TransportMenu::find($bk->vehicle_id);
+						$supb = \App\Supplier::find($bk->transport_id);
 					?>
 					<tr>	
 						<td class="text-center">{{$n}}</td>
@@ -186,6 +282,29 @@
 						<td class="text-right">{{Content::money($kprice)}}</td>
 					</tr>
 					@endforeach
+					<tr>
+						<td colspan="5" >
+							<table class="table operation-sheed table-bordered">
+								<tr class="header-row">
+								
+									
+										<th>Pay to - Supplier Name</th>
+										<th>Bank Name</th>
+										<th>Bank Account</th>
+										<th>Bank QR</th>
+									
+								</tr>
+								<tbody>
+									<tr>
+										<td>{{$supb->supplier_name}}</td>
+										<td>{{$supb->bank_name }}</td>
+										<td>{{$supb->bank_account}}</td>
+										<td><img src="{{Storage::url('avata/' . $supb->scan_img) }}" style="width: 50%;"></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
 				@endif
 
 				@if($guideb->get()->count() > 0)
@@ -197,6 +316,7 @@
 						$kprice = isset($bg->kprice)? $bg->kprice :0;
 						$sb = \App\GuideService::find($bg->service_id);
 						$supb = \App\Supplier::find($bg->sup_id);
+						$scan =  Storage::url('avata/' . $supb->scan_img);
 						$langb = \App\GuideLanguage::find($bg->language_id);
 					?>
 					<tr>	
@@ -211,6 +331,29 @@
 						<td class="text-right">{{Content::money($kprice)}}</td>
 					</tr>
 					@endforeach
+					<tr>
+						<td colspan="5" >
+							<table class="table operation-sheed table-bordered">
+								<tr class="header-row">
+								
+									
+										<th>Pay to - Supplier Name</th>
+										<th>Bank Name</th>
+										<th>Bank Account</th>
+										<th>Bank QR</th>
+									
+								</tr>
+								<tbody>
+									<tr>
+										<td>{{$supb->supplier_name}}</td>
+										<td>{{$supb->bank_name }}</td>
+										<td>{{$supb->bank_account}}</td>
+										<td><img src="{{Storage::url('avata/' . $supb->scan_img) }}" style="width: 50%;"></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
 				@endif
 
 				@if($restaurantb->get()->count() > 0)
@@ -228,6 +371,29 @@
 	                  	<td class="text-right">{{Content::money($rb->kamount)}}</td>
 					</tr>
 					@endforeach
+					<tr>
+						<td colspan="5" >
+							<table class="table operation-sheed table-bordered">
+								<tr class="header-row">
+								
+									
+										<th>Pay to - Supplier Name</th>
+										<th>Bank Name</th>
+										<th>Bank Account</th>
+										<th>Bank QR</th>
+									
+								</tr>
+								<tbody>
+									<tr>
+										<td>{{$supb->supplier_name}}</td>
+										<td>{{$supb->bank_name }}</td>
+										<td>{{$supb->bank_account}}</td>
+										<td><img src="{{Storage::url('avata/' . $supb->scan_img) }}" style="width: 50%;"></td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
 				@endif
 
 				@if($entranb->get()->count() > 0)
@@ -295,11 +461,12 @@
 					<th colspan="6">Cash/ Cheque</th>
 				</tr>
 				<tr>
-					<th colspan="9"><br><br><br></th>
+				
+
 				</tr>
 				
 				<tr>
-					<td colspan="2" style="border-top:none;border-left:none; border-right:none;">Prepared By:............................</td>
+					<td colspan="2" style="border-top:none;border-left:none; border-right:none;">Prepared By: <b>{{date('d/F/Y')}}</b></td>
 					<td style="border-top:none; border-right:none;border-left:none;">Approved By:............................</td>
 					<td colspan="3" style="border-top:none; border-right:none;border-left:none;">Account:............................</td>
 					<td colspan="2" style="border-top:none; border-right:none;border-left:none;">Cashier:............................</td>

@@ -43,14 +43,14 @@
 
                 <div class="col-md-3 col-xs-6">
                     <div class="form-group">
-                        <label>City <span style="color:#b12f1f;">*</span></label>
+                        <label>City<span style="color:#b12f1f;">*</span></label>
 
                         <select class="form-control" name="city" id="city" required>
                             <option value="">Select a city</option>
                         </select>
                     </div>
                 </div>
-                  <div class="col-md-3 col-xs-6">
+                <div class="col-md-3 col-xs-6">
                     <div class="form-group">
                       <label>Business Type <span style="color:#b12f1f;">*</span></label>
                       <select class="form-control" name="business_type" required>
@@ -81,6 +81,24 @@
                   </div>
                   <div class="col-md-3 col-xs-6">
                     <div class="form-group">
+                      <label>Bank Name</label>
+                      <input type="text" name="bankname" class="form-control" placeholder="ABA or Wing">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-xs-6">
+                    <div class="form-group">
+                      <label>Bank Account</label>
+                      <input type="text" name="bankacc" class="form-control" placeholder="0123654789">
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-xs-6">
+                    <div class="form-group">
+                      <label>Bank QR Scan</label>
+                      <input type="file" name="scan_img" class="form-control"/>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-xs-6">
+                    <div class="form-group">
                       <label>Fax Number</label>
                       <input type="text" name="fax_number" class="form-control" placeholder="Ex:+855 123 456 789">
                     </div>
@@ -103,7 +121,7 @@
                       <input type="text" name="website" class="form-control" placeholder="{{config('app.url_add')}}">
                     </div>
                   </div>
-                </div>  
+                </div>
                 <div class="form-group">
                   <label>Address</label>
                   <script src="{{asset('adminlte/editor/tinymce.min.js')}}"></script>
@@ -152,6 +170,7 @@
                 </div>
                 <div class="panel-footer">Gallery Image</div>
               </div>
+             
               <div class="form-group"> 
                 <button type="submit" class="btn btn-success btn-flat btn-sm">Submit</button>&nbsp;
               </div>

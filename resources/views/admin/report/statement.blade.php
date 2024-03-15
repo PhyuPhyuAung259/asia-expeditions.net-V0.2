@@ -29,16 +29,11 @@
                 <input class="form-control input-sm" type="text" id="to_date" name="end_date" placeholder="To Date" value="{{{$endDate or ''}}}"> 
               </div>
               <div class="col-md-2" style="padding-right: 0px;">
-                <!-- <select class="form-control input-sm" name="agent">
+              <select class="form-control input-sm" name="agent">
                   <option value="0">All Agent</option>
                   @foreach(App\Supplier::getSupplier(9)->whereNotIn('pro.project_fileno', ["","Null",0])->get() as $agent)
                   <option value="{{$agent->id}}" {{$agent->id == $agent_id ? 'selected':''}}>{{$agent->supplier_name}}</option>
                   @endforeach
-                </select> -->
-                <select id="agentSelect" name="agentNames[]" multiple class="form-control input-sm">
-                    @foreach(App\Supplier::getSupplier(9)->whereNotIn('pro.project_fileno', ["","Null",0])->get()  as $agent)
-                        <option value="{{ $agent->id }}">{{ $agent->supplier_name }}</option>
-                    @endforeach
                 </select>
               </div>             
               <div class="col-md-2">
@@ -59,18 +54,27 @@
    
             </div>
             
-            <table class="datatable table table-hover table-striped">
+            <table class="datatable table table-hover ">
               <thead>
                 <tr>
-                  <th width="48px">File No.</th>
-                  <th>Client Name</th>
-                  <th>No of Pax</th>
-                  <th class="text-center">Reference No.</th>
-                  <th>Travel Consultant</th>
-                  <th width="162px">Start Date-End Date</th>
-                  <th width="280px">Selling Rate</th>
-                  <th class="text-center">Cost_of_Sale</th>
-
+                  <th width="48px" rowspan="2">File No.</th>
+                  <th rowspan="2">No.</th>
+                  <th class="text-center" rowspan="2">Reference No.</th>
+                  <th rowspan="2">Client Name</th>
+                  <th rowspan="2">No of Pax</th>
+                  <th rowspan="2">Travel Consultant</th>
+                  <th width="162px" rowspan="2">Start Date-End Date</th>
+                  <th rowspan="2">Selling Rate</th>
+                  <th class="text-center" rowspan="2">Cost_of_Sale</th>
+                  <th class="text-center" rowspan="2">Bank Charges</th>
+                  <th class="text-center" rowspan="2">Total Cost</th>
+                  <th class="text-center" colspan="2">Total Profit</th>
+                  <th class="text-center" rowspan="2">Total</th>
+                </tr>
+                <tr>
+                  
+                  <td>USD</td>
+                  <td>%</td>
                 </tr>
               </thead>
               <tbody>
@@ -79,23 +83,35 @@
                   <?php 
                     $guideSupplier = App\BookGuide::where(['project_number'=>$pro->project_number])->groupBy('supplier_id')->orderBy("created_at")->get(); 
                     $toTalPax = $toTalPax + $pro->project_pax;
+                  
+                    
+                      $USDP=$pro->project_selling_rate - $pro->cost_of_sale;
+                      if($USDP != 0){
+                      $percentP=$USDP/$pro->cost_of_sale *100 ;
+                      $total = $USDP/2;
+                      }
                   ?>
                   <tr>
                     <td>{{$pro->project_prefix}}-{{$pro->project_fileno}}</td>
+                    <td></td>
+                    <td class="text-center">{{{$pro->project_book_ref or ''}}}</td> 
                     <td>{{$pro->project_client}} 
                       @if($pro->project_pax)
                         <span style="font-weight: 700; color: #3F51B5;">x {{$pro->project_pax}}</span>
                       @endif
                     </td> 
                     <td>{{{$pro->project_pax or ''}}}</td>
-                    <td class="text-center">{{{$pro->project_book_ref or ''}}}</td>
-                    <td>{{{$pro->project_book_consultant or ''}}}</td>   
+                    <td>{{{$pro->project_book_consultant or ''}}}</td>                
                     <td>
                       {{Content::dateformat($pro->project_start)}} - {{Content::dateformat($pro->project_end)}}
                     </td>
                     <td>{{{$pro->project_selling_rate or ''}}}</td>
-                    <!-- <td><span style="text-transform: capitalize;"></span></td> -->
-                    <td class="text-right">{{{$pro->cost_of_sale or ''}}}</td>               
+                    <td class="text-right">{{{$pro->cost_of_sale or ''}}}</td> 
+                    <td></td> 
+                    <td class="text-right">{{{$pro->cost_of_sale or ''}}}</td> 
+                    <td>{{{$USDP or " "}}}</td>  
+                    <td>{{{$percentP or " "}}}</td>  
+                    <td>{{{$total or " "}}}</td>      
                   </tr>
                 @endforeach
               </tbody>
@@ -120,15 +136,7 @@
     });
    
   });
-  $(document).ready(function() {
-        $('#agentSelect').multiselect({
-            enableFiltering: true, // Enable search/filtering
-            enableCaseInsensitiveFiltering: true, // Make search/filtering case-insensitive
-            includeSelectAllOption: true, // Include "Select All" option
-            maxHeight: 300, // Set maximum height for the dropdown
-            buttonWidth: '100%', // Set button width to 100% of its parent container
-        });
-    });
+ 
   function exportReportToExcel() {
   let table = document.getElementsByTagName("table"); // you can use document.getElementById('tableId') as well by providing id to the table tag
   TableToExcel.convert(table[0], { // html code may contain multiple tables so here we are refering to 1st table tag
@@ -139,12 +147,7 @@
   });
 }
 </script>
-<script>
-    // Initialize Select2 plugin for multi-select box
-    $(document).ready(function() {
-        $('#agentSelect').select2();
-    });
-</script>
+
 
 @include('admin.include.datepicker')
 @endsection

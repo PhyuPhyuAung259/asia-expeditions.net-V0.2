@@ -3,7 +3,6 @@
 <?php $active = 'booked/project';
 $subactive ='booked/hotel';
   use App\component\Content;
-
 ?>
 @section('content')
   <div class="wrapper">
@@ -14,6 +13,60 @@ $subactive ='booked/hotel';
         <div class="row">
           @include('admin.include.message')
           <div class="col-lg-12"><h3 class="border"><small>Room Applied for</small> <strong>{{$hotel->supplier_name}}</strong> <small>Hotel</small>, <strong style="font-size: 14px;">CheckIn:{{Content::dateformat($project->book_checkin)}}, CheckOut:{{Content::dateformat($project->book_checkout)}}</strong></h3></div>
+         <!-- promtion condition -->
+          <?php 
+            // $promotion= App\Promotion::where(['hotel_id'=>$hotel->id,'status'=>1])
+            //             ->where('start_date', '<=', $project->book_checkin)
+            //             ->orWhere('start_date', '<=', $project->book_checkout)
+            //             ->orWhere('end_date', '>=', $project->book_checkin)
+            //             ->orWhere('end_date', '<=', $project->book_checkout)
+            //             ->get();
+            // $promotion = App\Promotion::where('hotel_id', $hotel->id)
+            //             ->where('status', 1)
+            //             ->where(function ($query) use ($project) {
+            //                 $query->where('start_date', '<=', $project->book_checkin)
+            //                       ->where('end_date', '>=', $project->book_checkin)
+            //                       ->orWhere(function ($query) use ($project) {
+            //                           $query->where('start_date', '<=', $project->book_checkout)
+            //                                 ->where('end_date', '>=', $project->book_checkout);
+            //                       });
+            //             })
+            //             ->get();
+            $promotion = App\Promotion::where('hotel_id', $hotel->id)
+                        ->where('status', 1)
+                        ->where(function ($query) use ($project) {
+                            $query->where('start_date', '<=', $project->book_checkin)
+                                ->where('end_date', '>=', $project->book_checkout);
+                        })
+                        ->orWhere(function ($query) use ($project) {
+                          $query->where('start_date', '<=',  $project->book_checkin)
+                                 ->where('end_date', '>=', $project->book_checkout);
+                        })
+                        ->get();
+            // $promotion = App\Promotion::where(['hotel_id' => $hotel->id, 'status' => 1])
+            //             ->where(function ($query) use ($project) {
+            //             $query->where('start_date', '<=', $project->book_checkin)
+            //                   ->where('end_date', '>=', $project->book_checkout);
+            //             })
+            //             ->orWhere(function ($query) use ($project) {
+            //             $query->where('start_date', '<=',  $project->book_checkin)
+            //             ->where('end_date', '>=', $project->book_checkout);
+            //             })
+            //           ->get();
+            
+            //  dd($promotion);  
+          ?>
+          @if(isset($promotion))
+           
+            <div  class="col-lg-6">
+            <select class="form-control input-sm  " id="no_of_room" name="" >
+            @foreach($promotion as $promo)    
+            <option value="">{{$hotel->supplier_name}} has {{$promo->name}} and promotion rate is {{$promo->promotion_rate}}</option>
+            @endforeach
+              </select>
+            </div>
+          @endif
+          <!-- promtion condition -->
           <form method="POST" action="{{route('bookingAppliedroom')}}">
             {{csrf_field()}}
             <input type="hidden" name="bookId" value="{{$project->id}}">

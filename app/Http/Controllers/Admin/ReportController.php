@@ -138,46 +138,41 @@ class ReportController extends Controller
         $startDate  = $req->start_date;
         $endDate    = $req->end_date;
         $projectNo  = $req->textSearch;
-        $agentid    = $req->input('agentNames');
+        $agentid    = $req->agent;
         $location   = isset($req->sort_location) ? $req->sort_location : 'AE';
         $sort_main  = $req->sort_main;
-        // if (!empty($projectNo)) {
-        //     $projects = Project::Where(['active'=>1,'project_status'=>1,'project_fileno'=> $projectNo])
-        //         ->orWhere('project_number',$projectNo)
-        //         ->orWhere('project_client', 'like', $projectNo. '%')
-        //         ->whereNotIn('project_fileno', ['','Null', 0])
-        //         ->orderBy('project_start', 'ASC')->get();
+        if (!empty($projectNo)) {
+            $projects = Project::Where(['active'=>1,'project_fileno'=> $projectNo])
+                ->orWhere('project_number',$projectNo)
+                ->orWhere('project_client', 'like', $projectNo. '%')
+                ->whereNotIn('project_fileno', ['','Null', 0])
+                ->orderBy('project_start', 'DESC')->get();
         
-        // }elseif (!empty($startDate) && !empty($endDate) && $agentid!=0) {
-        //     $projects = Project::Where(['active'=>1,'project_status'=>1, 'project_prefix'=> $location, 'supplier_id'=> $agentid])
-        //         ->whereNotIn('project_fileno', ['Null','',0])
-        //         ->whereBetween('project_start', [$startDate, $endDate])
-        //         ->orderBy('project_start', 'ASC')->get();
-        // }elseif (!empty($startDate) && !empty($endDate) && $agentid==0) {
-             
-        //     $projects = Project::Where(['active'=>1,'project_status'=>1, 'project_prefix'=> $location])
-        //         ->whereNotIn('project_fileno', ['Null','',0])
-        //         ->whereBetween('project_start', [$startDate, $endDate])
-        //         ->orderBy('project_start', 'ASC')->get();
-        // }
-        // elseif (empty($startDate) && empty($endDate) && $agentid==0) {
-             
-        //     $projects = Project::Where(['active'=>1,'project_status'=>1, 'project_prefix'=> $location])
-        //         ->whereNotIn('project_fileno', ['Null','',0])
-        //         ->orderBy('project_start', 'ASC')->get();
-        // }
-        // else{           
-        //     $projects = Project::Where(['active'=>1,'project_status'=>1,'project_fileno'=> $projectNo, 'project_prefix'=> $location])
-        //         ->whereBetween('project_start', [$currentDate, $nextMonth])
-        //         ->whereNotIn('project_fileno', ['','Null', 0])
-        //         ->orderBy('project_start', 'ASC')->get();
-        // }
-     
-        $projects = Project::Where(['active'=>1,'project_status'=>1, 'project_prefix'=> $location, 'supplier_id'=> $agentid])
+        }elseif (!empty($startDate) && !empty($endDate) && $agentid!=0) {
+            $projects = Project::Where(['active'=>1,'project_prefix'=> $location, 'supplier_id'=> $agentid])
                 ->whereNotIn('project_fileno', ['Null','',0])
                 ->whereBetween('project_start', [$startDate, $endDate])
-                ->orderBy('project_start', 'ASC')->get();
-             //   dd($agentid,$projects);
+                ->orderBy('project_start', 'DESC')->get();
+        }elseif (!empty($startDate) && !empty($endDate) && $agentid==0) {
+             
+            $projects = Project::Where(['active'=>1, 'project_prefix'=> $location])
+                ->whereNotIn('project_fileno', ['Null','',0])
+                ->whereBetween('project_start', [$startDate, $endDate])
+                ->orderBy('project_start', 'DESC')->get();
+        }
+        elseif (empty($startDate) && empty($endDate) && $agentid==0) {
+             
+            $projects = Project::Where(['active'=>1, 'project_prefix'=> $location])
+                ->whereNotIn('project_fileno', ['Null','',0])
+                ->orderBy('project_start', 'DESC')->get();
+        }
+        else{           
+            $projects = Project::Where(['active'=>1,'project_fileno'=> $projectNo, 'project_prefix'=> $location])
+                ->whereBetween('project_start', [$currentDate, $nextMonth])
+                ->whereNotIn('project_fileno', ['','Null', 0])
+                ->orderBy('project_start', 'DESC')->get();
+        }
+        //dd($agentid,$projects);
         return view('admin.report.statement', compact('projects','projectNo', 'agentid', 'startDate', 'endDate', 'sort_main', 'location'));
     }
 

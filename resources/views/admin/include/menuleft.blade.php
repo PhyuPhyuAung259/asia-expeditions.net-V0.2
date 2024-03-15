@@ -42,7 +42,7 @@
                     @endif
                 @endforeach
             @endif
-            <li><a target="_blank" href="http://jngtravelpro.com/system/help"><i class="fa fa-book"></i>
+            <li><a target="_blank" href="#"><i class="fa fa-book"></i>
                     <span>Documentation</span></a></li>
         </ul>
     </section>

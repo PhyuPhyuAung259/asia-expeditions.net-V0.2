@@ -441,6 +441,8 @@ class ProjectController extends Controller
             $aPro->project_ex_rate  = $req->ex_rate;
             $aPro->project_selling_rate  = $req->sell_rate;
             $aPro->cost_of_sale  = $req->cost_of_sale;
+            // $aPro->client_payment  = $req->client_payment;
+            // $aPro->transfer_date  = $req->transfer_date;
             $aPro->project_add_invoice = $req->add_invoice;
             $aPro->project_cnote_invoice  = $req->cnote_invoice;
             $aPro->project_invoice_number  = $req->invoice_num;
@@ -473,8 +475,21 @@ class ProjectController extends Controller
             $aPro->check_by         = isset($req->project_check) == 1? \Auth::user()->id: $req->olduser;
             $aPro->supplier_id      = $req->agent;
             $aPro->project_amount   = $req->project_amount;
-            $aPro->save();
+            $aPro->vat              = $req->vat;
+          
         // @end project update
+        //payment status start
+      
+        // if($aPro->selling_rate != 0){
+        //     if($pp==0){
+        //         $aPro->payment_status=2; //paid
+        //     }else if($pp != 0){
+        //         $aPro->payment_status=1; //patial paid
+        //     }
+        // }
+            $aPro->save();
+        
+         //payment status end
             $usertags = $req->usertag;
             if ($req->usertag) {
                 array_push($usertags, \Auth::user()->id);

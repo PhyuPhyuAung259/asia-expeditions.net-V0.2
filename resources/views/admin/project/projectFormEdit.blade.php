@@ -91,10 +91,29 @@ $subactive ='booking/project';
                     </div>
                     <div class="col-md-3 col-xs-6">
                       <div class="form-group">
+                        <label>VAT %</label> 
+                        <input type="text" class="form-control" name="vat" placeholder="VAT %" value="{{{ $project->vat or old('vat')}}}" />
+                      </div> 
+                    </div>
+                    <div class="col-md-3 col-xs-6">
+                      <div class="form-group">
                         <label>Cost of Sale</label> 
                         <input type="text" class="form-control" name="cost_of_sale" placeholder="Cost of Sale" value="{{{ $project->cost_of_sale or old('cost_of_sale')}}}" />
                       </div> 
                     </div>
+                    
+                    <!-- <div class="col-md-3 col-xs-6">
+                      <div class="form-group">
+                        <label>Client Payment Amount</label> 
+                        <input type="text" class="form-control" name="client_payment" placeholder="Client Payment Amount" value="{{{ $project->client_payment or old('client_payment')}}}" />
+                      </div> 
+                    </div>
+                    <div class="col-md-3 col-xs-6">
+                      <div class="form-group">
+                        <label>Transfer Date</label> 
+                        <input type="date" class="form-control" name="transfer_date" placeholder="2024-04-24"  value="{{{ $project->transfer_date or old('transfer_date')}}}" />
+                      </div> 
+                    </div> -->
                     <div class="col-md-3 col-xs-6">
                       <div class="form-group">
                         <label>Additional Invoice</label> 

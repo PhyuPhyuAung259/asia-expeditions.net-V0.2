@@ -46,7 +46,7 @@
 				</tr>
 			</table>
 			
-			<table class="table operation-sheed table-bordered">
+			<table class="table operation-sheed table-bordered" id="myTable">
 				<tr class="header-row">
 					<th width="10px">No.</th>
 					<th style="width: 13%;">Date</th>
@@ -88,9 +88,12 @@
 						<td>{{{$hb->room->name or ''}}}</td>
 						<td class="text-center">{{$hb->book_day}}</td>
 						<td class="text-right">{{$hprice}}</td>
-						<td class="text-right">{{$hb->net_amount}}</td>
+						<td class="text-right" id="price">{{$hb->net_amount}}</td>
 						<td class="text-right"></td>
 						<td class="text-right"></td>
+						<td>						
+							<label style="cursor:pointer;" class="icon-list ic_remove" onclick="deleteRow(this)"> </label>
+						</td>
 					</tr>
 					<?php $payto=$hb->hotel->supplier_name; ?>
 					@endforeach
@@ -133,9 +136,12 @@
 						<td>{{{$fb->fagent->supplier_name or ''}}}</td>				
 						<td class="text-center">{{$fb->book_pax}}</td>
 						<td class="text-right">{{Content::money($fb->book_price)}}</td>
-						<td class="text-right">{{Content::money($fb->book_namount)}}</td>
+						<td class="text-right" id="price">{{Content::money($fb->book_namount)}}</td>
 						<td class="text-right">{{Content::money($fb->book_nkprice)}}</td>
-						<td class="text-right">{{Content::money($fb->book_kamount)}}</td>
+						<td class="text-right" id="price">{{Content::money($fb->book_kamount)}}</td>
+						<td>						
+							<label style="cursor:pointer;" class="icon-list ic_remove" onclick="deleteRow(this)"> </label>
+						</td>
 					</tr>
 					@endforeach
 					<tr>
@@ -167,6 +173,7 @@
 					@foreach($golfb->get() as $gb)
 					<?php 
 						$n++;
+						$supb = \App\Supplier::find($gb->golf_id);
 					?>
 					<tr>
 						<td class="text-center">{{$n}}</td>
@@ -175,10 +182,12 @@
 						<td >{{{$gb->golf_service->name or ''}}}</td>
 						<td class="text-center">{{$gb->book_pax}}</td>
 						<td class="text-right">{{Content::money($gb->book_nprice)}}</td>
-						<td class="text-right">{{Content::money($gb->book_namount)}}</td>
+						<td class="text-right" id="price">{{Content::money($gb->book_namount)}}</td>
 						<td class="text-right">{{Content::money($gb->book_nkprice)}}</td>
-						<td class="text-right">{{Content::money($gb->book_nkamount)}}</td>
-						
+						<td class="text-right" id="price">{{Content::money($gb->book_nkamount)}}</td>
+						<td>						
+							<label style="cursor:pointer;" class="icon-list ic_remove" onclick="deleteRow(this)"> </label>
+						</td>
 					</tr>
 					@endforeach
 					<tr>
@@ -229,9 +238,12 @@
 						<td>{{{$cb->program->program_name or ''}}}</td>
 						<td class="text-center">{{$cb->book_day}}</td>
 						<td class="text-right">{{Content::money($hprice)}}</td>
-						<td class="text-right">{{Content::money($cb->net_amount)}}</td>
+						<td class="text-right" id="price">{{Content::money($cb->net_amount)}}</td>
 						<td></td>
 						<td></td>
+						<td>						
+							<label style="cursor:pointer;" class="icon-list ic_remove" onclick="deleteRow(this)"> </label>
+						</td>
 					</tr>
 					@endforeach
 					<tr>
@@ -277,9 +289,12 @@
 				        <td>{{{$vehicle->name or ''}}}</td>
 						<td class="text-center"></td>
 						<td class="text-right">{{Content::money($price)}}</td>
-						<td class="text-right">{{Content::money($price)}}</td>
+						<td class="text-right" id="price">{{Content::money($price)}}</td>
 						<td class="text-right">{{Content::money($kprice)}}</td>
-						<td class="text-right">{{Content::money($kprice)}}</td>
+						<td class="text-right" id="price">{{Content::money($kprice)}}</td>
+						<td>						
+							<label style="cursor:pointer;" class="icon-list ic_remove" onclick="deleteRow(this)"> </label>
+						</td>
 					</tr>
 					@endforeach
 					<tr>
@@ -326,9 +341,12 @@
 				        <td>{{{$langb->name or ''}}}</td>
 						<td></td>
 						<td class="text-right">{{Content::money($price)}}</td>
-						<td class="text-right">{{Content::money($price)}}</td>
+						<td class="text-right" id="price">{{Content::money($price)}}</td>
 						<td class="text-right">{{Content::money($kprice)}}</td>
-						<td class="text-right">{{Content::money($kprice)}}</td>
+						<td class="text-right" id="price">{{Content::money($kprice)}}</td>
+						<td>						
+							<label style="cursor:pointer;" class="icon-list ic_remove" onclick="deleteRow(this)"> </label>
+						</td>
 					</tr>
 					@endforeach
 					<tr>
@@ -365,10 +383,13 @@
 						<td>{{{$rb->supplier->supplier_name or ''}}}</td>         
 					    <td>{{{$rb->rest_menu->title or ''}}}</td>
 					    <td class="text-center">{{$rb->book_pax}}</td>
-						<td class="text-right">{{Content::money($rb->price)}}</td>
+						<td class="text-right" id="price">{{Content::money($rb->price)}}</td>
 		                <td class="text-right">{{Content::money($rb->amount)}}</td>
 		                <td class="text-right">{{Content::money($rb->kprice)}}</td>
-	                  	<td class="text-right">{{Content::money($rb->kamount)}}</td>
+	                  	<td class="text-right" id="price">{{Content::money($rb->kamount)}}</td>
+						<td>						
+							<label style="cursor:pointer;" class="icon-list ic_remove" onclick="deleteRow(this)"> </label>
+						</td>
 					</tr>
 					@endforeach
 					<tr>
@@ -406,9 +427,12 @@
 						<td></td>
 					    <td class="text-center">{{$rb->book_pax}}</td>
 		                <td class="text-right">{{Content::money($rb->price)}}</td>
-		                <td class="text-right">{{Content::money($rb->amount)}}</td>
+		                <td class="text-right" id="price">{{Content::money($rb->amount)}}</td>
 		                <td class="text-right">{{Content::money($rb->kprice)}}</td>
-	                  	<td class="text-right">{{Content::money($rb->kamount)}}</td>
+	                  	<td class="text-right" id="price">{{Content::money($rb->kamount)}}</td>
+						<td>						
+							<label style="cursor:pointer;" class="icon-list ic_remove" onclick="deleteRow(this)"> </label>
+						</td>
 					</tr>
 					@endforeach
 				@endif
@@ -425,15 +449,18 @@
 						<td></td>   
 					    <td class="text-center">{{$misc->book_pax}}</td>
 		                <td class="text-right">{{Content::money($misc->price)}}</td>
-		                <td class="text-right">{{Content::money($misc->amount)}}</td>
+		                <td class="text-right" id="price">{{Content::money($misc->amount)}}</td>
 		                <td class="text-right">{{Content::money($misc->kprice)}}</td>
-	                  	<td class="text-right">{{Content::money($misc->kamount)}}</td>
+	                  	<td class="text-right" id="price">{{Content::money($misc->kamount)}}</td>
+					    <td>						
+							<label style="cursor:pointer;" class="icon-list ic_remove" onclick="deleteRow(this)"> </label>
+						</td>
 					</tr>
 					@endforeach
 				@endif
 				<tr>
 					<td colspan="5" class="text-right" style="border-bottom: none; border-bottom: none; border-left:none border-right:none;" ></td>
-					<th colspan="2" class="text-right" style="border-bottom: none; border-bottom: none; border-left:none;">
+					<th colspan="2" class="text-right" style="border-bottom: none; border-bottom: none; border-left:none;" id="totalAmountCell">
 						<?php 
 						$grandtotal = $hotelb->sum('net_amount') + $flightb->sum('book_namount') + $golfb->sum('book_namount') + 
 									$cruiseb->sum('net_amount') + $transportb->sum('price') + $guideb->sum('price') + 
@@ -476,3 +503,43 @@
 	  	</div>
 	</div>
 @endsection
+<script>
+function deleteRow(r) {
+	console.log('delete');
+	var row = r.parentNode.parentNode;
+    var rowIndex = row.rowIndex;
+    
+    // Get the amount from the specific column in the row (adjust the selector accordingly)
+    var amountCell = row.querySelector("#price");
+
+    // Ensure that the amountCell is valid
+    if (amountCell) {
+        // Get the amount value
+        var amount = parseFloat(amountCell.innerText.replace(/[^0-9.-]+/g, ""));
+		console.log(amount);
+
+        // Update the total amount cell using its ID (adjust the ID accordingly)
+        var totalAmountCell = document.getElementById("totalAmountCell");
+		console.log(totalAmountCell);
+
+        // Ensure that the totalAmountCell is valid
+    if (totalAmountCell) {
+            // Get the current total amount value
+            var currentTotal = parseFloat(totalAmountCell.innerText.replace(/[^0-9.-]+/g, ""));
+			console.log("c" + currentTotal);
+            // Subtract the row amount from the total amount
+            var newTotal = currentTotal - amount;
+			console.log("n" + newTotal);
+
+            // Update the total amount cell
+		//	totalAmountCell.innerText = "Total " + Content.currency() + ": " + Content.money(newTotal.toFixed(2));
+	totalAmountCell.innerText = newTotal.toFixed(2);
+	
+        }
+       
+    }
+		var i = r.parentNode.parentNode.rowIndex;
+  document.getElementById("myTable").deleteRow(i);
+    }
+
+</script>

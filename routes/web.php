@@ -273,6 +273,7 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::post("arrival_report", "Admin\ReportController@searchArrival")->name("searchArrival");
 		Route::get("statement", "Admin\ReportController@statement")->name("statement");
 		Route::post("statement", "Admin\ReportController@searchStatement")->name("searchStatement");
+		Route::get("payment_report", "Admin\ReportController@payment_report")->name("payment_report");
 		Route::get("changestatus/{projectNum}","Admin\AdminController@changestatus")->name("changestatus");
 		Route::post("gross_p&l", "Admin\ReportController@searchGross")->name("searchGross");
 
@@ -336,7 +337,9 @@ Route::group(["middleware" => ["IsAccount"]], function(){
 		Route::post("editjournal-entry", "Account\AccountController@editJournal")->name("editJournal");
 		Route::post("createJournal", "Account\AccountController@createJournal")->name("createJournal");
 		Route::post("addAccountName", "Account\AccountController@addNewAccount")->name("addNewAccount");
+
 		Route::post("createPayable", "Account\AccountController@createPayment")->name("createPayment");
+		
 		Route::post("addBankTransfer", "Account\AccountController@addBankTransfer")->name("addBankTransfer");
 
 		Route::get("findOption",  "Account\OptionController@loadData")->name("loadData");	

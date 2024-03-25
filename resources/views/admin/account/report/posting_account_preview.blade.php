@@ -47,6 +47,7 @@
 							$Project_total = $project->project_selling_rate;
 						}
 						$totalRevenue = ($Project_total + $project->project_add_invoice) - $project->project_cnote_invoice; 
+						//dd($totalRevenue);
 					?>
 					@if(!empty($totalRevenue))
 						<tr style="background-color:#f4f4f4;">
@@ -55,16 +56,25 @@
 							<th style="border-top: none; width: 17%;" colspan="2" class="text-left">INV-Amount <span class="pull-right">Received</span></th>
 						</tr>
 						<tr>
-							<td>{{Content::dateformat($project->project_start)}} -> {{Content::dateformat($project->project_end)}}</td>
+							<td>{{ Content::dateformat($project->project_start) }} -> {{ Content::dateformat($project->project_end) }}</td>
 							<td colspan="9">{!! $project->project_desc !!}</td>
-							<td class="text-center" colspan="2">
+							<td class="" colspan="2">
 								<?php
 			      					$proJournal = App\AccountJournal::where(['supplier_id'=>$project->supplier_id, 'business_id'=>9,'project_number'=>$project->project_number, "book_id"=>$project->id, 'status'=>1])->first();
-			      					$accTransaction = App\AccountTransaction::where(['journal_id'=> $proJournal['id'], 'account_type_id'=>8, 'status'=>1]);
+									if(isset($proJournal)){
+			      					$accTransaction = App\AccountTransaction::where(['journal_id'=> $proJournal->id, 'account_type_id'=>8, 'status'=>1]);
 			      					$color = $accTransaction->sum('debit') == $totalRevenue ? "style=font-weight:700;color:#3c8dbc" : '';
+									}else{
+										$color=0;
+										$accTransaction='';
+									}
 		      						?>
+								@if(!empty($accTransaction))
 	      						<span class="pull-left" {{$color}}> {{ $totalRevenue == $accTransaction->sum('debit') ? Content::money($totalRevenue) : Content::money($totalRevenue - $accTransaction->sum('debit')) }}</span>
-	  							@if( $proJournal['book_amount'] > 0 ) 	  								
+	  							@else
+								{{Content::money($totalRevenue)}}
+								@endif
+								@if( $proJournal['book_amount'] > 0 ) 	  								
 	  								<span class="badge badge-light pull-right">{{ Content::money($accTransaction->sum('debit')) }}</span>
 	          						@if ($proJournal['book_amount'] > $accTransaction->sum('debit'))
 	          							<a target="_blank" href="{{route('getPayable', ['journal_id'=> $proJournal->id])}}" class="btn btn-info btn-xs hidden-print pull-right"><b>Receive </b></a>
@@ -87,7 +97,7 @@
 	          							data-bus_type="agent"
 	          							data-title="{{{ $project->supplier->supplier_name or ''}}}"
 	          							data-book_id="{{$project->id}}"
-	          							data-supplier="{{ $project->supplier_id }}" 
+	          							data-supplier="{{ $project->supplier_id }}"  
 	          							data-country="{{ $project->country_id}}">Post</span>
 	          						@endif
 	          					@endif
@@ -102,8 +112,8 @@
 							<th style="border-top: none;" colspan="2"><span class="pull-right">Net Cost</span></th>
 						</tr>	
 							<tr>
-							<td>{{Content::dateformat($project->project_start)}} -> {{Content::dateformat($project->project_end)}}</td>
-							<td colspan="9">{!! $project->project_desc !!}</td>
+							<td>{{ Content::dateformat($project->project_start)}} -> {{ Content::dateformat($project->project_end) }}</td>
+							<td colspan="9">{{{ $project->project_desc or '' }}}</td>
 							<td class="text-center" colspan="2">
 								<?php
 			      					$proJournal = App\AccountJournal::where(['supplier_id'=>$project->supplier_agent, 'business_id'=>9,'project_number'=>$project->project_number, "book_id"=>$project->id, 'status'=>1])->first();
@@ -115,7 +125,7 @@
 	      					</span>
 	  							@if( $proJournal['book_amount'] > 0 ) 
 	  								
-	  								<span class="badge badge-light pull-right">{{ Content::money($accTransaction->sum('credit')) }}</span>
+	  								<span class="badge badge-light pull-right">{{{ Content::money($accTransaction->sum('credit')) or '' }}}</span>
 
 	          						@if ($proJournal['book_amount'] > $accTransaction->sum('credit'))
 	          							<a target="_blank" href="{{route('getPayable', ['journal_id'=> $proJournal->id])}}" class="btn btn-info btn-xs hidden-print pull-right"><b>Receive</b></a>
@@ -162,11 +172,11 @@
 						</tr>
 						@foreach($hotelBook as $hotel)
 						<tr class="container_hotel">
-							<td><span>{{ Content::dateformat($hotel->checkin) }} -> {{ Content::dateformat($hotel->checkout)}}</span></td>
+							<td><span>{{ Content::dateformat($hotel->checkin)}} -> {{ Content::dateformat($hotel->checkout) }}</span></td>
 							<td colspan="5">{{{ $hotel->hotel->supplier_name or ''}}} <small style="color: #9E9E9E;">{!! $hotel->remark > 0 ? "($hotel->remark)" :'' !!}</small></td>
 							<td colspan="2" >{{{ $hotel->room->name or ''}}}</td>
-							<td class="text-center">{{$hotel->no_of_room}}</td>
-							<td class="text-center" >{{ $hotel->book_day}}</td>
+							<td class="text-center">{{{ $hotel->no_of_room or '' }}}</td>
+							<td class="text-center" >{{{ $hotel->book_day or '' }}}</td>
 							<td class="text-right" width="120px">
 							<?php $hotelAmount = $hotel->net_amount;
 								$totalHotel = $totalHotel + $hotelAmount;
@@ -177,7 +187,7 @@
 	          					<span class="pull-left" {{$color}}>{{$hotelAmount == $hTransaction->sum('credit') ? Content::money($hotelAmount) : Content::money($hotelAmount - $hTransaction->sum('credit'))}}</span>	
  
 								@if( !empty($HproJournal['book_amount']) )									
-									<span class="badge badge-light pull-right">{{ Content::money($hTransaction->sum('credit') ) }}</span>
+									<span class="badge badge-light pull-right">{{{ Content::money($hTransaction->sum('credit') ) or '' }}}</span>
 		          						@if ( $HproJournal['book_amount'] > $hTransaction->sum('credit'))
 			      							<a target="_blank" href="{{route('getPayable', ['journal_id'=> $HproJournal->id])}}" class="btn btn-info btn-xs pull-right hidden-print"><b>Pay</b></a>
 			      							<span class="btn btn-link btn-xs hidden-print pull-right">
@@ -206,7 +216,7 @@
 						</tr>
 						@endforeach
 						<tr>
-							<td colspan="11" class="text-right"><h5><strong>Total: {{Content::money($totalHotel)}} {{Content::currency()}} </strong></h5></td>
+							<td colspan="11" class="text-right"><h5><strong>Total: {{ Content::money($totalHotel)}} {{Content::currency()}} </strong></h5></td>
 						</tr>				
 					@endif
 
@@ -228,7 +238,7 @@
 						@foreach($flightBook as $fl)
 							<?php $flprice = App\Supplier::find($fl->book_agent);?>		
 							<tr class="container_flight">
-								<td>{{Content::dateformat($fl->book_checkin)}}</td>
+								<td>{{ Content::dateformat($fl->book_checkin) }}</td>
 								<?php
 			      					$FJournal = App\AccountJournal::where(['supplier_id'=>$flprice['id'], 'business_id'=>4,'project_number'=>$project->project_number, "book_id"=>$fl->id, 'type'=>1, 'status'=>1])->first();
 			      					$fSaction = App\AccountTransaction::where(['journal_id'=>$FJournal['id'], 'status'=>1]);
@@ -238,18 +248,18 @@
 									$combideFlihgt = $fl->book_namount ? $fl->book_namount : $fl->book_nkamount; 
 									$flightAmount = $fl->book_namount + $fl->book_nkamount;
 		      					?>
-								<td colspan="3">{{ $flprice['supplier_name'] }}</td>
-								<td colspan="2" class="text-center">{{$fl->flight_from}}<i class="fa fa-arrow-right"></i>{{$fl->flight_to}}</td>
-								<td class="text-center">{{$fl->book_pax}}</td>
-								<td class="text-right">{{Content::money($fl->book_nprice)}}</td>
-								<td class="text-right" {{$color}}>{{ $fl->book_namount == $fSaction->sum('credit') ? Content::money($fl->book_namount) :   Content::money($fl->book_namount - $fSaction->sum('credit') )}}</td>
-								<td class="text-right">{{Content::money($fl->book_nkprice)}}</td>
+								<td colspan="3">{{{ $flprice['supplier_name'] or '' }}}</td>
+								<td colspan="2" class="text-center">{{{ $fl->flight_from or '' }}}<i class="fa fa-arrow-right"></i>{{{ $fl->flight_to or '' }}}</td>
+								<td class="text-center">{{{ $fl->book_pax or '' }}}</td>
+								<td class="text-right">{{{ Content::money($fl->book_nprice) or '' }}}</td>
+								<td class="text-right" {{$color}}>{{ $fl->book_namount == $fSaction->sum('credit') ? Content::money($fl->book_namount) :   Content::money($fl->book_namount - $fSaction->sum('credit') ) }}</td>
+								<td class="text-right">{{{ Content::money($fl->book_nkprice) or '' }}}</td>
 								<td class="text-right">
-									<span class="pull-left" {{$colork}}>{{$fl->book_nkamount == $fSaction->sum('kcredit') ? Content::money($fl->book_nkamount) : Content::money($fl->book_nkamount - $fSaction->sum('kcredit'))}}</span>
+									<span class="pull-left" {{$colork}}>{{ $fl->book_nkamount == $fSaction->sum('kcredit') ? Content::money($fl->book_nkamount) : Content::money($fl->book_nkamount - $fSaction->sum('kcredit')) }}</span>
 
 									@if($FJournal['book_amount'] > 0 || $FJournal['book_kamount'] > 0 )
 			          					
-			          					<span class="badge badge-light pull-right">{{ $fSaction->sum('credit') ? Content::money($fSaction->sum('credit')) : Content::money($fSaction->sum('kcredit'))}}</span>
+			          					<span class="badge badge-light pull-right">{{ $fSaction->sum('credit') ? Content::money($fSaction->sum('credit')) : Content::money($fSaction->sum('kcredit')) }}</span>
 
 										@if($FJournal['book_amount'] > $fSaction->sum('credit') || $FJournal['book_kamount'] > $fSaction->sum('kcredit'))
 											<a target="_blank" href="{{route('getPayable', ['journal_id'=>$FJournal['id']]) }}" class="btn btn-info btn-xs pull-right hidden-print"><b>Pay</b></a>
@@ -281,11 +291,11 @@
 							<td colspan="11" class="text-right">
 								<h5><strong>
 										@if($flightBook->sum('book_namount') > 0)
-											Total {{Content::currency()}}: {{Content::money($flightBook->sum('book_namount'))}}
+											Total {{Content::currency()}}: {{ Content::money($flightBook->sum('book_namount')) }}
 										@endif
 										{{$flightBook->sum('book_namount') > 0 && $flightBook->sum('book_nkamount') > 0 ? ',' : ''}}
 										@if($flightBook->sum('book_nkamount') > 0)
-											Total {{Content::currency(1)}}: {{Content::money($flightBook->sum('book_nkamount'))}}
+											Total {{Content::currency(1)}}: {{ Content::money($flightBook->sum('book_nkamount')) }}
 										@endif
 									</strong>
 								</h5>
@@ -330,22 +340,22 @@
 	              			
 						?>
 							<tr class="container_golf">
-								<td>{{Content::dateformat($gf->book_checkin)}}</td>
-								<td>{{$gf->supplier_name}}</td>
-								<td>{{$gf->book_golf_time}}</td>
+								<td>{{ Content::dateformat($gf->book_checkin) }}</td>
+								<td>{{{ $gf->supplier_name or '' }}}</td>
+								<td>{{{ $gf->book_golf_time or '' }}}</td>
 								<td colspan="3">{{{ $gsv->name or ''}}}</td>
-								<td class="text-center">{{$gf->book_pax}}</td>			
-								<td class="text-right">{{Content::money($gf->book_nprice)}}</td>
+								<td class="text-center">{{{ $gf->book_pax or '' }}}</td>			
+								<td class="text-right">{{{ Content::money($gf->book_nprice) or ''}}}</td>
 								<td class="text-right" {{$color}}>
-		{{$gf->book_namount == $Gsaction->sum('credit') ? Content::money($gf->book_namount) : Content::money($gf->book_namount - $Gsaction->sum('credit'))}}</td>
-									<td class="text-right">{{Content::money($gf->book_nkprice)}}</td>
+		{{ $gf->book_namount == $Gsaction->sum('credit') ? Content::money($gf->book_namount) : Content::money($gf->book_namount - $Gsaction->sum('credit')) }}</td>
+									<td class="text-right">{{{ Content::money($gf->book_nkprice) or '' }}}</td>
 									<td class="text-center" style="width: 17%;">
 										<span class="pull-left" {{$colork}}>
-		{{ $gf->book_nkamount == $Gsaction->sum('kcredit') ? Content::money($gf->book_nkamount) : Content::money($gf->book_nkamount - $Gsaction->sum('kcredit'))}}</span>
+		{{ $gf->book_nkamount == $Gsaction->sum('kcredit') ? Content::money($gf->book_nkamount) : Content::money($gf->book_nkamount - $Gsaction->sum('kcredit')) }}</span>
 
 		      						@if($GJournal['book_amount'] > 0 || $GJournal['book_kamount'] > 0 ) 
 										
-										<span class="badge badge-light pull-right">{{ Content::money($Gsaction->sum('credit'))  }}</span>
+										<span class="badge badge-light pull-right">{{{ Content::money($Gsaction->sum('credit')) or '' }}}</span>
 
 		      							@if($GJournal['book_amount'] > $Gsaction->sum('credit') || $GJournal['book_kamount'] > $Gsaction->sum('kcredit'))
 		      								<a target="_blank" href="{{route('getPayable', ['journal_id'=>$GJournal['id'] ])}}" class="btn btn-info btn-xs pull-right hidden-print"><b>Pay</b></a>
@@ -379,14 +389,14 @@
 							<td colspan="11" class="text-right">
 								<h5><strong>
 									@if($TotalGolf > 0)
-										Total {{Content::currency()}}: {{Content::money($TotalGolf)}}	
+										Total {{Content::currency()}}: {{ Content::money($TotalGolf) }}	
 									@endif
 									{{$TotalGolf > 0 || $TotalKGolf > 0 ? ', ':''}}
 									@if($TotalKGolf > 0) 
-										Total {{Content::currency(1)}}: {{Content::money($TotalKGolf)}}
+										Total {{Content::currency(1)}}: {{ Content::money($TotalKGolf) }}
 									@endif
 									</strong>
-								</h5>
+								</h5> 
 							</td>
 						</tr>
 					@endif
@@ -422,16 +432,16 @@
 							
 							?>	
 						<tr class="container_river-cruise">
-							<td>{{Content::dateformat($crp->checkin)}} -> {{ Content::dateformat($crp->checkout)}} </td>
+							<td>{{ Content::dateformat($crp->checkin)}} -> {{ Content::dateformat($crp->checkout) }} </td>
 							<td colspan="3">{{{ $crp->cruise->supplier_name or ''}}}</td>
 							<td colspan="4">{{{ $pcr->program_name or ''}}}</td>
 							<td>{{{ $crp->room->name or ''}}}</td>					
-							<td class="text-center">{{$crp->book_day}} / {{$crp->cabin_pax}}</td>
+							<td class="text-center">{{{ $crp->book_day or '' }}} / {{{ $crp->cabin_pax or '' }}}</td>
 							<td class="text-right">							
-								<span class="pull-left" {{$color}}> {{$crp->net_amount == $rsaction->sum('credit') ? Content::money($crp->net_amount) : Content::money($crp->net_amount - $rsaction->sum('credit'))}}</span>
+								<span class="pull-left" {{$color}}> {{ $crp->net_amount == $rsaction->sum('credit') ? Content::money($crp->net_amount) : Content::money($crp->net_amount - $rsaction->sum('credit')) }}</span>
 
 								@if(isset($RJournal['book_amount']) || $RJournal['book_kamount'] > 0 )
-									<span class="badge badge-light pull-right">{{ Content::money($rsaction->sum('credit')) }}</span>
+									<span class="badge badge-light pull-right">{{{ Content::money($rsaction->sum('credit')) or '' }}}</span>
 	              					@if($RJournal['book_amount'] > $rsaction->sum('credit') || $RJournal['book_kamount'] > $rsaction->sum('kcredit'))
 	          							<a target="_blank" href="{{route('getPayable', ['journal_id'=>$RJournal['id']])}}" class="btn btn-info  btn-xs pull-right hidden-print"><b>Pay</b></a>
 	          							<span class=" btn btn-link btn-xs hidden-print pull-right">
@@ -461,7 +471,7 @@
 						@endforeach
 						<tr>
 							<td colspan="11" class="text-right"><h5><strong>
-								Total {{Content::currency()}} : {{Content::money($totalCruise)}}</strong></h5>
+								Total {{Content::currency()}} : {{ Content::money($totalCruise) }}</strong></h5>
 							</td>
 						</tr>
 					@endif
@@ -503,16 +513,14 @@
 							$colork	= $TransacTran->sum('kcredit') == $btran['kprice'] ? "style=font-weight:700;color:#3c8dbc" : '';
 						?>
 						<tr class="container_transport">
-							<td>{{Content::dateformat($tran->book_checkin)}}</td>
-							<!-- <td>{{{ $pro->province_name or ''}}}</td> -->
-							
-							<td colspan="4">{{ $tran->tour_name }} &nbsp;<i>[ {{ $pro->province_name}} ]</i></td>
+							<td>{{ Content::dateformat($tran->book_checkin) }}</td>
+							<td colspan="4">{{{ $tran->tour_name or '' }}} &nbsp;<i>[ {{{ $pro->province_name or ''}}} ]</i></td>
 							<td>{{{ $btran->transport->supplier_name or ''}}}</td>
 							<td colspan="2">{{{ $btran->service->title or ''}}}</td>
 			                <td>{{{ $btran->vehicle->name or ''}}}</td>
-			                <td class="text-right" {{$color}}>{{ $btran['price'] == $TransacTran->sum('credit') ? Content::money($btran['price']) : Content::money($btran['price'] - $TransacTran->sum('credit'))}}</td>
+			                <td class="text-right" {{$color}}>{{ $btran['price'] == $TransacTran->sum('credit') ? Content::money($btran['price']) : Content::money($btran['price'] - $TransacTran->sum('credit')) }}</td>
 		                  	<td class="text-right" style="width: 17%;">
-		                  		<span {{$colork}}>{{Content::money($btran['kprice'] - $TransacTran->sum('kcredit'))}}</span>
+		                  		<span {{$colork}}>{{ Content::money($btran['kprice'] - $TransacTran->sum('kcredit')) }}</span>
 	              		
 	      					@if($TranJournal['book_amount'] > 0 || $TranJournal['book_kamount'] > 0)
 	      						<span class="badge badge-light pull-right">{{ Content::money($TransacTran->sum('credit')) }}</span>
@@ -550,11 +558,11 @@
 								<h5>
 									<strong>
 										@if($transportTotal > 0)
-											Total {{Content::currency()}}: {{Content::money($transportTotal)}}
+											Total {{Content::currency()}}: {{ Content::money($transportTotal) }}
 										@endif
 										{{$transportTotal > 0 && $transportkTotal > 0 ? ',' : '' }}
 										@if($transportkTotal > 0)
-											Total {{Content::currency(1)}} : {{Content::money($transportkTotal)}}
+											Total {{Content::currency(1)}} : {{ Content::money($transportkTotal) }}
 										@endif
 									</strong>
 								</h5>
@@ -598,19 +606,19 @@
 								$colork	= $GAccTran->sum('kcredit') == $bg['kprice'] ? "style=font-weight:700;color:#3c8dbc" : '';
 							?>
 							<tr class="container_guide">
-								<td><span class="hidden-print" style="position: relative;top:2px;"></span>{{Content::dateformat($tran->book_checkin)}}</td>
-								<!-- <td>{{$pro->province_name}}</td>          -->
-								<td colspan="4">{{$tran->tour_name}} &nbsp;<i>[ {{$pro->province_name}} ]</i></td>     
+								<td><span class="hidden-print" style="position: relative;top:2px;"></span>{{ Content::dateformat($tran->book_checkin) }}</td>
+								
+								<td colspan="4">{{{ $tran->tour_name or '' }}} &nbsp;<i>[ {{{ $pro->province_name or ''}}} ]</i></td>     
 								<td colspan="2">{{{ $bg->service->title or '' }}}</td>
 								<td>{{{ $bg->supplier->supplier_name or ''}}} </td>
 								<td>{{{$bg->language->name or ''}}}</td>
-								<td class="text-right" {{$color}}> {{$bg['price'] == $GAccTran->sum('credit') ? Content::money($bg['price']) : Content::money($bg['price'] - $GAccTran->sum('credit'))}}</td>
+								<td class="text-right" {{$color}}> {{ $bg['price'] == $GAccTran->sum('credit') ? Content::money($bg['price']) : Content::money($bg['price'] - $GAccTran->sum('credit')) }}</td>
 								<td class="text-right" style="vertical-align: middle;">
 									
-									<span {{$colork}}>{{ $bg['kprice'] == $GAccTran->sum('kcredit') ? Content::money($bg['kprice']) : Content::money($bg['kprice'] - $GAccTran->sum('kcredit')) }}</span>
+									<span {{$colork}}>{{ $bg['kprice'] == $GAccTran->sum('kcredit') ? Content::money($bg['kprice']) : Content::money($bg['kprice'] - $GAccTran->sum('kcredit'))}}</span>
 
 									@if($GJournal['book_amount'] > 0 || $GJournal['book_kamount'] > 0)
-	                  					<span class="badge badge-light pull-right">{{ $GAccTran->sum('kcredit') ? Content::money( $GAccTran->sum('kcredit')) : Content::money($GAccTran->sum('credit'))}}</span>
+	                  					<span class="badge badge-light pull-right">{{ $GAccTran->sum('kcredit') ? Content::money( $GAccTran->sum('kcredit')) : Content::money($GAccTran->sum('credit')) }}</span>
 
 			  							@if($GJournal['book_amount'] > $GAccTran->sum('credit') || $GJournal['book_kamount'] > $GAccTran->sum('kcredit'))
 			  								<a target="_blank" href="{{route('getPayable', ['journal_id'=> $GJournal['id']])}}" class="btn btn-info btn-xs pull-right hidden-print"><b>Pay</b></a>
@@ -644,11 +652,11 @@
 								<h5>
 									<strong>
 										@if($guidTotal > 0)
-											Total {{Content::currency()}}: {{Content::money($guidTotal)}}
+											Total {{Content::currency()}}: {{ Content::money($guidTotal) }}
 										@endif
 										{{$guidTotal > 0 && $guidkTotal > 0 ? ',' : ''}}
 										@if($guidkTotal > 0)
-											Total {{Content::currency(1)}}: {{Content::money($guidkTotal)}}
+											Total {{Content::currency(1)}}: {{ Content::money($guidkTotal) }}
 										@endif
 									</strong>
 								</h5>
@@ -686,11 +694,11 @@
 									
 	  						?>
 							<tr class="container_restaurant">
-								<td>{{Content::dateformat($rest->start_date)}}</td>
+								<td>{{ Content::dateformat($rest->start_date) }}</td>
 				                <td colspan="2">{{{$rest->supplier->supplier_name or ''}}}</td>         
 				                <td colspan="3">{{{$rest->rest_menu->title or ''}}}</td>
-				                <td class="text-center">{{$rest->book_pax}}</td>
-				                <td class="text-right">{{Content::money($rest->price)}}</td>
+				                <td class="text-center">{{{ $rest->book_pax or '' }}}</td>
+				                <td class="text-right">{{{ Content::money($rest->price) or '' }}}</td>
 				                <td class="text-right" {{$color}}>{{ $rest->amount == $RestAccTran->sum('credit') ? Content::money($rest->amount) : Content::money($rest->amount - $RestAccTran->sum('credit') )}} </td>
 				                <td class="text-right">{{Content::money($rest->kprice)}}</td>
 			                  	<td class="text-left">
@@ -731,11 +739,11 @@
 									<h5>
 										<strong>
 											@if($restBook->sum('amount') > 0)
-												Total {{Content::currency()}}: {{Content::money($restBook->sum('amount'))}}
+												Total {{Content::currency()}}: {{ Content::money($restBook->sum('amount')) }}
 											@endif
 											{{$restBook->sum('amount') > 0 && $restBook->sum('kamount') > 0 ? ',':''}}
 											@if($restBook->sum('kamount') > 0)
-												Total {{Content::currency(1)}}: {{Content::money($restBook->sum('kamount'))}} 
+												Total {{Content::currency(1)}}: {{ Content::money($restBook->sum('kamount')) }} 
 											@endif
 										</strong>
 									</h5>
@@ -781,12 +789,12 @@
 	  								
 								?>
 								<tr>
-									<td>{{Content::dateformat($ent->start_date)}}</td>
+									<td>{{ Content::dateformat($ent->start_date) }}</td>
 					                <td  colspan="5">{{{$ent->entrance->name or ''}}}</td>
-					                <td class="text-center">{{$ent->book_pax}}</td>
-					                <td class="text-right">{{Content::money($ent->price)}}</td>
+					                <td class="text-center">{{{ $ent->book_pax or '' }}}</td>
+					                <td class="text-right">{{{ Content::money($ent->price) or ''}}}</td>
 					                <td class="text-right" {{$color}}>{{$entAmount == $EntAccTran->sum('credit') ? Content::money($entAmount) : Content::money($entAmount - $EntAccTran->sum('credit'))}}</td>
-					                <td class="text-right">{{Content::money($ent->kprice)}}</td>
+					                <td class="text-right">{{{ Content::money($ent->kprice) or '' }}}</td>
 				                  	<td class="text-right">
 				                  		<span class="pull-left" {{$colork}}>{{$entKamount == $EntAccTran->sum('kcredit') ? Content::money($entKamount) : Content::money($entKamount - $EntAccTran->sum('kcredit'))}}</span>
 
@@ -858,10 +866,10 @@
 							$pro = App\Province::find($tour->province_id); 
 							$miscService = App\BookMisc::where(['project_number'=>$tour->book_project,'book_id'=>$tour->id])->orderBy("created_at", "DESC")->get();?>
 							<tr class="container_misc">
-				                <td>{{Content::dateformat($tour->book_checkin)}}</td>
-				                <!-- <td>{{$pro->province_name}}</td>          -->
+				                <td>{{ Content::dateformat($tour->book_checkin) }}</td>
+				              
 				                <td colspan="10" style="padding-right: 0px;">
-				                  	<div><strong>{{$tour->tour_name}}</strong> &nbsp; <i>[ {{$pro->province_name}} ]</i></div>
+				                  	<div><strong>{{{ $tour->tour_name or '' }}}</strong> &nbsp; <i>[ {{{$pro->province_name or ''}}} ]</i></div>
 						            @if($miscService->count() > 0) 
 						            	<hr style="border-top:none; border-bottom: 1px solid #ddd;padding: 5px 0px; margin-top:0px; margin-bottom: 0px;">
 					                  	<div class="row "style="font-style: italic;">
@@ -910,16 +918,16 @@
 							                  		<p>{{{ $misc->servicetype->name or '' }}}</p>
 							                  	</label>
 							                  	<label class="col-md-1" style="font-weight: 400;">
-							                  		<p>{{$misc->book_pax}}</p>
+							                  		<p>{{{ $misc->book_pax or '' }}}</p>
 							                  	</label>
 							                  	<label class="col-md-1" style="font-weight: 400;">
-							                  		<p>{{Content::money($misc->price)}}</p>
+							                  		<p>{{{Content::money($misc->price) or '' }}}</p>
 							                  	</label>
 							                  	<label class="col-md-1" style="font-weight: 400;">						                  		
 						                  			<span {{$color}}>{{ $miscAmount - $MiscAccTran->sum('credit') ? Content::money($miscAmount) : Content::money($miscAmount - $MiscAccTran->sum('credit')) }} </span>
 							                  	</label>
 							                  	<label class="col-md-1" style="font-weight: 400;">
-							                  		<p>{{Content::money($misc->kprice)}}</p>
+							                  		<p>{{{ ontent::money($misc->kprice) or '' }}}</p>
 							                  	</label>
 							                  	<label class="col-md-3 text-center" style="font-weight: 400; padding-right: 0px;">
 							                  		<span {{$colork}}> {{ $misckAmount - $MiscAccTran->sum('kcredit') ? Content::money($misckAmount) : Content::money($misckAmount - $MiscAccTran->sum('kcredit')) }}</span>
@@ -935,7 +943,7 @@
 					                  						</span>		
 				              							@elseif($miscAmount >= $MiscJournal['book_amount'] || $misckAmount >= $MiscJournal['book_kamount'] )
 				              								<span class="btn btn-link btn-xs hidden-print pull-right">
-					                  							<a  target="_blank" href="{{route('getJournalReport', ['journal_entry' => $project->project_number])}}">View/Edit</a>
+					                  						  	<a  target="_blank" href="{{route('getJournalReport', ['journal_entry' => $project->project_number])}}">View/Edit</a>
 					                  						</span>
 				              							@endif
 					                  				@else

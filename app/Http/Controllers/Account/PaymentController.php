@@ -58,13 +58,14 @@ class PaymentController extends Controller
         $aPay->amount       = $pay_amount;
         $aPay->original_amount = $req->vpc_Amount;
         $aPay->desc         = $req->desc;
-        if($aPay->save()){
-            $payment = PaymentLink::findOrFail($aPay->id);
-            Mail::to(\Auth::user()->email)
-                // ->cc(\Auth::user()->email)
-                ->bcc(config('app.acc_email'), 'Account Department')
-                ->send( new PaymentLinkShipped($payment));
-        }
+        $aPay->save();
+        // if($aPay->save()){
+        //     $payment = PaymentLink::findOrFail($aPay->id);
+        //     Mail::to(\Auth::user()->email)
+        //         // ->cc(\Auth::user()->email)
+        //         ->bcc(config('app.acc_email'), 'Account Department')
+        //         ->send( new PaymentLinkShipped($payment));
+        // }
         return redirect()->route('getPaymentLink')->with(['message'=> 'Payment link successfully created',  'status'=> 'success', 'status_icon'=> 'fa-check-circle']); 
     }
 

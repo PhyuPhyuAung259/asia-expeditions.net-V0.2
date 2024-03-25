@@ -110,6 +110,12 @@
 
 
         function insertData(baseUrl, dataForm, btnSub, btnText = "Public"){
+            //console.log(typeof dataForm)
+            $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+            });
             $.ajax({
                 method: "POST",
                 url: baseUrl,
@@ -135,7 +141,8 @@
                     $(btnSub).removeAttr("disabled");                
                 }
             });
-            return false;
+           return false;
+        
         }
 
         function validateField(feildName, title = "Required Field"){
@@ -600,14 +607,16 @@
 
             }      
         });
-         $(document).on("click", ".btnOkay", function(){
+         $(document).on("click", ".btnOkay", function(e){
+            e.preventDefault();
             urlMakePayment = baseUrl+"createPayable";
             dataForm = $("#account_CreatePayment_form").serialize();
             if ($(this).val() == 1) {
-                $("#account_CreatePayment_form").submit();
-                insertData(urlMakePayment,dataForm , $("#btnSaveCreatedPayment"), "Confirm Pay");
+               // console.log($("#account_CreatePayment_form").submit());
+                $("#account_CreatePayment_form")[0].submit();;
+                //insertData(urlMakePayment,dataForm , $("#btnSaveCreatedPayment"), "Confirm Pay");
                 $('#myAlert').modal('hide');
-            }
+             }
         });
 
         $(document).on("submit", "#account_journal_entry_form", function(e){

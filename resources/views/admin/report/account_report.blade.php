@@ -259,9 +259,9 @@
 							@if(!empty($fb->book_price))
 								{{$fb->book_price}}  {{Content::currency()}}
 							@else
-								{{$fb->book_kprice}}  {{Content::currency(1)}}
+								{{$fb->book_kprice}}  {{Content::currency()}}
 							@endif
-						<td class="text-right">{{Content::money($fb->book_namount or $fb->book_nkamount)}}</td>
+						<td class="text-right">{{Content::money($fb->book_namount)}}</td>
 						
 					</tr>
 					@endforeach

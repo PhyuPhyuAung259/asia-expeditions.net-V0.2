@@ -153,8 +153,10 @@ class AccountController extends Controller
     
 
     public function createPayment(Request $req){
+     // dd("fhweauirf8iowefio");
         try {
             $actCode = AccountTransaction::latest('entry_code')->first();
+         
             $entry_code = sprintf("%08d", (int)$actCode['entry_code'] + 1);
             if ($req->exchange_rate) {
                 $total_ex_converted = $req->pay_kamount / $req->exchange_rate;
@@ -182,13 +184,14 @@ class AccountController extends Controller
             $acctran->kcredit         = $req->type == 1 ? $req->deposit_kamount : '';
             $acctran->kdebit          = $req->type == 2 ? $req->deposit_kamount : '';
             $acctran->total_amount    = $req->pay_amount;
-            $acctran->bankfees        = $req->bank_fees;
+           // $acctran->bankfees        = $req->bank_fees;
             $acctran->total_kamount   = $req->pay_kamount;      
             $acctran->ex_rate         = $req->exchange_rate;
             $acctran->ex_rate_converted  = $total_ex_converted;
             $acctran->payment_voucher = $req->payment_voucher;
             $acctran->type            = $req->type;
             $acctran->remark  = $req->remark;
+            
             if ($acctran->save()) {
                 $secondTran = New AccountTransaction;
                 $secondTran->user_id  = \Auth::user()->id;
@@ -218,6 +221,7 @@ class AccountController extends Controller
                 $secondTran->payment_voucher = $req->payment_voucher;
                 $secondTran->type            = $req->type == 1 ? 2 : 1;
                 $secondTran->remark  = $req->remark;
+             //   dd($secondTran);
                 $secondTran->save();
             }
             $messagetype = "success";
@@ -228,7 +232,7 @@ class AccountController extends Controller
             $message = "Payment can not create";
             $status_icon = "fa-exclamation-circle";
         }
-        return response()->json(["message"=>$message, "messagetype"=>$messagetype, 'status_icon'=>$status_icon]);
+        return back()->with(["message"=>$message, "messagetype"=>$messagetype, 'status_icon'=>$status_icon]);
     } 
 
     public function editJournal(Request $req){
@@ -304,7 +308,9 @@ class AccountController extends Controller
     public function previewPosting($projectNo, $type){
         $project = Project::Where('project_number', $projectNo)->first();
         $booking = Booking::where(['book_project'=>$projectNo,'book_status'=>1])->groupBy('book_checkin')->orderBy('book_checkin', 'ASC')->get();
+       // dd($project,$booking);
         if ($project) {
+         
             return view('admin.account.report.posting_account_preview', compact('project', 'booking', 'type'));
         }else{
             $message =  $projectNo;

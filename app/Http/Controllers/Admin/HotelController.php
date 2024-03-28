@@ -29,13 +29,22 @@ class HotelController extends Controller
     }
     
     public function getHotelinfo(Request $req){
-        if (isset($req->hotel_checked) && !empty($req->hotel_checked)) {
+        $viewType = $req->input('viewType');
+        if ($viewType === 'view1') {
+            if (isset($req->hotel_checked) && !empty($req->hotel_checked)) {
+                $hotelChecked = isset($req->hotel_checked) ? $req->hotel_checked : [0];
+                $suppliers = Supplier::where('supplier_status', 1)->whereIn('id', $hotelChecked)->orderBy('supplier_name')->get();
+                return view('admin.hotel.hotel_Report', compact('suppliers'));
+            }else{
+                $hotelinfo = HotelCategory::orderBy('name', 'ASC')->get();
+                return view('admin.hotel.hotel_info', compact('hotelinfo'));
+            }
+        } elseif ($viewType === 'view2') {
+            $currentAction = $req->path();
             $hotelChecked = isset($req->hotel_checked) ? $req->hotel_checked : [0];
             $suppliers = Supplier::where('supplier_status', 1)->whereIn('id', $hotelChecked)->orderBy('supplier_name')->get();
-            return view('admin.hotel.hotel_Report', compact('suppliers'));
-        }else{
-            $hotelinfo = HotelCategory::orderBy('name', 'ASC')->get();
-            return view('admin.hotel.hotel_info', compact('hotelinfo'));
+            //dd($suppliers);
+            return view('admin.supplier.hotelAgentTariff', compact('suppliers','currentAction','hotelChecked'));
         }
     }
 

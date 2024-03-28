@@ -43,10 +43,10 @@ class SupplierController extends Controller
      // supplier report
     public function getSupplierReport(Request $req, $supId, $type){
         $sub_type=$req->sub_type;
-        
         $currentAction = $req->path();
         $supplier = Supplier::find($supId);
         $essittype = isset($req->type) ? $req->type : '';
+
         if ($essittype == 'selling') {
             $priceType = $req->type;
             return view('admin.supplier.supplierReport', compact('supplier', 'type', 'priceType', 'currentAction'));
@@ -59,9 +59,22 @@ class SupplierController extends Controller
             return view('admin.supplier.supplierReport', compact('supplier', 'type' ,'currentAction', 'priceType','sub_type' ));
         }
     }
+  
+
+    public function sortHotelTariff(Request $req){
+        $currentAction = $req->path();
+        $hotelChecked = isset($req->supIds) ? $req->supIds : [0];
+        $suppliers = Supplier::where('supplier_status', 1)->whereIn('id', $hotelChecked)->orderBy('supplier_name')->get();
+        $fmonth  = $req->fmonth;
+        $tmonth  = $req->tmonth;
+        $year   = $req->year;
+       return view('admin.supplier.hotelAgentTariff', compact('suppliers','currentAction', 'fmonth','tmonth', 'year','hotelChecked'));
+      
+    }
+
 
     public function sortHotelRateReport(Request $req, $supId, $type){
-        // return date('Y', strtotime('+25 years'));
+      
         $currentAction = $req->path();
         $supplier = Supplier::find($supId);
         $fmonth  = $req->fmonth;

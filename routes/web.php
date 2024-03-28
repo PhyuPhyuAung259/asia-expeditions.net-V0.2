@@ -179,6 +179,8 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::get('hotel/room', 'Admin\HotelController@getRoom')->name('getRoom');
 		Route::get('hotel/info', 'Admin\HotelController@getHotelinfo')->name('getHotelinfo');
 		Route::post('hotel/info', 'Admin\HotelController@addHotelinfo')->name('addHotelinfo');
+		Route::post('hotel/agentTariff', 'Admin\SupplierController@sortHotelTariff')->name('sortHotelTariff');
+
 
 		Route::get('hotel/facility', 'Admin\HotelController@getHotelFacility')->name('getHotelFacility');
 		Route::post('hotel/facility', 'Admin\HotelController@eddHotelFacility')->name('eddHotelFacility');

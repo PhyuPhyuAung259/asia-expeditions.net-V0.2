@@ -14,7 +14,9 @@
     <section class="content"> 
       <div class="row">
         <section class="col-lg-12 connectedSortable">
-          <h3 class="border">Suppliers {{{ $business->name or ''}}} List <span class="fa fa-angle-double-right"></span> <a href="{{route('getSupplierForm', ['type'=> $supply] )}}" class="btn btn-default btn-sm">New {{{ $business->name or 'Supplier'}}}</a></h3>     
+          <h3 class="border">Suppliers {{{ $business->name or ''}}} List <span class="fa fa-angle-double-right"></span> <a href="{{route('getSupplierForm', ['type'=> $supply] )}}" class="btn btn-default btn-sm">New {{{ $business->name or 'Supplier'}}}</a> 
+          
+          </h3>     
           @if(Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
           <form action="" method="" style="position: relative; z-index: 2;">
             <div class="col-sm-2 col-xs-6 pull-right" style="text-align: right; margin-right: -15px;">
@@ -49,7 +51,10 @@
                 <button style="border-radius: 50px;" class="btn btn-sm btn-default ok_download" data-type="excel">Download Excel  &nbsp;<i class="fa fa-download"></i></button>
               </div>
               <div class="col-sm-1 pull-right checkingAction" style="display: none;">
-                <button class="btn btn-sm btn-primary btn_acc">Preview Info</button>
+                <button class="btn btn-sm btn-primary btn_acc" name="viewType" value="view1"> Preview Info</button>
+              </div>
+              <div class="col-sm-1 pull-right checkingAction" style="display: none;">
+                <button class="btn btn-sm btn-primary btn_acc" name="viewType" value="view2"> View Agent Tariff</button>
               </div>
               <table class="datatable table table-hover table-striped excel-sheed">
                 <thead>
@@ -197,10 +202,10 @@
                         <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> isset($sup->business->slug)? $sup->business->slug :'','sub_type'=>'with Price'])}}" title="View {{{$business->name or 'supplier'}}} Report">
                           <label class="icon-list ic_report"></label>
                         </a> 
-                        <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> isset($sup->business->slug)? $sup->business->slug :'','sub_type'=>'without Price'])}}" title="View {{{$business->name or 'supplier'}}} Service Report">
+                        <a target="_blank" href="{{route('supplierReport' ,['reportId' => $sup->id,'type'=> isset($sup->business->slug)? $sup->business->slug :'','sub_type'=>'without Price'])}}" title="View Agent {{{$business->name or 'supplier'}}} Tariff">
                           <label class="icon-list ic_report"></label>
                         </a>            
-                        <a href="javascript:void(0)" class="RemoveHotelRate" data-type="supplier" data-id="{{$sup->id}}" title="Remove this Flight Number ?">
+                        <a href="javascript:void(0)" class="RemoveHotelRate" data-type="supplier" data-id="{{$sup->id}}" title="Remove this 0 Number ?">
                           <label class="icon-list ic_remove"></label>
                         </a>                   
                       </td>                     

@@ -1,19 +1,21 @@
 <?php
 namespace App\Http\Controllers\admin;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\component\Content;
-use Intervention\Image\ImageManagerStatic as Image;
-use App\Business;
 use App\Room;
+use App\Tour;
+use App\Business;
 use App\RoomRate;
-use App\RoomCategory;
 use App\Supplier;
-use App\HotelFacitily;
-use App\HotelCategory;
 use App\HotelRate;
 use App\HotelBooked;
+use App\RoomCategory;
+use App\HotelCategory;
+use App\HotelFacitily;
+use App\component\Content;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Intervention\Image\ImageManagerStatic as Image;
+
 class HotelController extends Controller 
 {
     //
@@ -45,6 +47,10 @@ class HotelController extends Controller
             $suppliers = Supplier::where('supplier_status', 1)->whereIn('id', $hotelChecked)->orderBy('supplier_name')->get();
             //dd($suppliers);
             return view('admin.supplier.hotelAgentTariff', compact('suppliers','currentAction','hotelChecked'));
+        }elseif($viewType == 'view3'){
+            $tourId = isset($req->tour_checked) ? $req->tour_checked : [0];
+            $tours = Tour::whereIn('id',$tourId)->orderByDESC('id')->get();
+            return view('admin.tour.tourAgentTariff', compact('tours'));
         }
     }
 

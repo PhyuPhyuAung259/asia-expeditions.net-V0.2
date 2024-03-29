@@ -111,13 +111,15 @@
                                         class="pcolor">{{ $rate->sextra > 0 ? Content::currency() : '' }}</small></td>
                                 <td class="text-right">{{ Content::money($rate->schexbed) }} <small
                                         class="pcolor">{{ $rate->schexbed > 0 ? Content::currency() : '' }}</small></td>
-                                
-                 
                             </tr>
-                          
                         @endforeach
-                         
                     @endforeach
+                    <tr>
+                        <td>
+                            <strong>Remark</strong>
+                            {{{$supplier->supplier_remark or ''}}}
+                        </td>
+                    </tr>
                 @endforeach
                 
             </table>    

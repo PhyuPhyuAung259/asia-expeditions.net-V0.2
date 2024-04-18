@@ -220,6 +220,7 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::get('tour/update/price/{tourid}', 'Admin\TourController@getTourPriceEdit')->name('getTourPriceEdit');
 		Route::post('tour/add/price', 'Admin\TourController@addTourPrice')->name('addTourPrice');
 		Route::post('tour/update/price', 'Admin\TourController@updateTourPrice')->name('updateTourPrice');
+		Route::post("editTourDesc/{tourId}", "Admin\TourController@editTourDesc")->name("editTourDesc");
 
 		Route::get('tour/tour-report/{tourid}/{type}', 'Admin\TourController@getTourReport')->name('getTourReport');
 		Route::get('supplier/report/{supplierId}/{supType}', 'Admin\SupplierController@getSupplierReport')->name('supplierReport');
@@ -299,6 +300,12 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::post("window/uploadfile", 'Admin\UploadController@uploadfile')->name('uploadfile');
 		Route::post("window/uploadfile/only", 'Admin\UploadController@uploadOnlyFile')->name('uploadOnlyFile');
 		Route::get("window/remove-image/logo", 'Admin\UploadController@RemoveLogo')->name('RemoveLogo');
+
+		//chartofAccount
+		Route::get('chartofaccount', 'Account\AccountController@chartofAccount')->name('chartofaccount');	
+		Route::get('account/accForm', 'Account\AccountController@accForm')->name('accForm');
+		Route::post("addNewAccount", "Account\AccountController@addNewAccount")->name("addNewAccount");
+
 }); 
  
 

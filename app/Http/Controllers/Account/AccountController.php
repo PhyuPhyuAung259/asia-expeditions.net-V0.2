@@ -484,5 +484,14 @@ class AccountController extends Controller
         }
         return response()->json(["message"=>$message, "messagetype"=>$messagetype, 'status_icon'=> $status_icon]);
     }
-
+    
+    public function chartofAccount(Request $req){
+        $account = AccountName::where('status',1)->orderBy('account_code')->get();
+       // dd($account);
+        return view('admin.account.report.chartOfAcc', compact('account'));
+    }
+    public function accForm(Request $req)
+    {       
+        return view('admin.account.report.accForm');
+    } 
 }

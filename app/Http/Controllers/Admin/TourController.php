@@ -112,6 +112,20 @@ class TourController extends Controller
         return back()->with(['message'=> "Tour Successfully Updated", 'status'=> 'success', 'status_icon'=> 'fa-check-circle']); 
     }
 
+    public function editTourDesc(Request $req,$tourId){
+
+        try{
+            $editTour = Tour::find($tourId);
+         
+            $editTour->tour_desc = $req->tour_desc;
+         
+            $editTour->save();
+           return back()->with(['message'=> 'Tour Program Details has been Updated',  'status'=> 'success', 'status_icon'=> 'fa-check-circle']);
+        }catch (Exception $e) {
+            return back()->with(['message'=> 'Something went wrong please try again', 'status'=> 'warning', 'status_icon'=> 'fa-exclamation-circle']);
+        }
+    }
+
     public function getTourtype(){
         $tourtype = Business::where(['category_id'=> 1, 'status'=> 1])->orderBy('name', 'ASC')->get();
         return view('admin.tour.tourtype', compact('tourtype'));

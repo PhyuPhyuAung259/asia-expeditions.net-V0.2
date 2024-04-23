@@ -15,7 +15,7 @@
       <div class="row">
         @include('admin.include.message')
         <div class="col-lg-12"><h3 class="border">Account Management</h3></div>
-        <form method="POST" action="{{route('addNewAccount')}}">
+        <form method="POST" action="{{route('updateAcc',['id'=> $acc->id])}}">
             {{csrf_field()}}
             <section class="col-lg-9 connectedSortable">
               <div class="card">                                
@@ -23,54 +23,37 @@
                   <div class="col-md-6 col-xs-12">
                       <div class="form-group {{$errors->has('title') ?'has-error has-feedback':''}} ">
                       <label>Account name<span style="color:#b12f1f;">*</span></label> 
-                      <input autofocus="" type="text" placeholder="Account Name" class="form-control" name="account_name" value="{{old('account_name')}}" required>
+                      <input autofocus="" type="text" placeholder="Account Name" class="form-control" name="account_name" value="{{ $acc-> account_name}}" required>
                     </div> 
                   </div>        
-                  <div class="col-md-3 col-xs-6">
-                    <div class="form-group">
-                        <label>Country <span style="color:hsl(7, 70%, 41%);">*</span></label>
-
-                        <select class="form-control country" name="country" id="country"
-                            data-type="country" data-method="tour_accommodation" required>
-                            @foreach (App\Country::where('country_status', 1)->orderBy('country_name')->get() as $con)
-                                <option value="{{ $con->id }}">
-                                    {{ $con->country_name }}</option>
-                            @endforeach
-                        </select>
-
-                    </div>
-                </div>
-
-                <div class="col-md-3 col-xs-6">
-                    <div class="form-group">
-                        <label>City<span style="color:#b12f1f;">*</span></label>
-
-                        <select class="form-control" name="city" id="city" required>
-                            <option value="">Select a city</option>
-                        </select>
-                    </div>
-                </div>
+               
                 <div class="col-md-3 col-xs-6">
                     <div class="form-group">
                       <label>Account Type <span style="color:#b12f1f;">*</span></label>
-                      <select class="form-control" name="account_type" required>
+                      <!-- <select class="form-control" name="account_type" required>
                         <option value="">--Select--</option>
                         @foreach(App\AccountType::where(['status'=>1])->orderBy('account_name', 'ASC')->get() as $key=>$type)
-                            <option value="{{$type->id}}">{{$type->account_name}}</option>
+                            <option value="{{ $type->id}}">{{$type->account_name}}</option>
                         @endforeach
-                      </select>
+                      </select> -->
+                     
+                 <?php $acc_type = App\AccountType::where('id',$acc->account_type_id)->first();
+                 ?>
+                  
+                      <input type="text" name="account_type" class="form-control" value="{{$acc_type->account_name}}" readonly >
+
                     </div>
                   </div>                 
                   <div class="col-md-3 col-xs-6">
                     <div class="form-group ">
                       <label>Account Code<span style="color:#b12f1f;">*</span></label>
-                       <input type="text" name="account_code" class="form-control" placeholder="1000" value="{{old('contact_name')}}" >
+                       <input type="text" name="account_code" class="form-control" value="{{$acc->account_code}}" >
                     </div>
                 </div>
-                <div class="col-md-3 col-xs-6">
+                <div class="col-md-6 col-xs-6">
                     <div class="form-group ">
                       <label>Account Description<span style="color:#b12f1f;">*</span></label>
-                       <input type="text" name="desc" class="form-control" placeholder="1000" value="{{old('contact_name')}}" >
+                      <input type="text" name=" desc" class="form-control" value="{{$acc->account_desc}}" >
                     </div>
                 </div>
                 <div class="col-md-3 col-xs-6">

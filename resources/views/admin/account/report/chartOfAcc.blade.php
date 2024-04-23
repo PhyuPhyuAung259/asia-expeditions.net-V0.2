@@ -38,18 +38,17 @@
                 <tbody>
                   @foreach($account as $acc)
                   
-                    <?php 
-                 //   dd($acc);
-                      $acc_type = App\AccountType::find($acc->account_type_id)->first();
-                    ?>
+                   
                     <tr>
                       <td>{{$acc->account_code}}</td>
                       <td>{{$acc->account_name}}</td>
-                      <td>{{$acc_type->account_name}}</td>
+                      <td> <?php $acc_type = App\AccountType::where('id',$acc->account_type_id)->first();
+                      ?>
+                      {{$acc_type->account_name}}</td>
                       <td>{{$acc->account_desc}}</td>
-                      <td> <a href="" title="Edit Account Name">
-                          <label  class="icon-list ic_book_project"></label>
-                        </a>
+                      <td> <a target="_blank" href="{{route('editAccForm', ['id'=> $acc->id])}}" title="Edit Project">
+                          <label style="cursor:pointer;" class="icon-list ic_book_project"></lable>
+                        </a>   
                       </td>
                     </tr>
                   @endforeach

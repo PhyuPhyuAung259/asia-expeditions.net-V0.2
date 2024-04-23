@@ -305,7 +305,8 @@ Route::group(['middleware' => ['IsLogin']], function(){
 		Route::get('chartofaccount', 'Account\AccountController@chartofAccount')->name('chartofaccount');	
 		Route::get('account/accForm', 'Account\AccountController@accForm')->name('accForm');
 		Route::post("addNewAccount", "Account\AccountController@addNewAccount")->name("addNewAccount");
-
+		Route::get('account/editAccForm/{id}', 'Account\AccountController@editAccForm')->name('editAccForm');
+		Route::post("updateAcc/{id}", "Account\AccountController@updateAcc")->name("updateAcc");
 }); 
  
 

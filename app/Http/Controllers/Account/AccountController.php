@@ -494,4 +494,19 @@ class AccountController extends Controller
     {       
         return view('admin.account.report.accForm');
     } 
+    public function editAccForm(Request $req, $id)
+    {       
+        $acc=AccountName::where('id',$id)->first();
+      
+        return view('admin.account.report.editAccForm', compact('acc'));
+    } 
+    public function updateAcc(Request $req,$id){
+        $acc=AccountName::find($id);
+        $acc->account_name    =$req->account_name;
+        $acc->account_code    = $req->account_code;
+        $acc->account_desc    = $req->desc;
+        $acc->save();
+        return back()->with(['message'=> 'Account has been successfully updated',  'status'=> 'success', 'status_icon'=> 'fa-check-circle']);
+
+    }
 }

@@ -127,10 +127,10 @@ class Booking extends Model
 
             ->orderBy('book.book_checkin', 'ASC');
     }
-    public static function tourDetailsBook($project, $option= 0){
+    public static function tourDetailsBook($project){
         return \DB::table('booking as book')
             ->join('tours', 'tours.id','=','book.tour_id')
-            ->where(['book.book_project'=> $project, 'book.book_status'=>1, 'book.book_option'=>$option])
+            ->where(['book.book_project'=> $project, 'book.book_status'=>1])
             // ->whereHas('pricetour', function($query) {$query->whereNotIn('sprice', ['',0, 'Null'])})
             ->whereNotIn('book.book_pax', ["", "Null",0])
             ->select('book.id as id', 'book.*', 'tours.tour_name')
@@ -147,11 +147,11 @@ class Booking extends Model
             ->orderBy('book.book_checkin', 'ASC');
     }
 
-    public static function golfBook($project, $option = 0){
+    public static function golfBook($project){
         return \DB::table('booking as book')
             ->join('suppliers', 'suppliers.id','=','book.golf_id')
             ->join("project", "project.project_number","=", "book.book_project")
-            ->where(['book.book_project'=> $project, 'book.book_status'=>1,'book.book_option'=>$option]) 
+            ->where(['book.book_project'=> $project, 'book.book_status'=>1  ]) 
             ->select('book.id as id', 'book.*', 'suppliers.id as supplier_id', 'suppliers.supplier_name')
             ->orderBy('book.book_checkin', 'ASC');
     }

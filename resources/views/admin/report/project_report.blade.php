@@ -174,7 +174,8 @@ $user = App\User::find($project->check_by);
 		</table>
 	@if($booking->count() > 0)
 		<h4><strong style="text-transform: capitalize;">Program Summary</strong></h4>
-		<?php $tourBook = \App\Booking::tourDetailsBook($book->book_project); ?>
+		<?php $tourBook = \App\Booking::tourDetailsBook($book->book_project);
+		?>
 		@if(!empty($book->book_project))		
 			<div><strong style="text-transform: uppercase;">EXCURSION OVERVIEW</strong></div>
 			<table class="table" id="roomrate">

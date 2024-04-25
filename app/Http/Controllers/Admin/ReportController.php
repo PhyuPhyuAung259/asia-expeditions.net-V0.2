@@ -74,11 +74,11 @@ class ReportController extends Controller
             $message = $projectNo;
             return view('errors.error', compact('message', 'type'));
         }
-        $booking = Booking::where(['book_project' => $projectNo,'book_status'=>1, 'book_option'=> $option])
+        $booking = Booking::where(['book_project' => $projectNo,'book_status'=>1])
             ->groupBy('book_checkin')
             ->orderBy('book_checkin', 'ASC')
             ->get();
-            
+        
         $servicedata = [];
         if ($project->service) {
             foreach ($project->service as $key => $sv) {
@@ -93,6 +93,7 @@ class ReportController extends Controller
         }elseif ($type == "group-price") {
             return view('admin.report.project_group_price', compact('project', 'booking'));
         }else{
+           // dd($booking);
             return view('admin.report.project_report', compact('project', 'booking', 'servicedata', 'type'));
         }
     }
@@ -174,6 +175,17 @@ class ReportController extends Controller
         }
         //dd($agentid,$projects);
         return view('admin.report.statement', compact('projects','projectNo', 'agentid', 'startDate', 'endDate', 'sort_main', 'location'));
+    }
+
+    public function payment_report(){       
+        $Enddate = date("Y-m-d", strtotime("+1 month"));
+        $d =  Content::diffDate(date('Y-m-d'), $Enddate); 
+        $nextMonth = date('Y-m-').$d;
+     
+        $currentDate = date('Y-m-d');
+        $projects = Project::Where(['project_status'=> 1])->whereBetween('project_start', [$currentDate, $nextMonth])->whereNotIn('project_fileno', [""," Null"])->orderBy('project_start', 'DESC')->get();
+        //dd($projects);
+        return view('admin.report.payment_report', compact('projects'));
     }
 
     public function getgrossprofit_loss(){       

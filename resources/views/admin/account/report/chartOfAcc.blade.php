@@ -11,6 +11,7 @@
   @include('admin.include.menuleft')
   <div class="content-wrapper">
     <section class="content"> 
+       @include('admin.include.message') 
       <div class="row">
       <section class="content"> 
         <div class="row">
@@ -38,7 +39,7 @@
                 <tbody>
                   @foreach($account as $acc)
                   
-                   
+                  
                     <tr>
                       <td>{{$acc->account_code}}</td>
                       <td>{{$acc->account_name}}</td>
@@ -46,9 +47,12 @@
                       ?>
                       {{$acc_type->account_name}}</td>
                       <td>{{$acc->account_desc}}</td>
-                      <td> <a target="_blank" href="{{route('editAccForm', ['id'=> $acc->id])}}" title="Edit Project">
+                      <td>  <a target="_blank" href="{{route('editAccForm', ['id'=> $acc->id])}}" title="Edit Project">
                           <label style="cursor:pointer;" class="icon-list ic_book_project"></lable>
-                        </a>   
+                        </a> 
+                        <a href="{{route('removeAcc', ['id'=> $acc->id])}}" title="Remove Account">
+                          <label style="cursor:pointer;" class="icon-list ic_remove"></lable>
+                        </a> 
                       </td>
                     </tr>
                   @endforeach

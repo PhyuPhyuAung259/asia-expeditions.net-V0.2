@@ -183,7 +183,7 @@ $(document).ready(function(){
         var formData = new FormData($(this)[0]);
         $.ajax({
             method: "POST",
-            url: "/window/uploadfile/only",
+            url: " ",
             data: formData,
             type: 'POST',
             async: false,

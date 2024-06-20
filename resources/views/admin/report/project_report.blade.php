@@ -73,7 +73,7 @@ $user = App\User::find($project->check_by);
 						<td style="vertical-align: top;">					
 						@if(!empty($book->book_checkin) && !empty($book->book_project))
 							<?php 
-								$getBook = \App\Booking::where(['book_checkin'=>$book->book_checkin, 'book_project'=>$book->book_project, 'book_status'=> 1 ])->whereNotIn('book_pax', ["", "Null",0])->orderBy('hotel_id','ASC')->orderBy("book_checkin", "DESC")->get();
+								$getBook = \App\Booking::where(['book_checkin'=>$book->book_checkin, 'book_project'=>$book->book_project, 'book_status'=> 1])->whereNotIn('book_pax', ["", "Null",0])->orderBy('hotel_id','ASC')->orderBy("book_checkin", "DESC")->get();
 							?>
 							@foreach($getBook as $prow)
 								<?php 
@@ -84,7 +84,7 @@ $user = App\User::find($project->check_by);
 										<tr>
 											@if(isset($prow->tour->tour_name))
 											<td>
-												<div><b>{{{ $prow->tour->tour_name or '' }}}</b>, </div>
+												<div><h4> <b>{{{ $prow->tour->tour_name or '' }}}</b>, </h4> </div>
 												@if($prow->book_tour_details)
 													{!! $prow->book_tour_details !!}
 												@else
@@ -174,8 +174,7 @@ $user = App\User::find($project->check_by);
 		</table>
 	@if($booking->count() > 0)
 		<h4><strong style="text-transform: capitalize;">Program Summary</strong></h4>
-		<?php $tourBook = \App\Booking::tourDetailsBook($book->book_project);
-		?>
+		<?php $tourBook = \App\Booking::tourDetailsBook($book->book_project); ?>
 		@if(!empty($book->book_project))		
 			<div><strong style="text-transform: uppercase;">EXCURSION OVERVIEW</strong></div>
 			<table class="table" id="roomrate">

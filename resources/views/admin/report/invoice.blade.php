@@ -31,7 +31,16 @@
 		$golfBook   = App\Booking::golfBook($project->project_number);
 		$grandtotal = $cruiseBook->sum('sell_amount') + $golfBook->sum('book_amount') + $flightBook->sum('book_amount') + $hotelBook->sum('sell_amount') + $tourBook->sum('book_amount');
 
-		if (empty((int)$project->project_selling_rate) && $project->vat != Null) {
+// 	if (empty((int)$project->project_selling_rate)) {
+// 			$Project_total = $grandtotal;
+// 		}else if ($project->vat != Null){
+// 			$Project_total = $grandtotal;
+// 			$Project_vat=$grandtotal* $project->vat/100;
+// 			$Project_total_vat=  $grandtotal+ ($grandtotal * $project->vat/100);
+// 		}else{
+// 			$Project_total =  $project->project_selling_rate ;
+// 		}
+        if (empty((int)$project->project_selling_rate) && $project->vat != Null) {
 			$Project_total = $grandtotal;
 			$Project_vat=$grandtotal* $project->vat/100;
 			$Project_total_vat=  $grandtotal+ ($grandtotal * $project->vat / 100);
@@ -40,7 +49,7 @@
 		//   dd($project->vat);
 		$Project_total = $grandtotal;
 		}elseif ( $project->vat != Null ){
-		     dd($project->vat);
+		   //  dd($project->vat);
 			$Project_total = $project->project_selling_rate;
 			$Project_vat=$project->project_selling_rate* $project->vat / 100;
 			$Project_total_vat=  $project->project_selling_rate+ ($project->project_selling_rate * $project->vat/100);
@@ -49,8 +58,6 @@
 			$Project_total =  $project->project_selling_rate ;
 		}
 
-
-		
 	 ?>
 	<table class="table table-striped" style="border: solid 1px #c4c2c2;">
 		<tr>
@@ -58,15 +65,17 @@
 			<th style="width: 80%;" class="text-left">Descriptions</th>
 			<th class="text-right">Amount</th>
 		</tr>
-		<tr>
+		<tr style="height:80px;">
 			<td valign="top">1</td>
 			<td>{!! $project->project_desc !!}</td>
 			<td class="text-right"><b>{{ Content::money($Project_total) }} {{Content::currency()}}</b></td>
 		</tr>
+
 		<tr>
 		@if(isset($Project_vat))
+	
 			<td></td>
-			<td class="text-right">VAT {{$project->vat}} % </td>
+			<td class="text-right">  <b> VAT {{$project->vat}} %  </b></td>
 			<td class="text-right"> <b>{{ Content::money($Project_vat) }} {{Content::currency()}}</b></td>
 		@endif
 			

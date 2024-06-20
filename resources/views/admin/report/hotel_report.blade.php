@@ -24,7 +24,7 @@
                     @endforeach
                 @endif
             </ul>
-        </td> 
+        </td>
         <td style="width: 50%; vertical-align:top;">
             <strong>Hotel Info</strong>
             <ul>

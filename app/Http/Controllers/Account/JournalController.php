@@ -177,16 +177,18 @@ class JournalController extends Controller
         $to_date = $this->end_date;
         $supplier = Supplier::find($req->supplier_name);
         $conId = isset($req->country) ? $req->country : \Auth::user()->country_id;
-        $journals=AccountJournal::where(['status'=>1, 'supplier_id'=>$supplier['id']])->whereBetween('entry_date', [$this->start_date, $this->end_date])
-                ->whereNotNull('supplier_id')->orderBy('created_at', 'DESC')->get();
-
-        if (isset($req->journCheck) && !empty($req->journCheck)) {
-            $journals=AccountJournal::whereIn('id', $data)->orderBy('entry_date', 'DESC')->get();
-            return view("admin.account.report.previewOutstanding", compact('journals', 'from_date', 'to_date'));
+        if($supplier===Null){
+            $journals= collect();
+        }else{
+            $journals=AccountJournal::where(['status'=>1, 'supplier_id'=>$supplier['id']])->whereBetween('entry_date', [$this->start_date, $this->end_date])
+                    ->whereNotNull('supplier_id')->orderBy('created_at', 'DESC')->get();
+            if (isset($req->journCheck) && !empty($req->journCheck)) {
+                $journals=AccountJournal::whereIn('id', $data)->orderBy('entry_date', 'DESC')->get();
+                return view("admin.account.report.previewOutstanding", compact('journals','from_date', 'to_date'));
+            }
         }
-
-        
-        return view("admin.account.outstanding_by_supplier", compact('journals', 'supplier', 'conId', 'from_date', 'to_date'));
+         
+        return view("admin.account.outstanding_by_supplier", compact('journals','supplier', 'conId', 'from_date', 'to_date'));
     }
  
     public function getAccountStatement(Request $req){
@@ -228,7 +230,7 @@ class JournalController extends Controller
             $journals = (new AccountTransaction)->AccountBySegment($project['id']);
             return view("admin.account.report.previewProfitAndLossSegment", compact('journals', 'project', 'start_date', 'end_date'));
         }
-        return view("admin.account.report.profil_and_loss_by_segment", compact('projects', 'project', 'start_date', 'end_date'));
+        return view("admin.account.report.profil_and_loss_by_segment", compact('projects', 'start_date', 'end_date'));
     }
 
     public function searchPnlbysegment(Request $req){

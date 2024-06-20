@@ -15,8 +15,8 @@ class TourController extends Controller
     public function tourList(Request $req)
     {   
         $locationid = isset($req->location) ? $req->location: \Auth::user()->country_id;
-        $tours = Tour::where([ 'country_id'=>$locationid])->whereNotIn('post_type', [1])->orderBy('id', 'DESC')->get();
-        //dd($tours,$locationid);
+        $tours = Tour::where(['tour_status'=>1, 'country_id'=>$locationid])->whereNotIn('post_type', [1])->orderBy('id', 'DESC')->get();
+        // dd($tours,$locationid);
         return view('admin.tour.tour', compact('tours', 'locationid'));
     }
 
@@ -110,20 +110,6 @@ class TourController extends Controller
         $addTour->tour_feasility()->sync($req->tour_feasilitiy, true);
         $addTour->supplier()->sync($req->tour_supplier, true);
         return back()->with(['message'=> "Tour Successfully Updated", 'status'=> 'success', 'status_icon'=> 'fa-check-circle']); 
-    }
-
-    public function editTourDesc(Request $req,$tourId){
-
-        try{
-            $editTour = Tour::find($tourId);
-         
-            $editTour->tour_desc = $req->tour_desc;
-         
-            $editTour->save();
-           return back()->with(['message'=> 'Tour Program Details has been Updated',  'status'=> 'success', 'status_icon'=> 'fa-check-circle']);
-        }catch (Exception $e) {
-            return back()->with(['message'=> 'Something went wrong please try again', 'status'=> 'warning', 'status_icon'=> 'fa-exclamation-circle']);
-        }
     }
 
     public function getTourtype(){

@@ -103,8 +103,8 @@ class SupplierController extends Controller
             $image = $req->file('scan_img');
             $filename = time().'-'.$image->getClientOriginalName();
             $img = Image::make($image->getRealPath())->fit(200, 210);
-            $img->save(public_path('storage/avata/thumbnail/'.$filename));
-            $image->move(public_path('storage/avata/'), $filename);   
+            $img->save('storage/avata/thumbnail/'.$filename);
+            $image->move(('storage/avata/'), $filename);   
         }else{
             $filename = $req->oldFile;
         }
@@ -174,8 +174,8 @@ class SupplierController extends Controller
             $image = $req->file('scan_img');
             $filename = time().'-'.$image->getClientOriginalName();
             $img = Image::make($image->getRealPath())->fit(200, 210);
-            $img->save(public_path('storage/avata/thumbnail/'.$filename));
-            $image->move(public_path('storage/avata/'), $filename);   
+            $img->save('storage/avata/thumbnail/'.$filename);
+            $image->move(('storage/avata/'), $filename);   
         }else{
             $filename = $req->oldFile;
         }
@@ -212,12 +212,13 @@ class SupplierController extends Controller
         $addsup->bank_name          = $req->bankname;
         $addsup->bank_account       = $req->bankacc;
         $addsup->scan_img           = $filename;
-        $addsup->supplier_photo     = $photo;
+        $addsup->supplier_photo     = $req->image;
         $addsup->supplier_picture   = $gallery;
         $addsup->supplier_remark    = $req->remark;
         $addsup->supplier_intro     = $req->desc;
         $addsup->supplier_address   = $req->address;
         $addsup->supplier_status    = $req->status;
+        //dd($addsup);
         $addsup->save();
         return back()->with(['message'=> "supplier has been updated successfully",  'status'=> 'success', 'status_icon'=> 'fa-check-circle']); 
     }

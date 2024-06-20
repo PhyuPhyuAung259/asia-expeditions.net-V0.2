@@ -1,5 +1,5 @@
 @extends('layout.backend')
-@section('title','Agent Tariff')
+@section('title','Hotel Tariff')
 <?php  use App\component\Content;
 		$title = 'hotel';
 
@@ -8,7 +8,7 @@
 	<div class="col-lg-12">
     
         @include('admin.report.headerReport')		
-            <h3 class="text-center"><strong class="btborder" style="text-transform: uppercase;">{{$title}} Agent Tariff</strong></h3>
+            <h3 class="text-center"><strong class="btborder" style="text-transform: uppercase;">{{$title}} Tariff As of ({{ \Carbon\Carbon::now()->format('Y-m-d') }})</strong></h3>
           
                 <div class="col-md-12 pull-center hidden-print">
                         <form action="{{route('sortHotelTariff')}}" method="POST">
@@ -63,12 +63,12 @@
         	</div>
             @foreach($suppliers as $key => $supplier)          
                 <table class="table" id="roomrate">
-                    <tr><h4 style="text-transform: capitalize;color:blue;"><strong>{{{ $supplier->country->country_name or '' }}} <i class="fa fa fa-angle-double-right"></i> {{{$supplier->province->province_name or ''}}} <i class="fa fa fa-angle-double-right"></i>  {{$supplier->supplier_name}} </strong></h4></tr>
-                    <tr style="background-color: rgb(245, 245, 245);" class="custom-border">
-                        <th style="padding:2px;"><span>RoomType</span></td>
+                    <tr><h4 style="text-transform: capitalize;"><strong>{{{ $supplier->country->country_name or '' }}} <i class="fa fa fa-angle-double-right"></i> {{{$supplier->province->province_name or ''}}} <i class="fa fa fa-angle-double-right"></i>  {{$supplier->supplier_name}} </strong></h4></tr>
+                    <tr style="background-color: rgb(245, 245, 245);">
+                        <th style="padding:2px; width: 20%;"><span>Room Type</span></td>
                         <th style="padding:2px;"><span>From Date</span> <span class="fa fa-long-arrow-right"
                                 style="top: 1px; position: relative;"></span> <span>To Date</span></th>
-                                @foreach (\App\RoomCategory::where('status', 1)->take(5)->orderBy('id', 'ASC')->get() as $cat)
+                                @foreach (\App\RoomCategory::where('status', 1)->take(4)->orderBy('id', 'ASC')->get() as $cat)
                                     <th title="{{ $cat->name }}" style="padding: 2px;" class="text-right">
                                         <span>{{ $cat->name }}</span>
                                     </th>
@@ -93,8 +93,8 @@
                                 ->get();
                             ?>
                         @endif
-                        <tr class="custom-border">
-                            <td style="vertical-align: middle;" colspan="{{ $getRate->count() == 0 ? '12' : '' }}"
+                        <tr>
+                            <td style="vertical-align: middle; width: 20%;" colspan="{{ $getRate->count() == 0 ? '12' : '' }}"
                                 rowspan="{{ $getRate->count() + 1 }}"><b>{{ $room->name }}</b></td>
                         </tr>
                         @foreach ($getRate as $rate)
@@ -109,8 +109,7 @@
                                         class="pcolor">{{ $rate->sdbl_price > 0 ? Content::currency() : '' }}</small></td>
                                 <td class="text-right">{{ Content::money($rate->sextra) }} <small
                                         class="pcolor">{{ $rate->sextra > 0 ? Content::currency() : '' }}</small></td>
-                                <td class="text-right">{{ Content::money($rate->schexbed) }} <small
-                                        class="pcolor">{{ $rate->schexbed > 0 ? Content::currency() : '' }}</small></td>
+                               
                             </tr>
                         @endforeach
                     @endforeach

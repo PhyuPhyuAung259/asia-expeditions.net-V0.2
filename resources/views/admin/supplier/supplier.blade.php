@@ -110,7 +110,7 @@
                     	@if(isset($supplierName) && $supplierName == 'hotels')
                         <td style="vertical-align: middle;">
                           <label class="container-CheckBox">
-                              <input type="checkbox" class="checkall" name="hotel_checked[]" value="{{$sup->id}}">
+                              <input type="checkbox"  id="check_all" class="checkall" name="hotel_checked[]" value="{{$sup->id}}">
                               <span class="checkmark hidden-print"></span>
                           </label>
                         </td>
@@ -124,7 +124,7 @@
                         </td>
                       @endif                
                       <td class="hidden-xs" width="20px">
-                        <img src="{{Content::urlthumbnail($sup->supplier_photo, $sup->user_id)}}" style="width: 100%"></td>
+                        <img src="/storage/{{$sup->supplier_photo}}" style="width: 100%"></td>
                       <td>{{$sup->supplier_name}}</td>
                       <td class="hidden-xs" style="color: #605ca8;">
                         {{{ $sup->country->country_name or ''}}},  {{{ $sup->province->province_name or ''}}}</td>

@@ -256,10 +256,10 @@
 						<td></td>			
 						<td class="text-center">{{$fb->book_pax}}</td>
 						<td class="text-right">
-							@if(!empty($fb->book_price))
-								{{$fb->book_price}}  {{Content::currency()}}
+							@if(!empty($fb->book_nprice))
+								{{$fb->book_nprice}}  {{Content::currency()}}
 							@else
-								{{$fb->book_kprice}}  {{Content::currency()}}
+								{{$fb->book_kprice}}  {{Content::currency(1)}}
 							@endif
 						<td class="text-right">{{Content::money($fb->book_namount)}}</td>
 						

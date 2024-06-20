@@ -18,7 +18,7 @@
         <?php
             $guide=DB::table('guide_language')->where('id', $guide_lang->guide_language_id)->first();
             $guide_service=DB::table('guide_service')->where('id', $guide->guide_service_id)->first();
-          //  dd($guide_service);
+         
         ?>
        
 			<tr style="border-bottom: 3px solid #black;">
@@ -48,11 +48,10 @@
             $guide_service=DB::table('guide_service')->where('id', $guide->guide_service_id)->first();
           
         ?>
-       
-		<tr style="border-bottom: 3px solid #black;">
+      
+			<tr style="border-bottom: 3px solid #black;">
 				<td style="padding: 8px;"> {{{$guide_service->title or ''}}} </td>
                 <td style="padding: 8px;"> {{{$guide->name or ''}}} </td>
-				 
 				
 			</tr>
 		@endforeach

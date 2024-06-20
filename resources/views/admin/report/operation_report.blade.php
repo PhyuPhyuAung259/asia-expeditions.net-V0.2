@@ -10,7 +10,6 @@
 @section('content')
 	<div class="container">
 		<div class="row">
-	
 			<form method="GET" target="_blank" action="{{route('requestReport', ['url'=> $project->project_number])}}">
 			<div class="col-lg-12">
 		    	@include('admin.report.project_header')	 
@@ -26,16 +25,18 @@
 				<div class="pull-right">
 				<a class="btn btn-info" target="_blank" href="{{route('proFormEdit', ['project'=> $project->project_number])}}" title="Edit Project">
                          Edit Project
-                </a>
-				@if(\Auth::user()->role_id == 2)
+                        </a>
+                @if(\Auth::user()->role_id == 2)
 					@if($project->project_status==2) 
 					<a class="btn btn-success" target="_blank" href="{{route('changestatus', ['projectNum'=> $project->project_number])}}" title="Confirm">Confirmed</a>
 					@else
 					<a class="btn btn-info" target="_blank" href="{{route('changestatus', ['projectNum'=> $project->project_number])}}" title="Confirm"> Confirm</a>
 					@endif
+				@elseif($project->project_status == 2)
+				  	<a class="btn btn-success" title="Checked">Checked</a>
 				@endif
+				
 				</div>
-				<!-- @include('admin.include.message') -->
 				<?php $clientByProject = App\Admin\ProjectClientName::where('project_number', $project->project_number)->get();?>
 				@if($Probooked->Count() > 0 )
 				<div class="pull-right hidden-print checkingAction" style="display: none;">
@@ -121,7 +122,7 @@
 							<th class="text-center" width="85">Single</th>
 							<th class="text-center">Twin</th>
 							<th class="text-center">Double</th>
-							<th class="text-center">Discount</th>
+							<th class="text-center">Promotion</th>
 							<th class="text-center">Extra</th>
 							<th class="text-center" width="188">Ch-Extra</th>
 						
@@ -582,7 +583,7 @@
 				                <td class="text-right">{{Content::money($rest->amount)}}</td>
 				                <td class="text-right">{{Content::money($rest->kprice)}}</td>
 			                  	<td class="text-right">{{Content::money($rest->kamount)}}</td>
-								<td><a target="_blank" href="{{route('editoperation', ['type'=>'restaurant', 'id'=>$rest->id, 'project_no'=> $rest->project_number])}}" title="Edit Restaurant">
+								<td><a target="_blank" href="{{route('editoperation', ['type'=>'restaurant', 'id'=>$rest->id , 'project_no'=>$rest->project_number])}}" title="Edit Restaurant">
                                 			<label class="icon-list ic_edit"></label>
                              			</a>&nbsp;</td>
 							</tr>				
@@ -634,7 +635,7 @@
 				                <td class="text-right">{{Content::money($rest->kprice)}}</td>
 			                  	<td class="text-right">{{Content::money($rest->kamount)}}</td>
 								<td>
-									<a target="_blank" href="{{route('editoperation', ['type'=>'entrance', 'id'=>$rest->id, 'project_no'=> $rest->project_number])}}" title="Edit Entrance Fee">
+									<a target="_blank" href="{{route('editoperation', ['type'=>'entrance', 'id'=>$rest->id, 'project_no'=>$rest->project_number])}}" title="Edit Entrance Fee">
                                 			<label class="icon-list ic_edit"></label>
                              		</a>&nbsp;
 								</td>
@@ -723,11 +724,10 @@
 							            	<?php 
 								            	$miscTotal = $miscTotal + $misc->amount;
 								            	$misckTotal = $misckTotal + $misc->kamount;
-												//dd($misc);
 							            	?>
-						                  	<div class="row">  
+						                  	<div class="row">
 							                  	<label class="col-md-6" style="font-weight: 400;">
-												  <input type="checkbox" class="checkall" name="checkedmisc[]" value="{{$misc->id}}" > <span>{{{ $misc->servicetype->name or '' }}}</spanp>
+							                  	    <span>{{{ $misc->servicetype->name or '' }}}</span>
 							                  	</label>
 							                  	<label class="col-md-1" style="font-weight: 400;">
 							                  		<p>{{$misc->book_pax}}</p>

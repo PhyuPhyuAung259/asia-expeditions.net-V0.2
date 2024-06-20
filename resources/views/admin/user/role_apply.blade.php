@@ -44,7 +44,7 @@
           <div class="notify-message">
             <div class="col-md-12" >
               <div class="row alert alert-dismissible fade show success" role="alert" style="position: relative; padding-left: 53px;">
-                <i class="fa fa-sitemap" style="font-size: 30px; position:absolute; top: 5px; left: 10px;"></i>
+                <!--<i class="fa fa-sitemap" style="font-size: 30px; position:absolute; top: 5px; left: 10px;"></i>-->
                 <div style="font-size: 13px;"><span> Set menu permissions, setting "{{{$role->name or ''}}}" Menu permissions.</span></div>
                 <p></p>
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close" style=" position: absolute;right: 7px;top: 13px;">

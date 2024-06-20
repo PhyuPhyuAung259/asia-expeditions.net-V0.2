@@ -44,7 +44,7 @@ class SubscribeController extends Controller
         $validate = Validator::make($req->all(), [ 'email' => 'required']);
 
         if (!$validate->fails()) {
-            if (!Subscribe::Email($req->email) ){
+            if (!Subscribe::Email($req->email) {
                 $adds = new Subscribe;           
                 $adds->email = $req->email;
                 $adds->type           = 1;

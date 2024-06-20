@@ -5,7 +5,6 @@
   $subactive ='booked/project';
   use App\component\Content;
   $status = isset($_GET['status']) ? $_GET['status'] : '';
-// dd($projects);
 ?>
 @section('content')
 <div class="wrapper">
@@ -63,9 +62,7 @@
                 </thead>
                 <tbody>
                   @foreach($projects as $project)
-                  
                     <?php 
-                    //dd($project);
                       $sup = App\Supplier::find($project->supplier_id);
                       $user= App\User::find($project->UserID);
                       $con = App\Country::find($project->country_id);
@@ -244,12 +241,13 @@
       $('#project_id').val($(this).data('id'));
       $('input[name=project_net_price]').val($(this).data('project_net_price'));
     });
+
     $(".datatable").DataTable({
-    language: {
+      language: {
         searchPlaceholder: "File/Project No., ClientName"
-    } ,  
-    order: [[3, 'asc']]
+      },
+      order: [[3, 'asc']]
+    });
   });
-});
 </script>
 @endsection

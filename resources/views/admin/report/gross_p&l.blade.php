@@ -7,6 +7,9 @@
   $agent_id = isset($agentid) ?  $agentid:0;
   $locat = isset($location) ? $location:0;
   $main = isset($sort_main) ? $sort_main:0;
+  $total_sell_rate=0;
+  $total_net=0;
+  $grand=0;
 ?>
 @section('content')
 <div class="wrapper">
@@ -146,7 +149,7 @@
                     }else{
                       $sell_rate=$pro->project_selling_rate;
                     }
-                       
+                        $total_sell_rate= $total_sell_rate + $sell_rate;
                     ?> {{number_format($sell_rate,2)}}</td>
                     <td>
                       <!-- Grand total -->
@@ -154,6 +157,8 @@
                       $grandtotal = ($hotelBook->sum('net_amount') + $flightBook->sum('book_namount') + $golfBook->sum('book_namount')
                                     + $cruiseBook->sum('net_amount') + $restBook->sum('amount') + $EntranceBook->sum('amount')) 
                                     + $transportTotal + $guidTotal + $miscTotal;
+                      $total_net=$grandtotal+$total_net;
+                      $grand=$total_sell_rate - $total_net;
                     ?>
                      {{ number_format($grandtotal,2)}}
                     </td>  
@@ -170,7 +175,14 @@
                 @endforeach
               </tbody>
               <tfoot>
-                  <tr><th colspan="8" class="text-right"><h3>Total Number of Pax: {{$toTalPax}}</h3></th></tr>
+                <tr>
+                    <td colspan="2" class="text-right"><strong>Total Number of Pax : </strong></td>
+                    <td colspan="4" >{{$toTalPax}}</td>
+                    <td class="text-right"> <strong> Grand Total :</strong> </td>
+                    <td>{{$total_sell_rate}}</td>
+                    <td>{{$total_net}}</td>
+                    <td>{{$grand}}</td>
+                </tr>
               </tfoot>
             </table>
           </form>

@@ -37,7 +37,8 @@
                     </select>
                   </div>                      
                   <div class="col-md-3 col-xs-6">                  
-                    <select class="form-control" name="rest_name" id="restaurant" required>                     
+                    <select class="form-control" name="rest_name" id="restaurant" required>  
+                    <!--I changed id= dropdown_booking_restaurant to restaurant and add js code-->
                     </select>
                   </div><div class="clearfix"></div>
                 </div>
@@ -89,16 +90,7 @@
     $(document).on('click','.RemoveRest', function(){
       $(this).closest("tr").remove();
     });
-
-    
-    $(document).ready(function(){
-      $(".datatable").DataTable({
-        language: {
-          searchPlaceholder: "Number No., File No.",
-        },
-        order: [[4, 'desc']]
-      });
-      $('#dropdown-country').change(function() {
+     $('#dropdown-country').change(function() {
        
         var cityId = $(this).val();
            $.ajax({
@@ -120,7 +112,6 @@
             }
           }); 
       });
-
   </script>
 
 @endsection

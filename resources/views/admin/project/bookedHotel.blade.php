@@ -31,9 +31,7 @@ $subactive ='booked/hotel';
                   </thead>
                   <tbody>
                     @foreach($projects as $hotel)
-                   
                         <?php 
-                       
                           $supb = \App\Supplier::find($hotel->hotel_id);
                           $conb = \App\Country::find($hotel->country_id);
                           $prob = \App\Province::find($hotel->province_id);

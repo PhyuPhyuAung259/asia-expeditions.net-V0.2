@@ -105,7 +105,7 @@ class AccountController extends Controller
             $message = "Account Receivable Not Confirm";
             $status_icon = "fa-check-circle";
         }
-        return response()->json(["message"=> $message, "messagetype"=>$messagetype, "status_icon"=> $status_icon, "collect"=> $req->all()]);
+        return back()->with(["message"=> $message, "messagetype"=>$messagetype,'status'=> 'success',"collect"=> $req->all()]);
     }   
     
     public function getJournalJson(){      
@@ -484,8 +484,7 @@ class AccountController extends Controller
         }
         return response()->json(["message"=>$message, "messagetype"=>$messagetype, 'status_icon'=> $status_icon]);
     }
-    
-    public function chartofAccount(Request $req){
+     public function chartofAccount(Request $req){
         $account = AccountName::where('status',1)->orderBy('account_code')->get();
        // dd($account);
         return view('admin.account.report.chartOfAcc', compact('account'));
@@ -507,6 +506,10 @@ class AccountController extends Controller
         $acc->account_desc    = $req->desc;
         $acc->save();
         return back()->with(['message'=> 'Account has been successfully updated',  'status'=> 'success', 'status_icon'=> 'fa-check-circle']);
-
+    }
+     public function removeAcc(Request $req,$id){
+        $acc=AccountName::find($id);
+        $acc->delete();
+        return back()->with(['message'=> 'Account has been successfully delete',  'status'=> 'success']);
     }
 }

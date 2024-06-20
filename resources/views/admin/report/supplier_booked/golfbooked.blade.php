@@ -32,11 +32,27 @@ $total_round=0;
                     <td class="text-right">{{Content::money($sub->book_amount)}}</td>
                     <td class="text-right">{{Content::money($sub->book_kprice)}}</td>
                     <td class="text-right">{{Content::money($sub->book_kamount)}}</td>
-                    <?php $total_round=$total_round+ $sub->book_pax; ?>
                 </tr>
+                <?php $total_round=$total_round+ $sub->book_pax; ?>
             @endforeach      
         </tbody>
         <tfoot>
+            <!--<tr style="border: solid 1px #ddd;">-->
+            <!--    <td colspan="7" align="right">-->
+            <!--        <font color="#1991d6">-->
+            <!--            @if($bookeds->sum('book_amount'))-->
+            <!--                Grand Total : {{Content::money($bookeds->sum('book_amount'))}}  {{Content::currency()}}-->
+            <!--            @endif-->
+            <!--        </font>-->
+            <!--    </td>-->
+            <!--    <td colspan="2" align="right">-->
+            <!--        @if($bookeds->sum('book_kamount'))-->
+            <!--        <font color="#1991d6">-->
+            <!--            Grand Total : {{Content::money($bookeds->sum('book_kamount'))}}  {{Content::currency(1)}}-->
+            <!--        </font>-->
+            <!--        @endif-->
+            <!--    </td>-->
+            <!--</tr>-->
             <tr style="border: solid 1px #ddd;">
                 <td colspan="5" align="right">
                     <font color="#1991d6">

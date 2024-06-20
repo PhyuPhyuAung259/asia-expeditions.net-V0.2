@@ -8,7 +8,7 @@ use App\component\Content;
 
 <?php 
 
-$tourBook = \App\Booking::tourBook($book->book_project);  ?>
+$tourBook = \App\Booking::tourBook($book->book_project); ?>
 
 @if($tourBook->count() > 0)
 
@@ -48,10 +48,7 @@ $tourBook = \App\Booking::tourBook($book->book_project);  ?>
 
 			<td class="text-center">{{$tour->book_pax}}</td>
 
-			
-			
 			<td class="text-right">{{Content::money($tour->book_price)}}</td>
-
 
 			<td class="text-right">{{$tour->book_amount}}</td>
 

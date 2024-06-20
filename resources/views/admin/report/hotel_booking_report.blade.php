@@ -3,6 +3,7 @@
 @section('title', 'Hotel booking report')
 <?php 
 $total_no_of_booked_night=0;
+$total_price=0;
 ?>
 @section('content')
 	<div class="col-lg-12">
@@ -61,40 +62,53 @@ $total_no_of_booked_night=0;
       <tbody>
         @if(!empty($hotel))
         @foreach($hotel as $hotels)
-        <?php $hotelbooked= DB::table("hotelb")->where(['book_id'=>$hotels->id,'hotel_id'=>$hotels->hotel_id])->get();?>
+        <?php $hotelbooked= DB::table("hotelb")->where(['book_id'=>$hotels->id,'hotel_id'=>$hotels->hotel_id])->get();
+     
+        ?>
         @foreach($hotelbooked as $hotelb)
-        @if(!empty($hotelb->project_number))
-        <?php $client_info= DB::table("project")->where('project_number', $hotelb->project_number)->first(); ?>
-            <tr>
-              <td>
-                Project Number &nbsp;&nbsp; : &nbsp;&nbsp; {{{$client_info->project_fileno or ''}}} <br>
-                Client Name &nbsp;&nbsp; : &nbsp;&nbsp; {{{$client_info->project_client or ''}}} <br>
-              </td>
-              <td><?php $agent=DB::table("suppliers")
-                              ->where('id',$client_info->supplier_id)
-                              ->first();?>
-                              {{{$agent->supplier_name or ''}}}</td>
-              <td>{{{$hotelb->checkin or ''}}}</td>
-              <td>{{{$hotelb->checkout or ''}}}</td>
-              <td><?php $room= DB::table("room")->where('id', $hotelb->room_id)->first(); ?>{{{ $room->name or ''}}}</td>
-              <td>{{{$hotelb->no_of_room or ''}}}</td>
-              <td>{{{$hotelb->book_day or ''}}}</td>
-              <td>{{{$hotelb->nsingle or ''}}}</td>
-              <td>{{{$hotelb->ndouble or ''}}}</td>
-              <td>{{{$hotelb->ntwin or ''}}}</td>
-              <td>{{{$hotelb->nextra or ''}}}</td>
-              <td>{{{$hotelb->nchextra or ''}}}</td> 
-              <td>{{{$hotelb->net_amount or ''}}}</td>
-              <?php $total_no_of_booked_night=$total_no_of_booked_night+ ($hotelb->book_day * $hotelb->no_of_room)  ?>
-            </tr>
+          @if(!empty($hotelb->project_number))
+            <?php $client_info= DB::table("project")->where('project_number', $hotelb->project_number)->first(); ?>
+                <tr>
+                  <td>
+                    Project Number &nbsp;&nbsp; : &nbsp;&nbsp; {{{$client_info->project_fileno or ''}}} <br>
+                    Client Name &nbsp;&nbsp; : &nbsp;&nbsp; {{{$client_info->project_client or ''}}} <br>
+                  </td>
+                  <td><?php $agent=DB::table("suppliers")
+                                  ->where('id',$client_info->supplier_id)
+                                  ->first();?>
+                                  {{{$agent->supplier_name or ''}}}</td>
+                  <td>{{{$hotelb->checkin or ''}}}</td>
+                  <td>{{{$hotelb->checkout or ''}}}</td>
+                  <td><?php $room= DB::table("room")->where('id', $hotelb->room_id)->first(); ?>{{{ $room->name or ''}}}</td>
+                  <td>{{{$hotelb->no_of_room or ''}}}</td>
+                  <td>{{{$hotelb->book_day or ''}}}</td>
+                  <td>{{{$hotelb->nsingle or ''}}}</td>
+                  <td>{{{$hotelb->ndouble or ''}}}</td>
+                  <td>{{{$hotelb->ntwin or ''}}}</td>
+                  <td>{{{$hotelb->nextra or ''}}}</td>
+                  <td>{{{$hotelb->nchextra or ''}}}</td>
+                  <td>{{{$hotelb->net_amount or ''}}}</td>
+                  <?php 
+                    $total_no_of_booked_night=$total_no_of_booked_night+ ($hotelb->book_day * $hotelb->no_of_room) ;
+                    $total_price=$total_price + $hotelb->net_amount;
+                  ?>
+                  
+                </tr>
             @endif
         @endforeach
-          
+       
           @endforeach
         @endif
+        <tr>
+            <td colspan="6" class="text-right"> <strong> Total number of booked night : </strong></td> 
+            <td><strong>{{$total_no_of_booked_night}}</strong></td>
+            <td colspan="5"  class="text-right"><strong>Total Amount :  </strong></td> 
+            <td><strong>{{$total_price}}</strong></td>
+        </tr>
       </tbody>
+     
     </table>
-    <h3><strong class="">Total number of booked night : {{$total_no_of_booked_night}}</strong></h3>
+   
 
 
 

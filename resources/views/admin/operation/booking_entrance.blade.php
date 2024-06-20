@@ -14,7 +14,7 @@
 		    <div class="row">
 		      	@include('admin.include.message')
 		        <section class="col-lg-12 connectedSortable">
-		           <h3 class="border" style="text-transform:capitalize;">Booking Entrance Fees for Project No. <b>{{$project->project_number}} </b> 
+		            <h3 class="border" style="text-transform:capitalize;">Booking Entrance Fees for Project No. <b>{{$project->project_number}} </b> 
 				 	@if($project->project_status == 2)
 						@if(\Auth::user()->role_id == 2)
 							<span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Entrance Fees</a> 
@@ -23,7 +23,7 @@
 				   <span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Entrance Fees</a>
 		         	@endif   
 					 </h3>
-				   <table class="datatable table table-hover table-striped">
+		            <table class="datatable table table-hover table-striped">
 			            <thead>
 			                <tr>
 			                  	<th width="100px">Start Date</th>
@@ -64,7 +64,7 @@
 					                    <!-- <span style="position: relative;top:-5px;" class="btnEditTran" data-type="entrance_fee" data-country="{{$ent->country_id}}" data-province="{{$ent->province_id}}" data-restmenu="{{{ $ent->entrance->id or ''}}}"  data-bookpax="{{ $ent->book_pax}}" data-supplier="{{$ent['supplier']}}" data-price="{{$ent->price}}" data-kprice="{{$ent->kprice}}" data-bookdate="{{$ent->start_date}}"  data-remark="{{$ent->remark}}" data-id="{{$ent->id}}" data-toggle="modal" data-target="#myModal">
 					                      <i style="padding:1px 2px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
 					                    </span> -->
-										<a target="_blank" href="{{route('editoperation', ['type'=>'entrance', 'id'=>$ent->id, 'project_no'=>$ent->project_number])}}" title="Edit Entrance Fee">
+										<a target="_blank" href="{{route('editoperation', ['type'=>'entrance', 'id'=>$ent->id , 'project_no'=>$ent->project_number])}}" title="Edit Entrance Fee">
                                 			<label class="icon-list ic_edit"></label>
                              			</a>&nbsp;
 								        <a href="javascript:void(0)" class="RemoveHotelRate" data-type="apply_entrance" data-id="{{$ent->id}}" title="Delete this ">

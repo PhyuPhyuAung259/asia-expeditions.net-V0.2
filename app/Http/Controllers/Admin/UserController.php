@@ -82,15 +82,18 @@ class UserController extends Controller
             $image = $req->file('image');
             $filename = time().'-'.$image->getClientOriginalName();
             $img = Image::make($image->getRealPath())->fit(200, 210);
-            $img->save(public_path('storage/avata/thumbnail/'.$filename));
-            $image->move(public_path('storage/avata/'), $filename);   
+            // $img->save(public_path('storage/avata/thumbnail/'.$filename));
+            // $image->move(public_path('storage/avata/'), $filename);  
+			$img->save('storage/avata/thumbnail/'.$filename);
+		
+            $image->move(('storage/avata/'), $filename);   
         }else{
             $filename = $req->oldFile;
         }
 		
     	$aUser = User::find($req->eid);
     	$aUser->fullname = $req->fullname;
-    	$aUser->position = $req->position;
+    	$aUser->position = $req->position; 
     	$aUser->postal   = $req->zipcode;
         $aUser->email = $req->email;
         $aUser->company_id = $req->company;

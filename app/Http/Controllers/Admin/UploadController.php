@@ -16,8 +16,8 @@ class UploadController extends Controller
     protected $dir_path;
 
     public function fileUploaded(Request $req){        
-        $this->dir_path = public_path('storage/');
-        $this->dir_thumb = public_path('storage/thumbnail/');
+        $this->dir_path = 'storage/';
+        $this->dir_thumb ='storage/thumbnail/';
         $datafile = "No File Exiting";
         $status   = false;
         $dirFile  = glob($this->dir_thumb."*", GLOB_BRACE);
@@ -72,8 +72,8 @@ class UploadController extends Controller
     }
 
     public function uploadFile(Request $req){
-        $this->dir_path = public_path("storage/");
-        $this->dir_thumb = public_path("storage/thumbnail");
+        $this->dir_path = "storage/";
+        $this->dir_thumb = "storage/thumbnail";
         $message = 'Folder Exiting';        
         if ( $req->hasFile("uploadfile") ) {
             foreach ($req->file("uploadfile") as $key=>$image) {
@@ -84,11 +84,12 @@ class UploadController extends Controller
                 $message = "Uploaded Successfully";
             }
         }
+         
         return response()->json(['message'=>$message]);
     }
 
     public function uploadOnlyFile(Request $req){
-        $this->dir_path = public_path('storage/avata');
+        $this->dir_path = 'storage/avata';
         if ( $req->hasFile("onlyFile")) {
             $image = $req->file("onlyFile");
             $filename = str_slug(time()."_".$image->getClientOriginalName(), "_").'.'.$image->getClientOriginalExtension();
@@ -105,7 +106,7 @@ class UploadController extends Controller
         $cp = Company::find($req->cp_id);
         $cp->logo = '';
         if ($cp->save()) {
-            unlink(public_path('storage/avata')."/".$req->filename);
+            unlink('storage/avata'."/".$req->filename);
         }
         return response()->json(['message'=>"Image Remove Successfully"]);
     }

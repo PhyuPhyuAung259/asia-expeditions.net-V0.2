@@ -4,7 +4,8 @@
   $active = 'reports'; 
   $subactive = 'tour_report';
   use App\component\Content;
-
+  $total_round=0;
+  $grand_total=0;
 ?>
 @section('content')
 <div class="wrapper">
@@ -53,39 +54,81 @@
 
               <div class="col-md-1 ml-5" style="padding: 0px;margin-left:10px;">
                 <button class="btn btn-primary btn-sm" type="submit">Search</button>
-              </div>          
-            </div>
-        
+              </div>   
+                
+            </div>  
+            <div class="col-sm-1 pull-right checkingAction" style="display: none;">
+                <button class="btn btn-sm btn-primary btn_acc" name="viewType" value="view3"> View Agent Tariff</button>
+              </div>
+
             <table class="datatable table table-hover table-striped">
+            @if(!empty($golf))
+                @foreach($golf as $golf_data)
+          
               <thead>
                 <tr>
-                  
-                  <th  width="280px">Supplier Name</th>
-                  <th>Country</th>
-                  <th>City</th>
-                  <th width="300px">Course Name</th>
-                  <th>No of Golf</th>
+                 
+                <th colspan="9" align="left"><font>{{$golf_data->supplier_name}}</font> From {{Content::dateformat($startDate)}} -> {{Content::dateformat($endDate)}}</th>
+                        </tr> 
+                <tr style="background-color: #ddd">
+                  <td width="86">File No.</td>
+                  <td>Client Name</td>
+                  <td>Start Date</td>
+                  <td>Golf Service</td>
+                  <td class="text-center">Pax</td>
+                  <td class="text-right">Price</td>
+                  <td class="text-right">Amount</td>
+                  <td class="text-right">Price {{Content::currency(1)}}</td>
+                  <td class="text-right">Amount {{Content::currency(1)}}</td>
                 </tr>
               </thead>
               <tbody>
-               @if(!empty($golf))
-                @foreach($golf as $golf_data)
-                  
-                  <tr>
-                   
-                    <td>
-                      <?php $supplier=DB::table('suppliers')->where('id', $golf_data->golf_id)->first();?> {{$supplier->supplier_name}}
-                    </td>
-                    <td><?php  $country = DB::table('country')->where('id', $golf_data->country_id)->first();?> {{{$country->country_name or ''}}} </td> 
-                    <td> <?php  $province = DB::table('province')->where('id', $golf_data->province_id)->first();?> {{{$province->province_name or ''}}} </td>
-                    <td>{{$golf_data->name}}</td>
-                    <td>{{$golf_data->golf_count}}</td>
-                    
-                                     
-                  </tr>
+              <?php  $bookeds = App\Booking::where(['book_status'=>1, 'golf_id'=>$golf_data->id])
+                ->whereHas('project', function($query) {
+                    $query->whereNotIn('project_fileno', ['', 0, 'Null']);
+                })                
+                ->whereBetween('book_checkin', [$startDate, $endDate])->orderBy('book_checkin')->get(); 
+                ?>
+                    @foreach($bookeds as $key => $sub )
+                      <?php $project = App\Project::where('project_number',$sub->book_project)->first(); 
+                      $gsv = App\GolfMenu::find($sub->program_id);?>
+                      <tr>
+                          <td>{{$project['project_prefix']}}-{{$project['project_fileno']}}</td>
+                          <td>{{$project['project_client']}} <small><b>x</b></small> <i>[ {{$project['project_pax']}} ]</i></td>
+                          <td>{{Content::dateformat($sub->book_checkin)}}</td>                    
+                          <td>{{$gsv['name']}}</td>
+                          <td class="text-center">{{$sub->book_pax}}</td>
+                          <td class="text-right">{{Content::money($sub->book_nprice)}}</td>
+                          <td class="text-right">{{Content::money($sub->book_namount)}}</td>
+                          <td class="text-right">{{Content::money($sub->book_kprice)}}</td>
+                          <td class="text-right">{{Content::money($sub->book_kamount)}}</td>
+                          <?php $total_round=$total_round+ $sub->book_pax;
+                            $grand_total=$grand_total+$bookeds->sum('book_namount');
+                          ?>
+                      </tr>
+                      </tbody>
+                      
+                    @endforeach  
+              
                 @endforeach
-                @endif
-              </tbody>
+                <tfoot>
+            <tr style="border: solid 1px #ddd;">
+                <td colspan="5" align="right">
+                    <font color="#1991d6">
+                    Total Round :  {{$total_round}}
+                    </font>
+                 
+                </td>
+                <td colspan="2" align="right">
+                    <font color="#1991d6">
+                    Grand Total :  {{$grand_total}}
+                    </font>
+                </td>
+               
+            </tr>
+        </tfoot>  
+              @endif
+               
             </table>
           </form>
         </section>
@@ -108,7 +151,7 @@
       language: {
         searchPlaceholder: "Number No., File No.",
       },
-       order: [[4, 'desc']]
+       order: [[3, 'desc']]
     });
     $('#country').change(function() {
       var countryId = $(this).val();
@@ -131,6 +174,25 @@
           }
        });               
     });
+    
+  });     
+
+  $(document).ready(function(){
+    
+      $('input[type="checkbox"]').change(function(){
+          var checkBotton = false;
+          $(".checkall").each(function(i, v){
+            if($(v).prop("checked") == true){
+              checkBotton = true;
+            }
+          }); 
+
+          if(checkBotton){
+            $(".checkingAction").fadeIn();
+          }else{
+            $(".checkingAction").fadeOut();
+          }
+      });
   });
 </script>
 @include('admin.include.datepicker')

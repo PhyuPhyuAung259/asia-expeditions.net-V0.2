@@ -77,7 +77,7 @@
                 <label>Country <span style="color:#b12f1f;">*</span></label> 
                 <select class="form-control country" id="country" name="country" data-type="driver" required>
                   <option value="">--Choose--</option>
-                  @foreach(App\supplier::whereNotIn("country_id", ["Null", 0])->groupBy('country_id')->get() as $con)
+                  @foreach(App\Supplier::whereNotIn("country_id", ["Null", 0])->groupBy('country_id')->get() as $con)
                     <option value="{{{$con->country_id or ''}}}">{{{ $con->country->country_name or ''}}}</option>
                   @endforeach
                 </select>

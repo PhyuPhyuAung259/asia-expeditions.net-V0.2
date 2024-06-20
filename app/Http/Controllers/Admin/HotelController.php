@@ -1,21 +1,20 @@
 <?php
 namespace App\Http\Controllers\admin;
 
-use App\Room;
-use App\Tour;
-use App\Business;
-use App\RoomRate;
-use App\Supplier;
-use App\HotelRate;
-use App\HotelBooked;
-use App\RoomCategory;
-use App\HotelCategory;
-use App\HotelFacitily;
-use App\component\Content;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\component\Content;
 use Intervention\Image\ImageManagerStatic as Image;
-
+use App\Business;
+use App\Room;
+use App\Tour;
+use App\RoomRate;
+use App\RoomCategory;
+use App\Supplier;
+use App\HotelFacitily;
+use App\HotelCategory;
+use App\HotelRate;
+use App\HotelBooked;
 class HotelController extends Controller 
 {
     //
@@ -35,7 +34,7 @@ class HotelController extends Controller
         if ($viewType === 'view1') {
             if (isset($req->hotel_checked) && !empty($req->hotel_checked)) {
                 $hotelChecked = isset($req->hotel_checked) ? $req->hotel_checked : [0];
-                $suppliers = Supplier::where('supplier_status', 1)->whereIn('id', $hotelChecked)->orderBy('supplier_name')->get();
+                $suppliers = Supplier::where('supplier_status', 1)->whereIn('id', $hotelChecked)->orderBy('province_id')->get();
                 return view('admin.hotel.hotel_Report', compact('suppliers'));
             }else{
                 $hotelinfo = HotelCategory::orderBy('name', 'ASC')->get();
@@ -44,12 +43,11 @@ class HotelController extends Controller
         } elseif ($viewType === 'view2') {
             $currentAction = $req->path();
             $hotelChecked = isset($req->hotel_checked) ? $req->hotel_checked : [0];
-            $suppliers = Supplier::where('supplier_status', 1)->whereIn('id', $hotelChecked)->orderBy('supplier_name')->get();
-            //dd($suppliers);
+            $suppliers = Supplier::where('supplier_status', 1)->whereIn('id', $hotelChecked)->orderBy('province_id')->get();
             return view('admin.supplier.hotelAgentTariff', compact('suppliers','currentAction','hotelChecked'));
         }elseif($viewType == 'view3'){
             $tourId = isset($req->tour_checked) ? $req->tour_checked : [0];
-            $tours = Tour::whereIn('id',$tourId)->orderByDESC('id')->get();
+            $tours = Tour::whereIn('id',$tourId)->orderBy('province_id')->get();
             return view('admin.tour.tourAgentTariff', compact('tours'));
         }
     }

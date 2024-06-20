@@ -12,7 +12,7 @@ $hotelReport = \App\HotelBooked::where('project_number', $book->book_project)->g
 	?>
 	<tr>
 		<td width="330px;">
-			<img src="{{Content::urlthumbnail($sup->supplier_photo, $sup->user_id)}}" class="img-responsive">
+			<img src="/storage/{{$sup->supplier_photo}}" class="img-responsive">
 		</td>
 		<td style="vertical-align:top;">
 			<h5 style="text-transform: capitalize;"><strong> 

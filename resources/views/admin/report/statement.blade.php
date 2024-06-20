@@ -1,8 +1,8 @@
 @extends('layout.backend')
-@section('title', 'Client Arrival Report')
+@section('title', 'Statement Report')
 <?php
   $active = 'reports'; 
-  $subactive = 'arrival_report';
+  $subactive = 'statement';
   use App\component\Content;
   $agent_id = isset($agentid) ?  $agentid:0;
   $locat = isset($location) ? $location:0;
@@ -16,7 +16,7 @@
     <section class="content"> 
       <div class="row">
         <section class="col-lg-12 connectedSortable">
-          <h3 class="border">Client Arrival Report</h3>
+          <h3 class="border">Statement Report</h3>
           <form method="POST" action="{{route('searchStatement')}}">
             {{csrf_field()}}
             
@@ -58,7 +58,7 @@
               <thead>
                 <tr>
                   <th width="48px" rowspan="2">File No.</th>
-                  <th rowspan="2">No.</th>
+                  
                   <th class="text-center" rowspan="2">Reference No.</th>
                   <th rowspan="2">Client Name</th>
                   <th rowspan="2">No of Pax</th>
@@ -66,16 +66,10 @@
                   <th width="162px" rowspan="2">Start Date-End Date</th>
                   <th rowspan="2">Selling Rate</th>
                   <th class="text-center" rowspan="2">Cost_of_Sale</th>
-                  <th class="text-center" rowspan="2">Bank Charges</th>
-                  <th class="text-center" rowspan="2">Total Cost</th>
-                  <th class="text-center" colspan="2">Total Profit</th>
-                  <th class="text-center" rowspan="2">Total</th>
+                 
+                 
                 </tr>
-                <tr>
-                  
-                  <td>USD</td>
-                  <td>%</td>
-                </tr>
+
               </thead>
               <tbody>
                 <?php $toTalPax = 0; ?>
@@ -83,17 +77,10 @@
                   <?php 
                     $guideSupplier = App\BookGuide::where(['project_number'=>$pro->project_number])->groupBy('supplier_id')->orderBy("created_at")->get(); 
                     $toTalPax = $toTalPax + $pro->project_pax;
-                  
                     
-                      $USDP=$pro->project_selling_rate - $pro->cost_of_sale;
-                      if($USDP != 0){
-                      $percentP=$USDP/$pro->cost_of_sale *100 ;
-                      $total = $USDP/2;
-                      }
                   ?>
                   <tr>
                     <td>{{$pro->project_prefix}}-{{$pro->project_fileno}}</td>
-                    <td></td>
                     <td class="text-center">{{{$pro->project_book_ref or ''}}}</td> 
                     <td>{{$pro->project_client}} 
                       @if($pro->project_pax)
@@ -106,12 +93,7 @@
                       {{Content::dateformat($pro->project_start)}} - {{Content::dateformat($pro->project_end)}}
                     </td>
                     <td>{{{$pro->project_selling_rate or ''}}}</td>
-                    <td class="text-right">{{{$pro->cost_of_sale or ''}}}</td> 
-                    <td></td> 
-                    <td class="text-right">{{{$pro->cost_of_sale or ''}}}</td> 
-                    <td>{{{$USDP or " "}}}</td>  
-                    <td>{{{$percentP or " "}}}</td>  
-                    <td>{{{$total or " "}}}</td>      
+                    <td class="text-right">{{{$pro->cost_of_sale or ''}}}</td>
                   </tr>
                 @endforeach
               </tbody>

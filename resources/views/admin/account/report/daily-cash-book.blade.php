@@ -49,7 +49,11 @@
               @else
                 <?php $getCountry = App\AccountTransaction::getAccBookByCity($country['id'])->groupBy('tran.supplier_id')->get(); ?>
               @endif
-              <?php $supId = $supplier['id'] > 0 ? $supplier->id : 1469; ?>
+              <?php
+            //   $supId = $supplier['id'] > 0 ? $supplier->id : 1469; 
+            $supId = $supplier && $supplier->id > 0 ? $supplier->id : 1469;
+
+              ?>
               @if($getCountry->count() > 0 )
                 <option value="">--select--</option>
                 @foreach($getCountry as $con)
@@ -87,7 +91,7 @@
       <?php $n = 0; ?>
       @if($accTransaction->count() > 0 )
         <tr style="background-color: #3c8dbc0a; font-size: 11px;" >
-        <th class="text-center" style="width: 4%;">No.#</th>
+        <th class="text-center" style="width: 4%;">No</th>
           <th style="border-bottom: 1px solid #ddd; width: 6.5%;"><b>Date </b></th>  
           <th class="text-left" style="border-bottom: 1px solid #ddd;">Descriptions</th>    
           <th style="border-bottom: 1px solid #ddd; width: 8%;"><b>INV-Number</b></th>          
@@ -150,12 +154,16 @@
               <td class="text-right">{{ Content::money($acc->kdebit) }}</td>
               <td class="text-right">{{ Content::money($acc->kcredit) }}</td>
               <td class="text-right" style="color:{{$getBalanceKyat <= 0 ? 'red' : '#72afd2'}}">{{ number_format($getBalanceKyat, 2) }}</td>
-              <td><span {{ $supplier['id'] == $tsup['id'] ? $highlight : ''}}>{{ $tsup['supplier_name'] }}</span></td>
+             
+              <td>
+                <span {{ isset($supplier['id'], $tsup['id']) && $supplier['id'] == $tsup['id'] ? $highlight : '' }}>
+                    {{ isset($tsup['supplier_name']) ? $tsup['supplier_name'] : '' }}
+                </span>
+            </td>
               @if($cashBookedproject->count() > 0)
-              <td class="text-right">
-              <!-- {{ $project['project_prefix' ] ."-".$project['project_fileno'] }}  -->
-              {{ ($project['project_prefix'] ?? '') . '-' . ($project['project_fileno'] ?? '') }}
-              </td>
+             
+           <td class="text-right"> {{ $project['project_prefix'] ."-".$project['project_fileno'] }} </td>
+           
               @endif
               <td class="text-left">
                 @if(isset($project->project_client))

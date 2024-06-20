@@ -31,9 +31,14 @@
 		                        </select>
 	                        </div>
 	                        <div class="col-md-3">
-								<select class="col-md-2 form-control input-sm  " name="supinfo" id="supinfo"  >
+		                        <!--<div class="form-group">-->
+		                        <!--    <input type="text" name="supplier" class="form-control" value="{{$supp['supplier_name'] or ''}}" placeholder="Supplier Name Search..." >		           	-->
+		                        <!--</div>-->
+		                        
+								<select class="col-md-2 form-control input-sm  " name="supplier" id="supplier"  >
 									<option value="0">Choose Supplier Name</option>
 								</select>
+	                      
 	                        </div>
 	                        <div class="col-md-2">
 		                        <div class="form-group">
@@ -107,7 +112,6 @@
 			return false;
 		}
 	});
-
 	$(document).ready(function(){
     
       $('#business').change(function() {
@@ -117,7 +121,7 @@
             type: 'GET',
             dataType: 'json',
             success: function(response) {
-                var sup_info = $('#supinfo');
+                var sup_info = $('#supplier');
                 sup_info.empty();
                 if (response.length === 0) {
                     sup_info.append('<option value="0">No available</option>');
@@ -138,4 +142,3 @@
 
 @include('admin.include.datepicker')
 @endsection
-

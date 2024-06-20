@@ -15,7 +15,7 @@
 		      	@include('admin.include.message')
 				
 		        <section class="col-lg-12 connectedSortable">
-		           <h3 class="border" style="text-transform:capitalize;">Booking Restaurant for Project No. <b>{{$project->project_number}} </b> 
+		             <h3 class="border" style="text-transform:capitalize;">Booking Restaurant for Project No. <b>{{$project->project_number}} </b> 
 					@if($project->project_status == 2)
 							@if(\Auth::user()->role_id == 2)
 							<span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Restaurant</a>
@@ -24,7 +24,6 @@
 							<span class="fa fa-angle-double-right"></span> <a href="#" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">Add Restaurant</a>		         	
 					@endif   
 					</h3>
-				 	  
 		            <table class="datatable table table-hover table-striped">
 			            <thead>
 			                <tr>

@@ -14,7 +14,7 @@
 	<tbody>
 		<?php $data = App\TransportMenu::where('supplier_id', $supplier->id)->get();?>
 		@foreach($data as $key => $tran)
-		<?php $transervice = App\TransportService::where('id', $tran->transport_id)->first();?> 
+			<?php $transervice = App\TransportService::where('id', $tran->transport_id)->first();?> 
 			@if(!empty($transervice->title))
 			<tr style="border-bottom: 3px solid #black;">
 				<td style="padding: 8px;">{{$tran->name}}</td>
@@ -30,28 +30,21 @@
 <table class="table" id="roomrate">
 	<thead style="background-color: rgb(245, 245, 245); font-weight: 600;">
 		<tr>
-			<td style="padding: 8px;">No.</td>
+		
 			<td style="padding: 8px;">Transport Service</td>
 			
 		</tr>
 	</thead>
 	<tbody>
-		<?php
-		$no=1; 
-		$data = DB::table('supplier_transport_service')->where('supplier_id', $supplier->id)->get();?>
-		
+	<?php $data = DB::table('supplier_transport_service')->where('supplier_id', $supplier->id)->get();?>
 		@foreach($data as $key => $tran)
-		<?php $transervice = App\TransportService::where('id', $tran->transport_service_id)->first();?> 
+			<?php $transervice = App\TransportService::where('id', $tran->transport_service_id)->first();?> 
 			@if(!empty($transervice->title))
 			<tr style="border-bottom: 3px solid #black;">
-				<td>{{$no}}</td>
 				<td style="padding: 8px;">{{{$transervice->title}}} </td>
 			</tr>
-			<?php $no=$no+1;?>
 			@endif
-			
 		@endforeach
-	
 	</tbody>
 </table>
 @endif

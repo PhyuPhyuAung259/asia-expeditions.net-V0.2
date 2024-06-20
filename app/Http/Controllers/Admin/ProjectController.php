@@ -33,15 +33,15 @@ class ProjectController extends Controller
         if ($project == "project")
         {
             if ($req->status == "Inactive") { 
-                $projects = Project::getProjectTags($startDate, $endDate, 0)->orderBy('project_start', 'DESC')->get();
+                $projects = Project::getProjectTags($startDate, $endDate, 0)->get();
             }elseif ($req->type == "quotation") {
-                $projects = Project::getProjectQuotation($startDate, $endDate)->orderBy('project_start', 'DESC')->get();  
+                $projects = Project::getProjectQuotation($startDate, $endDate)->get();  
                 return view('admin.project.projectQuotation', compact('projects', 'startDate', 'endDate'));
             } if ($req->status == "Disable") { 
-                $projects = Project::getProjectSearchforDisable($startDate, $endDate)->orderBy('project_start', 'DESC')->get();
+                $projects = Project::getProjectSearchforDisable($startDate, $endDate)->get();
             }
             else{
-                $projects = Project::getProjectTags($startDate, $endDate)->orderBy('project_start', 'DESC')->get(); 
+                $projects = Project::getProjectTags($startDate, $endDate)->get(); 
             }            
             return view('admin.project.bookedProject', compact('projects', 'startDate', 'endDate'));
         } elseif ($project == "tour") {
@@ -407,7 +407,7 @@ class ProjectController extends Controller
         }
     }
 
-    public function projectFormEdit($projectNum){
+   public function projectFormEdit($projectNum){
         $project = Project::where('project_number', $projectNum)->first();
         if($project->project_status==2){
             if(\Auth::user()->role_id == 2){
@@ -441,8 +441,6 @@ class ProjectController extends Controller
             $aPro->project_ex_rate  = $req->ex_rate;
             $aPro->project_selling_rate  = $req->sell_rate;
             $aPro->cost_of_sale  = $req->cost_of_sale;
-            // $aPro->client_payment  = $req->client_payment;
-            // $aPro->transfer_date  = $req->transfer_date;
             $aPro->project_add_invoice = $req->add_invoice;
             $aPro->project_cnote_invoice  = $req->cnote_invoice;
             $aPro->project_invoice_number  = $req->invoice_num;
@@ -476,20 +474,8 @@ class ProjectController extends Controller
             $aPro->supplier_id      = $req->agent;
             $aPro->project_amount   = $req->project_amount;
             $aPro->vat              = $req->vat;
-          
-        // @end project update
-        //payment status start
-      
-        // if($aPro->selling_rate != 0){
-        //     if($pp==0){
-        //         $aPro->payment_status=2; //paid
-        //     }else if($pp != 0){
-        //         $aPro->payment_status=1; //patial paid
-        //     }
-        // }
             $aPro->save();
-        
-         //payment status end
+        // @end project update
             $usertags = $req->usertag;
             if ($req->usertag) {
                 array_push($usertags, \Auth::user()->id);

@@ -127,10 +127,10 @@ class Booking extends Model
 
             ->orderBy('book.book_checkin', 'ASC');
     }
-    public static function tourDetailsBook($project){
+    public static function tourDetailsBook($project, $option= 0){
         return \DB::table('booking as book')
             ->join('tours', 'tours.id','=','book.tour_id')
-            ->where(['book.book_project'=> $project, 'book.book_status'=>1])
+            ->where(['book.book_project'=> $project, 'book.book_status'=>1 ]) //remove , 'book.book_option'=>$option
             // ->whereHas('pricetour', function($query) {$query->whereNotIn('sprice', ['',0, 'Null'])})
             ->whereNotIn('book.book_pax', ["", "Null",0])
             ->select('book.id as id', 'book.*', 'tours.tour_name')
@@ -142,16 +142,16 @@ class Booking extends Model
         return \DB::table('booking as book')
             ->join('flights', 'flights.id','=','book.flight_id')
             ->join("project", "project.project_number","=", "book.book_project")
-            ->where(['book.book_project'=>$project, 'book.book_status'=>1, "project.active"=>1, 'book.book_option'=>$option])
+            ->where(['book.book_project'=>$project, 'book.book_status'=>1, "project.active"=>1]) //remove , 'book.book_option'=>$option
             ->select('book.id as id', 'book.*', 'flights.flightno', 'flights.flight_from', 'flights.flight_to', 'flights.dep_time', 'flights.arr_time')
             ->orderBy('book.book_checkin', 'ASC');
     }
 
-    public static function golfBook($project){
+    public static function golfBook($project, $option = 0){
         return \DB::table('booking as book')
             ->join('suppliers', 'suppliers.id','=','book.golf_id')
             ->join("project", "project.project_number","=", "book.book_project")
-            ->where(['book.book_project'=> $project, 'book.book_status'=>1  ]) 
+            ->where(['book.book_project'=> $project, 'book.book_status'=>1 ]) //remove ,'book.book_option'=>$option
             ->select('book.id as id', 'book.*', 'suppliers.id as supplier_id', 'suppliers.supplier_name')
             ->orderBy('book.book_checkin', 'ASC');
     }
@@ -198,7 +198,7 @@ class Booking extends Model
                 ->join('project_user', 'project_user.project_id','=','project.id' )
                 ->join('users', 'users.id','=','project.user_id')
                 ->select("project.*",  "users.*", "booking.*", "booking.id as book_id", "booking.user_id as book_userId", "project_user.*", "project.user_id as UserID")
-                ->where(['booking.book_status'=>1, "project.active"=>1, 'booking.book_option'=> $option])
+                ->where([ 'booking.book_status'=>1, "project.active"=>1, 'booking.book_option'=> $option])
                 ->whereBetween('booking.book_checkin', [$checkIn, $checkOut])
                 ->groupBy("booking.id")
                 ->orderBy('booking.book_checkin', 'ASC');
@@ -222,7 +222,7 @@ class Booking extends Model
                 ->join('project_user', 'project_user.project_id','=','project.id' )
                 ->join('booking', 'booking.book_project','=','project.project_number')
                 ->select("project.*", "booking.*", "booking.id as book_id", "booking.user_id as book_userId", "project_user.*", "project.user_id as UserID")
-                ->where(["project.active"=>1, 'booking.book_status'=> 1, 'project.project_number'=> $projectNum, 'booking.book_option'=>$option])
+                ->where(["project.active"=>1,'booking.book_status'=> 1, 'project.project_number'=> $projectNum, 'booking.book_option'=>$option])
                 ->whereBetween('booking.book_checkin', [$checkIn, $checkOut])
                 ->groupBy("booking.id")
                 ->orderBy('booking.book_checkin', 'ASC');

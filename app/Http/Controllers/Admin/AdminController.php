@@ -46,14 +46,7 @@ class AdminController extends Controller
     public function getHotels(Request $request, $country)
     {
         $hotels = Supplier::where(['country_id'=>$country,'business_id'=>1] )->orderBy('supplier_name', 'asc')->get();
-        
         return response()->json($hotels);
-    }
-    public function getGolfs(Request $request, $country)
-    {
-        $golfs = Supplier::where(['country_id'=>$country,'business_id'=>29] )->orderBy('supplier_name', 'asc')->get();
-        
-        return response()->json($golfs);
     }
     public function getRestaurants(Request $request, $city)
     {
@@ -265,7 +258,7 @@ class AdminController extends Controller
         $supplier->supplier_status = 0;
         $supplier->save();
         $message = "Delete Successfully";
-      }elseif ($req->type == 'book_tour' || $req->type == 'book_hotel' || $req->type == 'book_flight' || $req->type == 'book_cruise' || $req->type == 'book_golf' ) {
+      }elseif ($req->type == 'book_tour' || $req->type == 'book_hotel' || $req->type == 'book_flight' || $req->type == 'book_cruise' || $req->type == 'book_golf') {
         Booking::find($id)->delete();
         $message = "Delete $req->type Successfully";
       }elseif ($req->type == 'book_hotelrate') {
@@ -706,7 +699,7 @@ class AdminController extends Controller
           }
       
         }elseif ($req->datatype == "vehicle") {
-          $vehicleService = \App\TransportMenu::where(['status'=>1, 'supplier_id'=> $req->selectedid, 'transport_id'=>$dataId])->orderBy('title', 'ASC')->get();
+          $vehicleService = \App\TransportMenu::where(['status'=>1, 'supplier_id'=> $req->selectedid, 'transport_id'=>$dataId])->orderBy('name', 'ASC')->get();
           if ($vehicleService->count() > 0) {
             $message .= "<option id='no_data'>Choose Vehicle</option>";
             foreach ($vehicleService as $key => $tran) {
@@ -765,13 +758,11 @@ class AdminController extends Controller
           $tranService = Supplier::find($dataId);
           if ($tranService->transport_service->count() > 0) {
             $message .= "<option id='no_data'>--Choose--</option>";
-            //  unsorting state
             // foreach ($tranService->transport_service as $key => $tran) {
             //   $message .="<option value=".$tran->id.">".$tran->title."</option>";
-            // }
-            
-            // Sorting the transport services by title
-            $sortedTransportServices = $tranService->transport_service->sortBy('title');
+            // }unsorting state
+            //// Sorting the transport services by title
+              $sortedTransportServices = $tranService->transport_service->sortBy('title');
             foreach ($sortedTransportServices as $key => $tran) {
               $message .= "<option value=" . $tran->id . ">" . $tran->title . "</option>";
             }
@@ -1232,7 +1223,7 @@ class AdminController extends Controller
             $projects = project::where(['project_number'=>$projectNum, 'project_status'=>1, "active"=>$status])
                         ->orWhere('project_fileno', $projectNum)
                         ->Where('project_client', 'like', $projectNum. '%')
-                        ->whereBetween('project_start', [$startDate, $endDate])
+                        ->whereBetween('project_end', [$startDate, $endDate])
                         ->orderBy('project_number', 'DESC')->get();
           }
         }elseif ($project == "hotelrate") { 

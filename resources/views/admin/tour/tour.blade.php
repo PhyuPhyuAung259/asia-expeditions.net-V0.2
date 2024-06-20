@@ -53,8 +53,8 @@
                   @foreach($tours as $tour)                 
                   <tr>
                     <td style="vertical-align: middle;">
-                            <label class="container-CheckBox">
-                                <input type="checkbox" class="checkall" name="tour_checked[]" value="{{$tour->id}}">
+                            <label class="container-CheckBox" >
+                                <input type="checkbox"  id="check_all" class="checkall"  name="tour_checked[]" value="{{$tour->id}}">
                                 <span class="checkmark hidden-print"></span>
                             </label>
                     </td>

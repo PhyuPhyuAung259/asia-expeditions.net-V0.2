@@ -19,9 +19,6 @@
           <h3 class="border">Client Arrival Report</h3>
           <form method="POST" action="{{route('searchArrival')}}">
             {{csrf_field()}}
-            <div class="col-sm-1 pull-right">
-                <button style="border-radius: 50px;" class="btn btn-sm btn-default ok_download" data-type="excel">Download Excel  &nbsp;<i class="fa fa-download"></i></button>
-              </div>
             <div class="col-sm-8 pull-right">
               <div class="col-md-2">
                 
@@ -62,7 +59,6 @@
                   <th width="162px">Start Date-End Date</th>
                   <th width="280px">Guide Name</th>
                   <th class="text-center">Preview</th>
-
                 </tr>
               </thead>
               <tbody>
@@ -125,7 +121,7 @@
                       <a target="_blank" href="{{route('previewProject', ['project'=>$pro->project_number, 'type'=>'sales'])}}" title="Prview Details">
                         <label style="cursor: pointer;" class="icon-list ic_del_drop"></label>
                       </a>     
-                    </td>               
+                    </td>                     
                   </tr>
                 @endforeach
               </tbody>
@@ -139,7 +135,6 @@
     </section>
   </div>
 </div>
-<script type="text/javascript" src="{{asset('js/jquery.table2excel.min.js')}}"></script>
 <script type="text/javascript">
   $(document).ready(function(){
     $(".datatable").DataTable({
@@ -149,42 +144,5 @@
     });
   });
 </script>
-<script type="text/javascript">
-  $(".ok_download").click(function(){
-    console.log(1)
-    var type = $(this).data('type');
-    if (type == 'excel') {
-      $(".excel-sheed").table2excel({
-        exclude: ".noExl",
-        name: "Supplier booked report by",
-        filename: "Supplier booked report by",
-        fileext: ".xls",
-        exclude_img: true,
-        exclude_links: true,
-        exclude_inputs: true            
-      });
-      return false;
-    }
-  });
-  $(document).ready(function(){
-      $(".datatable").DataTable();
-    // $(".checkingAction").css({"display": "none"});
-      $('input[type="checkbox"]').change(function(){
-          var checkBotton = false;
-          $(".checkall").each(function(i, v){
-            if($(v).prop("checked") == true){
-              checkBotton = true;
-            }
-          });
-
-          if(checkBotton){
-            $(".checkingAction").fadeIn();
-          }else{
-            $(".checkingAction").fadeOut();
-          }
-      });
-  });
-</script>
 @include('admin.include.datepicker')
 @endsection
- 

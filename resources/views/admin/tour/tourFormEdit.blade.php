@@ -129,7 +129,7 @@
                     <div id="wrap-feature-image" style="position:relative;" class="{{$tour->tour_photo ? 'open-img':''}}">
                       <input type="hidden" name="user_id" value="{{$tour->user_id}}">
                       <input type="hidden" name="image" id="data-img" value="{{$tour->tour_photo}}">
-                      <img id="feature-img" src="{{Content::urlthumbnail($tour->tour_photo, $tour->user_id)}}" style="width:100%;display:none;margin-bottom:12px;" class="btnUploadFiles" data-type="single-img" data-toggle="modal" data-target="#myUpload">
+                      <img id="feature-img" src="/storage/{{$tour->tour_photo}}" style="width:100%;display:none;margin-bottom:12px;" class="btnUploadFiles" data-type="single-img" data-toggle="modal" data-target="#myUpload">
                       <i id="removeImage" class="fa fa-remove (alias)" title="Remove picture" style="display: none;"></i>
                     </div>
                     <a href="#uploadfile" class="btnUploadFiles" data-type="single-img" data-toggle="modal" data-target="#myUpload">Set Feature Image</a>
@@ -147,7 +147,7 @@
                           @foreach($gallery as $key=>$img)
                             <li data-url="{{$img}}"><i class="removegallery fa fa-remove (alias)" title="Remove picture" style="display:none;"></i>
                               <input type="hidden" name="gallery[]" value="{{$img}}">  
-                              <img src="{{Content::urlthumbnail($img, $tour->user_id)}}" style='width:100%;'/></li>
+                              <img src="/storage/{{$img}}" style='width:100%;'/></li>
                           @endforeach
                         @endif
                       </ul>                    

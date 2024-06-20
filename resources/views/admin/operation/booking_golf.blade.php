@@ -15,8 +15,7 @@
 		    <div class="row">
 		      	@include('admin.include.message')
 		        <section class="col-lg-12 connectedSortable">
-		          <h3 class="border" style="text-transform:capitalize;">Booking Golf for Project No. <b>{{$project->project_number}} </b>
-				</h3>
+		          <h3 class="border" style="text-transform:capitalize;">Booking Golf for Project No. <b>{{$project->project_number}} </b></h3>
 		            <table class="datatable table table-hover table-striped">
 		              <thead>
 		                <tr>
@@ -53,7 +52,7 @@
 								<td class="text-right">
 									{{ $gf->book_kamount > 0 ? Content::money($gf->book_kamount) : Content::money($gf->book_kprice * $gf->book_pax) }}
 								</td>
-								@if($project->project_status == 2)
+							    @if($project->project_status == 2)
 										@if(\Auth::user()->role_id == 2)
 											<td class="text-center">
 												<button class="btnEditTran" style="padding:0px;border:none;" data-id="{{$gf->id}}" data-toggle="modal" data-target="#myModal">
@@ -66,8 +65,7 @@
 								<td class="text-center"><button class="btnEditTran" style="padding:0px;border:none;" data-id="{{$gf->id}}" data-toggle="modal" data-target="#myModal">
 		                      	<i style="padding:1px 2px;" class="btn btn-info btn-xs fa fa-pencil-square-o"></i>
 		                    </button> </td> 	
-								@endif 
-								
+								@endif
 							</tr>
 						@endforeach
 		              </tbody>

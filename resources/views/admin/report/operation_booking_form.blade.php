@@ -533,7 +533,8 @@ function deleteRow(r) {
 
             // Update the total amount cell
 		//	totalAmountCell.innerText = "Total " + Content.currency() + ": " + Content.money(newTotal.toFixed(2));
-	totalAmountCell.innerText = newTotal.toFixed(2);
+            // 	totalAmountCell.innerText = "Total USD:"  + newTotal.toFixed(2);
+                totalAmountCell.innerHTML = "<b>Total USD: " + newTotal.toFixed(2) + "</b>";
 	
         }
        

@@ -568,7 +568,7 @@
                                             <span class="pull-left">{{  Content::money($btran['kprice'])}}</span>
                                         @endif
                                       
-                                        @if(isset($TranJournal['book_amount']) && isset($TranJournal['book_kamount']))
+                                        @if(isset($TranJournal['book_amount']) || isset($TranJournal['book_kamount']))
                                        
                                             @if($TranJournal['book_amount'] > 0 || $TranJournal['book_kamount'] > 0)
                                                 <span class="badge badge-light pull-right">{{ Content::money($TransacTran->sum('credit')) }}</span>
@@ -680,7 +680,7 @@
                                                 <span class="pull-left">{{Content::money($bg['kprice']) or ''}} </span>
                                             @endif
                                             
-                                            @if(isset($GJournal['book_amount']) && isset($GJournal['book_kamount']))
+                                            @if(isset($GJournal['book_amount']) || isset($GJournal['book_kamount']))
                                                 @if($GJournal['book_amount'] > 0 || $GJournal['book_kamount'] > 0)
                                                     <span class="badge badge-light pull-right">{{ $GAccTran->sum('kcredit') ? Content::money( $GAccTran->sum('kcredit')) : Content::money($GAccTran->sum('credit')) }}</span>
 
@@ -697,7 +697,7 @@
                                                     @endif
                                                 @endif
                                             @else
-                                                @if($gAmount > 0)
+                                                 @if($gAmount > 0)
                                                     <span data-toggle="modal" data-target="#loadProjectConfirm" class="btn btn-success btn-xs AddToACcount text-right hidden-print pull-right" 
                                                     data-type="6" data-kamount="{{$bg['kprice']}}" 
                                                     data-amount="{{$bg['price']}}" 
@@ -781,22 +781,24 @@
 								    @else
 										<span class="pull-left">{{Content::money($rest->kamount)}}</span>
 									@endif
-			                  		
-			                  		@if($RJournal['book_amount'] > 0 || $RJournal['book_kamount'] > 0)
-			                  			<span class="badge badge-light pull-right">{{ $RestAccTran->sum('kcredit') ? Content::money($RestAccTran->sum('kcredit')) : Content::money($RestAccTran->sum('credit'))}}</span>
-
-			                  			@if($RJournal['book_amount'] > $RestAccTran->sum('credit') || $RJournal['book_kamount'] > $RestAccTran->sum('kcredit') )
-			  								<a target="_blank" href="{{route('getPayable', ['journal_id'=> $RJournal['id']])}}" class="btn btn-info btn-xs pull-right hidden-print"><b>Pay</b></a>
-			  								<span class="btn btn-link btn-xs hidden-print pull-right">
-				      							<a target="_blank" href="{{route('getJournalReport', ['journal_entry'=>$project->project_number])}}">View/Edit</a>
-				      						</span>
-			  								
-			  							@elseif($rest->amount >= $RJournal['book_amount'] || $rest->kamount >= $RJournal['book_kamount'] )
-			  								<span class="btn btn-link btn-xs hidden-print pull-right">
-				      							<a target="_blank" href="{{route('getJournalReport', ['journal_entry'=> $project->project_number])}}">View/Edit</a>
-				      						</span>
-			  							@endif
-	                  				@else
+			                  		@if(isset($RJournal['book_amount']) || isset($RJournal['book_kamount']))
+    			                  		@if($RJournal['book_amount'] > 0 || $RJournal['book_kamount'] > 0)
+        			                  			<span class="badge badge-light pull-right">{{ $RestAccTran->sum('kcredit') ? Content::money($RestAccTran->sum('kcredit')) : Content::money($RestAccTran->sum('credit'))}}</span>
+        
+        			                  			@if($RJournal['book_amount'] > $RestAccTran->sum('credit') || $RJournal['book_kamount'] > $RestAccTran->sum('kcredit') )
+        			  								<a target="_blank" href="{{route('getPayable', ['journal_id'=> $RJournal['id']])}}" class="btn btn-info btn-xs pull-right hidden-print"><b>Pay</b></a>
+        			  								<span class="btn btn-link btn-xs hidden-print pull-right">
+        				      							<a target="_blank" href="{{route('getJournalReport', ['journal_entry'=>$project->project_number])}}">View/Edit</a>
+        				      						</span>
+        			  								
+        			  							@elseif($rest->amount >= $RJournal['book_amount'] || $rest->kamount >= $RJournal['book_kamount'] )
+        			  								<span class="btn btn-link btn-xs hidden-print pull-right">
+        				      							<a target="_blank" href="{{route('getJournalReport', ['journal_entry'=> $project->project_number])}}">View/Edit</a>
+        				      						</span>
+        			  							@endif
+        			  					@endif
+    			  			                
+	                  				    @else
 	                  					@if($ResAmount > 0)
 		                  				<span data-toggle="modal" data-target="#loadProjectConfirm" class="btn btn-success btn-xs AddToACcount text-right hidden-print pull-right"
 	              							data-type="2" data-kamount="{{$rest->kamount}}" 
@@ -829,7 +831,7 @@
 							</tr>
 						@endif
                         <!-- Restaurant End -->
-                        <!-- Entrance Fees Start -->
+                         <!-- Entrance Fees Start -->
                         <?php 
                             $EntranceBook = App\BookEntrance::where('project_number', $project->project_number)->orderBy('start_date', 'ASC')->get();
                             $entranAmount = 0; 
@@ -870,7 +872,7 @@
 					                <td class="text-center">{{{ $ent->book_pax or '' }}}</td>
 					                <td class="text-right">{{ Content::money($ent->price) }}</td>
 					                <td class="text-right">
-										@if(!empty($RestAccTran))
+										@if(!empty($EntAccTran))
 											<span class="pull-left" {{$color}}>{{$entAmount == $EntAccTran->sum('credit') ? Content::money($entAmount) : Content::money($entAmount - $EntAccTran->sum('credit'))}} </span>
 										@else
                                             <span class="pull-left"> {{Content::money($entAmount)}}</span>
@@ -879,12 +881,11 @@
 					                <td class="text-right">{{ Content::money($ent->kprice) }}</td>
 				                  	<td class="text-right">
 				                  		
-										  	@if(!empty($RestAccTran))
-                                                <span class="pull-left" {{$colork}}>{{$entKAmount == $EntAccTran->sum('kcredit') ? Content::money($entKAmount) : Content::money($entKAmount - $EntAccTran->sum('kcredit'))}}</span>
-											@else
-                                                <span class="pull-left"> {{Content::money($entAmount)}} </span>
+										  	@if(!empty($EntAccTran))
+                                                <span class="pull-left" {{$colork}}>{{$entKamount == $EntAccTran->sum('kcredit') ? Content::money($entKamount) : Content::money($entKamount - $EntAccTran->sum('kcredit'))}}</span>
+									
 											@endif
-                                            @if(isset($EntJournal['book_amount']) && isset($EntJournal['book_kamount']))
+                                            @if(isset($EntJournal['book_amount']) || isset($EntJournal['book_kamount']))
                                                 @if($EntJournal['book_amount'] > 0 || $EntJournal['book_kamount'] > 0)
                                                     <span class="badge badge-light pull-right">{{ $EntAccTran->sum('kcredit') ? Content::money($EntAccTran->sum('kcredit')) : Content::money($EntAccTran->sum('credit')) }}</span>
                                                     
@@ -894,7 +895,7 @@
                                                         
                                                         <a target="_blank" href="{{route('getJournalReport', ['journal_entry'=>$project->project_number])}}">View/Edit</a> </span>
                                                         
-                                                    @elseif($entKamount >= $EntJournal['book_amount'] || $entKamount >= $EntJournal['book_kamount'] )
+                                                    @elseif($entAmount >= $EntJournal['book_amount'] || $entKamount >= $EntJournal['book_kamount'] )
                                                         <span class="btn btn-link btn-xs hidden-print pull-right">
                                                         <a target="_blank" href="{{route('getJournalReport', ['journal_entry'=>$project->project_number])}}">View/Edit</a> </span>
                                                     @endif
@@ -902,7 +903,7 @@
 	                  			    	    @else
                                             @if($entAmount>0) 
     		                  				<span data-toggle="modal" data-target="#loadProjectConfirm" class="btn btn-success btn-xs AddToACcount text-right hidden-print pull-right"
-    	              							data-type="55" data-kamount="{{$entKamount}}" 
+    	              							data-type="55" 	data-kamount="{{ $entKamount }}"
     	              							data-amount="{{$entAmount}}" 
     	              							data-process_type="pay" 
     	              							data-title="{{ $ent->entrance->name }}" 
@@ -910,6 +911,7 @@
     	              							data-supplier="" 
     	              							data-country="{{$ent->country_id}}">Post
     	              						</span>
+    	              					
                                             @endif
 	              				    	@endif
             				                  		
@@ -933,7 +935,7 @@
 							</tr>
 						@endif
                         <!-- Entrance Fees End -->
-                        <!-- MISC Start -->
+                         <!-- MISC Start -->
                             <?php 
                                 $MiscBook = App\Booking::tourBook($project->project_number)->get(); 
                                 $miscTotal = 0;
@@ -1029,7 +1031,7 @@
                                                             @else
                                                                 <span class="pull-left" >{{Content::money($misckAmount)}} </span>
                                                             @endif
-                                                            @if(isset($EntJournal['book_amount']) && isset($EntJournal['book_kamount']))
+                                                            @if(isset($MiscJournal['book_amount']) || isset($MiscJournal['book_kamount']))
                                                                 @if($MiscJournal['book_amount'] > 0 || $MiscJournal['book_kamount'] > 0)
                                                                     <span class="badge badge-light pull-right">{{ $MiscAccTran->sum('credit') ? Content::money($MiscAccTran->sum('credit')) : Content::money($MiscAccTran->sum('kcredit')) }}</span>
 
@@ -1046,17 +1048,19 @@
                                                                     @endif
                                                                 @endif
                                                             @else
-                                                                @if($MISCTotalAmount > 0)
+                                                                
+                                                                    @if($MISCTotalAmount > 0)
                                                                     <span data-toggle="modal" data-target="#loadProjectConfirm" class="btn btn-success btn-xs AddToACcount text-right hidden-print pull-right" 
                                                                         data-type="54" data-kamount="{{$misckAmount}}" 
                                                                         data-amount="{{$miscAmount}}" 
                                                                         data-process_type="pay" 
-                                                                        data-title="{{{ $misc->servicetype->name or ''}}}" 
+                                                                        data-title="{{ $misc->servicetype->name }}" 
                                                                         data-book_id="{{$misc->id}}"
                                                                         data-supplier="" 
-                                                                        data-country="{{ $tour->country_id }}">Post
+                                                                        data-country="{{ $tour->country_id}}">Post
                                                                     </span>
-                                                                @endif
+                                                                    @endif
+                                                              
                                                             @endif
                                                         </label>
                                                         <div class="clearfix"></div>
@@ -1071,11 +1075,12 @@
                                         <h5>
                                         <strong>
                                             @if(!empty($miscTotal))
-                                                Total: {{Content::money($miscTotal)}} {{Content::currency()}}
+                                                Total {{Content::money($miscTotal)}} {{Content::currency()}}
                                             @endif
-                                            {{$misckTotal > 0 && $miscTotal > 0 ? ',&nbsp;':''}}
+                                              {!! ($misckTotal > 0 && $miscTotal > 0) ? ',&nbsp;' : '' !!}
+                                           
                                             @if(!empty($misckTotal))
-                                                ,&nbsp;	Total: {{Content::money($misckTotal)}}  {{Content::currency(1)}}
+                                                , &nbsp;	Total {{Content::money($misckTotal)}}  {{Content::currency(1)}}
                                             @endif
                                         </strong>
                                         </h5>
@@ -1083,10 +1088,14 @@
                                 </tr>
                             @endif
                         <!-- MISC End -->
-                        <?php 
+                         <?php 
 							$grandtotal = $totalHotel + $flightBook->sum('book_namount') + $golfBook->sum('book_namount') + $cruiseBook->sum('net_amount') + $restBook->sum('amount') + $entranAmount + $transportTotal + $guidTotal + $miscTotal;
 							$grandktotal = $flightBook->sum('book_kamount') + $golfBook->sum('book_kamount') + $restBook->sum('kamount') + $entranKAmount + $transportkTotal + $guidkTotal + $misckTotal;
 						?>
+						 <tr>
+                            <td colspan="11" class="text-right"> <strong>GRAND TOTAL {{Content::currency()}} : {{ number_format(($grandtotal ), 2)}}</strong> </td>
+                        </tr>
+                   
                         <!--  The End-->
                     </table>
                 </form>
@@ -1094,7 +1103,7 @@
            
         </div>
     </div>
-    <br><br>
+     <br><br>
 	@if(isset($project->project_number))
 		<?php 
 			$getGuideBooked = \App\Supplier::where(["supplier_status"=>1, 'country_id' => \Auth::user()->country_id])->whereIn("business_id", [6, 7])->orderBy('created_at', 'desc')->get();

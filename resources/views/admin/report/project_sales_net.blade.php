@@ -67,7 +67,7 @@
 															@if($tour->tour_photo)
 																<div class="col-sm-4 col-xs-4" style="padding-right:4px;">
 																	<div class="form-group">
-																		<img src="{{Content::urlthumbnail($tour->tour_photo, $tour->user_id)}}" style="width: 100%;" />
+																		<img src="/storage/{{$tour->tour_photo}}" style="width: 100%;" />
 																	</div>
 																</div>
 															@endif

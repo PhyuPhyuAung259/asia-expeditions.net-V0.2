@@ -53,7 +53,7 @@
                 <div class="col-md-6 col-xs-6">
                     <div class="form-group ">
                       <label>Account Description<span style="color:#b12f1f;">*</span></label>
-                      <input type="text" name=" desc" class="form-control" value="{{$acc->account_desc}}" >
+                      <input type="text" name="desc" class="form-control" value="{{$acc->account_desc}}" >
                     </div>
                 </div>
                 <div class="col-md-3 col-xs-6">

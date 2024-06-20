@@ -148,7 +148,7 @@
                 <div class="panel-body">
                   <div id="wrap-feature-image" style="position:relative;" class="{{$supplier->supplier_photo ? 'open-img':''}}">
                     <input type="hidden" name="image" id="data-img" value="{{$supplier->supplier_photo}}">
-                    <img id="feature-img" src="{{Content::urlthumbnail($supplier->supplier_photo, $supplier->user_id)}}" style="width:100%;display:none;margin-bottom:12px;" class="btnUploadFiles" data-type="single-img" data-toggle="modal" data-target="#myUpload">
+                    <img id="feature-img" src="/storage/{{$supplier->supplier_photo}}" style="width:100%;display:none;margin-bottom:12px;" class="btnUploadFiles" data-type="single-img" data-toggle="modal" data-target="#myUpload">
                     <i id="removeImage" class="fa fa-remove (alias)" title="Remove picture" style="display: none;"></i>
                   </div>
                   <a href="#uploadfile" class="btnUploadFiles" data-type="single-img" data-toggle="modal" data-target="#myUpload">Set Feature Image</a>
@@ -164,7 +164,7 @@
                     <ul class="list-ustyled">
                       @if( $gallery[0] )
                         @foreach($gallery as $key=>$img)
-                          <li data-url="{{$img}}"><i class="removegallery fa fa-remove (alias)" title="Remove picture" style="display:none;"></i><input type="hidden" name="gallery[]" value="{{$img}}"><img src="{{Content::urlthumbnail($img, $supplier->user_id)}}" style='width:100%;' /></li>
+                          <li data-url="{{$img}}"><i class="removegallery fa fa-remove (alias)" title="Remove picture" style="display:none;"></i><input type="hidden" name="gallery[]" value="{{$img}}"><img src="/storage/{{$img}}" style='width:100%;' /></li>
                         @endforeach
                       @endif
                     </ul>                    

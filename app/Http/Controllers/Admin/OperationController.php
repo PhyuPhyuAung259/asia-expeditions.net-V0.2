@@ -34,7 +34,7 @@ class OperationController extends Controller
     	}elseif ($opstype == "golf") {
             $booking = Booking::golfBook($projectNo)->get();
         }elseif ($opstype == "guide" || $opstype == "misc"){
-            $booking = Booking::tourDetailsBook($projectNo)->get();   
+            $booking = Booking::tourBook($projectNo)->get();   
        }
         //dd($booking);
     	return view('admin.operation.booking_'.$opstype, compact("booking","project", "opstype"));
@@ -79,7 +79,7 @@ class OperationController extends Controller
     	$getTran = BookTransport::where(['project_number'=> $req->project_number, 'book_id'=> $req->book_id])->first();
         $btransport=Booking::where(['id'=>$req->book_id,'book_project'=>$req->project_number])->first();
         $project=Project::where(['project_number'=>$req->project_number])->first();
-      //  dd($getTran,$btransport);
+    //  dd($getTran,$btransport);
     	if ( $getTran) { 
     		$btran = BookTransport::find($getTran->id);
     		$btran->book_id        = $req->book_id;
@@ -243,6 +243,7 @@ class OperationController extends Controller
     public function assignGuide(Request $req){
     	$guidb=BookGuide::where(['project_number'=>$req->project_number,'book_id'=>$req->bookid])->first();
         $btour=Booking::where(['id'=>$req->bookid,'book_project'=>$req->project_number])->first();
+    //o dd($guidb,$btour);
     	$project=Project::where('project_number',$req->project_number)->first();
         if ($guidb) {
     		$aguide = BookGuide::find($guidb->id);
@@ -293,7 +294,7 @@ class OperationController extends Controller
             $booking->country_id=$req->country;
             $booking->province_id=$req->city;
             $booking->book_checkin=$req->start_date;
-            $booking->tour_id=$req->tran_name;
+            $booking->tour_id=$req->tour_id;
             $booking->book_price=$req->price;
             $booking->book_kprice=$req->kprice;
             $booking->save();

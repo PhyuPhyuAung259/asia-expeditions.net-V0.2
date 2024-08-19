@@ -154,21 +154,14 @@ class EditOperationController extends Controller
 
     public function editGuideOperation(Request $request,$type,$project_no, $id){
         $project=Project::where('project_number',$request->project_no)->first();
-        if($project->project_status==2){
-            if(\Auth::user()->role_id == 2){
-                $guide=BookGuide::where(['project_number'=>$project_no,'book_id'=>$id])->first();
-                $btour=Booking::where(['id'=>$id,'book_project'=>$project_no,'tour_id'=>$request->tour_id])->first();
-                return view("admin/operation/editguide",compact ('guide','btour'));
-            }
-            else{
-                return redirect()->intended('/');
-            }
+        $guide=BookGuide::where(['project_number'=>$project_no,'book_id'=>$id])->first();
+        $btour=Booking::where(['id'=>$id,'book_project'=>$project_no,'tour_id'=>$request->tour_id])->first();
+        if($request->sub_type=="additional guide"){
+            return view("admin/operation/additional_guide_booking",compact ('guide','btour'));
+
         }
-        else{
-            $guide=BookGuide::where(['project_number'=>$project_no,'book_id'=>$id])->first();
-            $btour=Booking::where(['id'=>$id,'book_project'=>$project_no,'tour_id'=>$request->tour_id])->first();
-            return view("admin/operation/editguide",compact ('guide','btour'));
-        }
+        return view("admin/operation/editguide",compact ('guide','btour'));
+     
         
         
     }  

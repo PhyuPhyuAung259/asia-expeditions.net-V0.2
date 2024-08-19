@@ -91,6 +91,9 @@
 											<a target="_blank" href="{{route('editguideoperation', ['type'=>'guide', 'project_no'=>$tran->book_project, 'id'=>$tran->id , 'tour_id'=>$tran->tour_id])}}" title="Edit Guide">
                                 			<label class="icon-list ic_edit"></label>
                              			</a>&nbsp;
+										 <a target="_blank" href="{{route('editguideoperation', ['type'=>'guide', 'project_no'=>$tran->book_project, 'id'=>$tran->id , 'tour_id'=>$tran->tour_id, 'sub_type'=>'additional guide'])}}" title="Additional Guide">
+                                			<label class="icon-list ic_book_add"></label>
+                             			</a>&nbsp;
 										@else
 											<span title="Project have been posted. can't edit" style="border-radius: 50px;border: solid 1px #795548; padding: 0px 6px;">Posted</span>
 										@endif

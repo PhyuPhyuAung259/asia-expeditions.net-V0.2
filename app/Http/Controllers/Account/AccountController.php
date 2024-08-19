@@ -90,9 +90,11 @@ class AccountController extends Controller
             if (!AccountName::checkAccountName($req->code)) {
                 $addAcc = new AccountName;
                 $addAcc->account_type_id = $req->account_type;
-                $addAcc->account_name    = $req->name;
-                $addAcc->account_code    = $req->code;
-                $addAcc->account_desc    = $req->account_desc;
+                $addAcc->account_name    = $req->account_name;
+                $addAcc->account_code    = $req->account_code;
+                $addAcc->account_desc    = $req->desc;
+                $addAcc->country_id      = $req->country;
+                $addAcc->province_id     = $req->city;  
                 $addAcc->save();
                 $message = "Your Account Name Successfully Added";
                 $messagetype = "success";
@@ -154,6 +156,7 @@ class AccountController extends Controller
 
     public function createPayment(Request $req){
      // dd("fhweauirf8iowefio");
+     dd($req->type);
         try {
             $actCode = AccountTransaction::latest('entry_code')->first();
          

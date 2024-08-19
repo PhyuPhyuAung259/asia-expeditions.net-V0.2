@@ -170,12 +170,12 @@
                   <?php 
                     $sup_bank = App\Supplier::find($bl->supplier_id);
                    ?>
-                  <tr class="{{isset($_GET['eid']) && $_GET['eid'] == $bl->id ? 'active':''}}">
+                  <tr class="{{isset($_GET['eid']) && $_GET['eid'] == $bl->id ? 'active':''}}"> 
                     <td>{{Content::dateformat($bl->invoice_pay_date)}}</td>
                     <td>{{{ $bl->user->fullname or ''}}}</td>
                     <td>{!! $bl->remark !!}</td>
                     <td>{{{ $sup_bank->supplier_name or ''}}}</td>                  
-                    <?php $currency = $bl->currency_id == 3 ? 0 : 1; ?>
+                    <?php $currency = $bl->currency_id == 3 ? 0 : 1; ?> 
                     <td>
                       @if($bl->total_amount > 0 || $bl->total_kamount > 0)
                         <a href="javascript:void(0)">
@@ -188,8 +188,7 @@
                         <a href="javascript:void(0)" class="btnRemoveOption" data-type="acc_opening_balance" data-id="{{$bl->id}}" title="Remove this ?"> <i style="font-size: 18px; color: #b21c1c;"  class="fa fa-minus-circle"></i></a>
                       @endif
                     </td>
-
-                  </tr>
+                            </tr>
                  @endforeach
                 </tbody>
               </table>

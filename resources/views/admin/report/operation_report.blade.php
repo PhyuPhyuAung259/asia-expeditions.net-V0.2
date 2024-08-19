@@ -418,8 +418,10 @@
 						</tr>			
 						@foreach($tranBook->get() as $tran)
 							<?php 
+								//dd("Transport",$tran);
 								//$pro   = App\Province::find($tran->province_id); 
 								$btran = App\BookTransport::where(['project_number'=>$tran->book_project, 'book_id'=>$tran->id])->first();
+								//dd($btran);
 								$price = isset($btran->price)? $btran->price:0; 
 								$kprice = isset($btran->kprice)? $btran->kprice:0;
 								$transportTotal = $transportTotal + $price;
@@ -473,11 +475,12 @@
 					<!-- End Transport -->
 					<!-- Guide Start-->
 						<?php 
-							$guideBook = \App\Booking::tourDetailsBook($project->project_number); 
+							$guideBook = \App\Booking::tourBook($project->project_number); 
+						//	dd($guideBook->count());
 							$guidTotal = 0;
 							$guidkTotal = 0;
 						?>
-						@if($guideBook->count() > 0)
+						@if($guideBook->count() != 0)
 							<tr>
 								<th colspan="12" style="border-top: none;"><div><strong style="text-transform: capitalize;">guide expenses</strong></div>
 								</th>
@@ -496,6 +499,7 @@
 							</tr>			
 							@foreach($guideBook->get() as $tran)
 							<?php 
+								//dd("guide",$tran);
 								$pro = \App\Province::find($tran->province_id);
 								$bg  = App\BookGuide::where(['project_number'=>$tran->book_project,'book_id'=>$tran->id])->first(); 
 								$price = isset($bg->price)?$bg->price :0;
@@ -525,6 +529,9 @@
 								<td class="text-right">{{Content::money($kprice)}}</td>
 								<td><a target="_blank" href="{{route('editguideoperation', ['type'=>'guide', 'project_no'=>$tran->book_project, 'id'=>$tran->id , 'tour_id'=>$tran->tour_id])}}" title="Edit Guide">
                                 			<label class="icon-list ic_edit"></label>
+                             			</a>&nbsp;
+										 <a target="_blank" href="{{route('editguideoperation', ['type'=>'guide', 'project_no'=>$tran->book_project, 'id'=>$tran->id , 'tour_id'=>$tran->tour_id, 'sub_type'=>'additional guide'])}}" title="Additional Guide">
+                                			<label class="icon-list ic_book_add"></label>
                              			</a>&nbsp;
 										 <!-- <a target="_blank" href="{{route('getBookingVoucher', [$tran->book_project, $tran->id])}}" title="View Transport Booking">
 							               	<label class="fa fa-list-alt btn btn-xs"></label>
